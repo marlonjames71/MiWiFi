@@ -54,6 +54,29 @@ class WiFiTableVC: UIViewController {
 			addWiFiButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 			addWiFiButton.heightAnchor.constraint(equalToConstant: 40)
 		])
+		addWiFiButton.addTarget(self, action: #selector(addWifiButtonTapped), for: .touchUpInside)
+	}
+
+	private func configureAndPresentAddWifiAlert() {
+		let addWifiAlertVC = UIAlertController(title: "Add New WiFi", message: nil, preferredStyle: .alert)
+		let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+			// Save code goes here
+		}
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+		addWifiAlertVC.addTextField { wifiNameTextField in
+			wifiNameTextField.placeholder =  "WiFi Name"
+		}
+		addWifiAlertVC.addTextField { wifiPasswordTextField in
+			wifiPasswordTextField.placeholder = "WiFi Password"
+			wifiPasswordTextField.isSecureTextEntry = true
+		}
+		[saveAction, cancelAction].forEach { addWifiAlertVC.addAction($0) }
+		present(addWifiAlertVC, animated: true)
+	}
+
+	// MARK: - Actions
+	@objc private func addWifiButtonTapped() {
+		configureAndPresentAddWifiAlert()
 	}
 }
 
