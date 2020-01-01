@@ -73,7 +73,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "WifiCell", for: indexPath)
 		cell.textLabel?.text = "Wifi Name"
-		cell.imageView?.image = UIImage(systemName: "house")
+		cell.imageView?.image = UIImage(systemName: "house.fill")
 		cell.accessoryType = .disclosureIndicator
 		
 		return cell

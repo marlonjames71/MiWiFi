@@ -20,12 +20,16 @@ class AddWIFIVC: UIViewController {
 	private let wifiNameStackView = UIStackView()
 	private let wifiPasswordStackView = UIStackView()
 	private let bottomSafeAreaConstraint = NSLayoutConstraint()
+	private let iconSegControl = UISegmentedControl()
+	private let iconImageView = UIImageView()
 
 	private let underline = UIView()
 	private let saveButton = MiWiFiButton(backgroundColor: .miwifiButtonBGColor, tintColor: .systemBlue, textColor: .systemBlue, title: "Save", image: nil)
 	private let nameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Name this entry", autocorrectionType: .yes, autocapitalizationType: .words)
 	private let wifiNameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "WiFi name", autocorrectionType: .no, autocapitalizationType: .none)
 	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "WiFi password", autocorrectionType: .no, autocapitalizationType: .none)
+
+//	private let textFieldStackViewBottomAnchor: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,10 +89,11 @@ class AddWIFIVC: UIViewController {
 		])
 
 		configureTitleLabel()
+		configureIconImageView()
 		configureCancelButton()
 		configureSaveButton()
+		configureSegControl()
 		configureTextFieldStackView()
-//		configureTextFields()
 	}
 
 	private func configureTitleLabel() {
@@ -108,13 +113,31 @@ class AddWIFIVC: UIViewController {
 		modalView.addSubview(cancelButton)
 		cancelButton.translatesAutoresizingMaskIntoConstraints = false
 		cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-		cancelButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
+		let cancelSymbol = UIImage(systemName: "xmark", withConfiguration: configuration)
+		cancelButton.setImage(cancelSymbol, for: .normal)
 		cancelButton.tintColor = .systemBlue
 		NSLayoutConstraint.activate([
 			cancelButton.topAnchor.constraint(equalTo: modalView.topAnchor, constant: 20),
 			cancelButton.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -20),
 			cancelButton.heightAnchor.constraint(equalToConstant: 30),
 			cancelButton.widthAnchor.constraint(equalToConstant: 30)
+		])
+	}
+
+	private func configureIconImageView() {
+		modalView.addSubview(iconImageView)
+		iconImageView.translatesAutoresizingMaskIntoConstraints = false
+		iconImageView.tintColor = .systemGreen
+		iconImageView.contentMode = .center
+		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
+		iconImageView.image = UIImage(systemName: "house.fill", withConfiguration: configuration)
+
+		NSLayoutConstraint.activate([
+			iconImageView.topAnchor.constraint(equalTo: modalView.topAnchor, constant: 20),
+			iconImageView.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 20),
+			iconImageView.heightAnchor.constraint(equalToConstant: 30),
+			iconImageView.widthAnchor.constraint(equalToConstant: 30)
 		])
 	}
 
@@ -125,7 +148,7 @@ class AddWIFIVC: UIViewController {
 		textFieldStackView.axis = .vertical
 		textFieldStackView.alignment = .fill
 		textFieldStackView.distribution = .fill
-		textFieldStackView.spacing = 16
+		textFieldStackView.spacing = 20
 
 		underline.translatesAutoresizingMaskIntoConstraints = false
 		underline.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -142,6 +165,12 @@ class AddWIFIVC: UIViewController {
 		wifiNameStackView.addArrangedSubview(wifiNameTextField)
 		wifiPasswordStackView.addArrangedSubview(passwordTextField)
 
+		[nameTextField, wifiNameTextField, passwordTextField].forEach {
+			$0.translatesAutoresizingMaskIntoConstraints = false
+			$0.heightAnchor.constraint(equalToConstant: 40).isActive = true
+			$0.delegate = self
+		}
+
 		[nameStackView, wifiNameStackView, wifiPasswordStackView].forEach { $0.addArrangedSubview(createUnderline()) }
 		[nameStackView, wifiNameStackView, wifiPasswordStackView].forEach { textFieldStackView.addArrangedSubview($0) }
 
@@ -150,31 +179,31 @@ class AddWIFIVC: UIViewController {
 
 		NSLayoutConstraint.activate([
 			textFieldStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
-			textFieldStackView.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -50),
-			textFieldStackView.bottomAnchor.constraint(lessThanOrEqualTo: saveButton.topAnchor, constant: -50),
+			textFieldStackView.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -30),
+			textFieldStackView.bottomAnchor.constraint(lessThanOrEqualTo: iconSegControl.topAnchor, constant: -50),
 			toBottomSafeArea,
-			textFieldStackView.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 50),
+			textFieldStackView.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 30),
 		])
 	}
 
-//	private func configureTextFields() {
-//		[wifiNameTextField, passwordTextField].forEach { modalView.addSubview($0) }
-//		[wifiNameTextField, passwordTextField].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-//
-//		NSLayoutConstraint.activate([
-//			wifiNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
-//			wifiNameTextField.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -50),
-//			wifiNameTextField.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 50),
-//			wifiNameTextField.heightAnchor.constraint(equalToConstant: 50)
-//		])
-//
-//		NSLayoutConstraint.activate([
-//			passwordTextField.topAnchor.constraint(equalTo: wifiNameTextField.bottomAnchor, constant: 8),
-//			passwordTextField.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -50),
-//			passwordTextField.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 50),
-//			passwordTextField.heightAnchor.constraint(equalToConstant: 50)
-//		])
-//	}
+	private func configureSegControl() {
+		modalView.addSubview(iconSegControl)
+		iconSegControl.translatesAutoresizingMaskIntoConstraints = false
+
+		iconSegControl.insertSegment(withTitle: "Home", at: 0, animated: true)
+		iconSegControl.insertSegment(withTitle: "Work", at: 1, animated: true)
+		iconSegControl.insertSegment(withTitle: "Misc", at: 2, animated: true)
+
+		NSLayoutConstraint.activate([
+			iconSegControl.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -50),
+			iconSegControl.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 30),
+			iconSegControl.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -30),
+			iconSegControl.heightAnchor.constraint(equalToConstant: 30)
+		])
+
+		iconSegControl.selectedSegmentIndex = 0
+		iconSegControl.addTarget(self, action: #selector(segControlDidChange), for: .valueChanged)
+	}
 
 	private func configureSaveButton() {
 		modalView.addSubview(saveButton)
@@ -184,9 +213,9 @@ class AddWIFIVC: UIViewController {
 		saveButton.layer.borderWidth = 1
 
 		NSLayoutConstraint.activate([
-			saveButton.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 50),
+			saveButton.leadingAnchor.constraint(equalTo: modalView.leadingAnchor, constant: 30),
 			saveButton.bottomAnchor.constraint(equalTo: modalView.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-			saveButton.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -50),
+			saveButton.trailingAnchor.constraint(equalTo: modalView.trailingAnchor, constant: -30),
 			saveButton.heightAnchor.constraint(equalToConstant: 40)
 		])
 	}
@@ -210,6 +239,21 @@ class AddWIFIVC: UIViewController {
 		dismiss(animated: true)
 	}
 
+	@objc private func segControlDidChange() {
+		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
+		switch iconSegControl.selectedSegmentIndex {
+		case 0:
+			iconImageView.image = UIImage(systemName: "house.fill", withConfiguration: configuration)
+		case 1:
+			iconImageView.image = UIImage(systemName: "briefcase.fill", withConfiguration: configuration)
+		case 2:
+			iconImageView.image = UIImage(systemName: "wifi", withConfiguration: configuration)
+		default:
+			break
+
+		}
+	}
+
 	@objc func keyboardFrameWillChange(notification: NSNotification) {
 		if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
 			let duration: NSNumber = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber ?? 0.2
@@ -220,5 +264,11 @@ class AddWIFIVC: UIViewController {
 				self.view.layoutSubviews()
 			}
 		}
+	}
+}
+
+extension AddWIFIVC: UITextFieldDelegate {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		textField.resignFirstResponder()
 	}
 }
