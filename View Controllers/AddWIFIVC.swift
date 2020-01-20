@@ -43,8 +43,8 @@ class AddWIFIVC: UIViewController {
 	var wifiController: WifiController?
 	var wifi: Wifi?
 
-	var icon: IconName?
-	var locationDesc: String?
+	var icon: IconName = .home
+	var desc: String = "Home"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,7 +105,7 @@ class AddWIFIVC: UIViewController {
 	private func configureSaveButton()  {
 		view.addSubview(saveButton)
 		saveButton.translatesAutoresizingMaskIntoConstraints = false
-		saveButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+		saveButton.addTarget(self, action: #selector(saveTapped(_:)), for: .touchUpInside)
 		let title = NSAttributedString(string: "Save", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .medium)])
 		saveButton.setAttributedTitle(title, for: .normal)
 		saveButton.tintColor = .miTintColor
@@ -195,15 +195,13 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.addTarget(self, action: #selector(segControlDidChange), for: .valueChanged)
 	}
 
-	@objc private func saveTapped() {
+	@objc private func saveTapped(_ sender: UIButton) {
 		guard let controller = wifiController else { return }
-		guard let name = nameTextField.text, !name.isEmpty,
-			let wifiName = wifiNameTextField.text, !wifiName.isEmpty,
-			let password = passwordTextField.text, !password.isEmpty,
-			let description = locationDesc,
-			let iconType = icon else { return }
+		guard let name = nameTextField.text,
+			let wifiName = wifiNameTextField.text,
+			let wifiPassword = passwordTextField.text else { return }
 
-		controller.addWifi(name: name, wifiName: wifiName, password: password, locationDesc: description, iconName: iconType.rawValue)
+		controller.addWifi(name: name, wifiName: wifiName, password: wifiPassword, locationDesc: desc, iconName: icon.rawValue)
 		delegate?.didFinishSaving()
 		dismiss(animated: true)
 	}
@@ -219,15 +217,15 @@ class AddWIFIVC: UIViewController {
 		case 0:
 			iconImageView.image = UIImage(systemName: "house.fill", withConfiguration: configuration)
 			icon = .home
-			locationDesc = "Home"
+			desc = "Home"
 		case 1:
 			iconImageView.image = UIImage(systemName: "briefcase.fill", withConfiguration: configuration)
 			icon = .work
-			locationDesc = "Work"
+			desc = "Work"
 		case 2:
 			iconImageView.image = UIImage(systemName: "wifi", withConfiguration: configuration)
 			icon = .misc
-			locationDesc = "Misc"
+			desc = "Misc"
 		default:
 			break
 		}

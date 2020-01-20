@@ -21,6 +21,7 @@ class WIFIDetailVC: UIViewController {
         super.viewDidLoad()
 		view.backgroundColor = .systemBackground
 		configureNavController()
+		updateViews()
     }
 
 	private func updateViews() {

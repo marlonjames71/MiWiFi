@@ -26,13 +26,13 @@ class WiFiTableVC: UIViewController {
 
 	lazy var fetchedResultsController: NSFetchedResultsController<Wifi> = {
 		let fetchRequest: NSFetchRequest<Wifi> = Wifi.fetchRequest()
-		let favoriteDescriptor = NSSortDescriptor(key: "name", ascending: true)
+		let favoriteDescriptor = NSSortDescriptor(key: "isFavorite", ascending: false)
 		fetchRequest.sortDescriptors = [favoriteDescriptor]
 
 		let moc = CoreDataStack.shared.mainContext
 		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
 																	managedObjectContext: moc,
-																	sectionNameKeyPath: "Name",
+																	sectionNameKeyPath: "Favorite",
 																	cacheName: nil)
 		fetchedResultsController.delegate = self
 		do {
@@ -187,6 +187,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		let wifi = fetchedResultsController.object(at: indexPath)
 		cell.textLabel?.text = wifi.name
 		cell.detailTextLabel?.text = wifi.wifiName
+		cell.detailTextLabel?.textColor = .secondaryLabel
 		cell.imageView?.tintColor = .miTintColor
 		cell.imageView?.image = UIImage(systemName: wifi.iconName ?? "house.fill")
 		cell.accessoryType = .disclosureIndicator
