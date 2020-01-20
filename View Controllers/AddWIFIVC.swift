@@ -8,7 +8,17 @@
 
 import UIKit
 
+protocol AddWiFiVCDelegate: AnyObject {
+	func didFinishSaving()
+}
+
 class AddWIFIVC: UIViewController {
+
+	enum IconName: String {
+		case home = "house.fill"
+		case work = "briefcase.fill"
+		case misc = "wifi"
+	}
 
 	private let tapToDismissGestureContainer = UIView()
 	private let modalView = UIView()
@@ -28,6 +38,13 @@ class AddWIFIVC: UIViewController {
 
 	lazy var bottomConstraint = dismissButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70)
 
+	weak var delegate: AddWiFiVCDelegate?
+
+	var wifiController: WifiController?
+	var wifi: Wifi?
+
+	var icon: IconName?
+	var locationDesc: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -179,6 +196,15 @@ class AddWIFIVC: UIViewController {
 	}
 
 	@objc private func saveTapped() {
+		guard let controller = wifiController else { return }
+		guard let name = nameTextField.text, !name.isEmpty,
+			let wifiName = wifiNameTextField.text, !wifiName.isEmpty,
+			let password = passwordTextField.text, !password.isEmpty,
+			let description = locationDesc,
+			let iconType = icon else { return }
+
+		controller.addWifi(name: name, wifiName: wifiName, password: password, locationDesc: description, iconName: iconType.rawValue)
+		delegate?.didFinishSaving()
 		dismiss(animated: true)
 	}
 
@@ -192,10 +218,16 @@ class AddWIFIVC: UIViewController {
 		switch iconSegControl.selectedSegmentIndex {
 		case 0:
 			iconImageView.image = UIImage(systemName: "house.fill", withConfiguration: configuration)
+			icon = .home
+			locationDesc = "Home"
 		case 1:
 			iconImageView.image = UIImage(systemName: "briefcase.fill", withConfiguration: configuration)
+			icon = .work
+			locationDesc = "Work"
 		case 2:
 			iconImageView.image = UIImage(systemName: "wifi", withConfiguration: configuration)
+			icon = .misc
+			locationDesc = "Misc"
 		default:
 			break
 		}

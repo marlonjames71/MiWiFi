@@ -10,11 +10,23 @@ import UIKit
 
 class WIFIDetailVC: UIViewController {
 
+	var wifiController: WifiController?
+	var wifi: Wifi? {
+		didSet {
+			updateViews()
+		}
+	}
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		view.backgroundColor = .systemBackground
 		configureNavController()
     }
+
+	private func updateViews() {
+		guard let wifi = wifi else { return }
+		title = wifi.name
+	}
 
 	private func configureNavController() {
 		title = "WiFi Name"

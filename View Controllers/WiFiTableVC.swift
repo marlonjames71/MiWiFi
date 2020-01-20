@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class WiFiTableVC: UIViewController {
 
@@ -16,10 +17,31 @@ class WiFiTableVC: UIViewController {
 									 tintColor: .miTintColor,
 									 textColor: .white,
 									 title: "Add WiFi",
-									 image: UIImage(systemName: "plus.circle"))
+									 image: nil)
 
 	// Layer for selected cell background
 	let layer = CAGradientLayer()
+
+	let wifiController = WifiController()
+
+	lazy var fetchedResultsController: NSFetchedResultsController<Wifi> = {
+		let fetchRequest: NSFetchRequest<Wifi> = Wifi.fetchRequest()
+		let favoriteDescriptor = NSSortDescriptor(key: "name", ascending: true)
+		fetchRequest.sortDescriptors = [favoriteDescriptor]
+
+		let moc = CoreDataStack.shared.mainContext
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+																	managedObjectContext: moc,
+																	sectionNameKeyPath: "Name",
+																	cacheName: nil)
+		fetchedResultsController.delegate = self
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			print("error performing initial fetch for frc: \(error)")
+		}
+		return fetchedResultsController
+	}()
 
 
 	// MARK: - Lifecycle
@@ -27,13 +49,17 @@ class WiFiTableVC: UIViewController {
         super.viewDidLoad()
 		view.backgroundColor = .systemBackground
 
-
 		configureTabBar()
 		configureNavController()
 		configureListTableView()
 		configureAddWIFIButton()
 		configureGradientLayer()
     }
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		wifiTableView.reloadData()
+	}
 
 	private func configureTabBar() {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
@@ -58,7 +84,7 @@ class WiFiTableVC: UIViewController {
 	private func configureListTableView() {
 		view.addSubview(wifiTableView)
 		wifiTableView.translatesAutoresizingMaskIntoConstraints = false
-		wifiTableView.register(UITableViewCell.self, forCellReuseIdentifier: "WifiCell")
+		wifiTableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "WifiCell")
 		NSLayoutConstraint.activate([
 			wifiTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
 			wifiTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
@@ -98,14 +124,19 @@ class WiFiTableVC: UIViewController {
 
 	@objc private func addWifiButtonTapped() {
 		let addWifiVC = AddWIFIVC()
+		addWifiVC.wifiController = wifiController
 		addWifiVC.modalPresentationStyle = .overFullScreen
 		present(addWifiVC, animated: true)
 	}
 }
 
 extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return fetchedResultsController.sections?.count ?? 1
+	}
+
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		5
+		fetchedResultsController.sections?[section].numberOfObjects ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -132,6 +163,8 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let action = UIContextualAction(style: .normal, title: "Delete") { (action, view, completion) in
+			let wifi = self.fetchedResultsController.object(at: indexPath)
+			self.wifiController.delete(wifi: wifi)
 			completion(true)
 		}
 
@@ -150,9 +183,12 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		}()
 
 		let cell = tableView.dequeueReusableCell(withIdentifier: "WifiCell", for: indexPath)
-		cell.textLabel?.text = "Wifi Name"
+		
+		let wifi = fetchedResultsController.object(at: indexPath)
+		cell.textLabel?.text = wifi.name
+		cell.detailTextLabel?.text = wifi.wifiName
 		cell.imageView?.tintColor = .miTintColor
-		cell.imageView?.image = UIImage(systemName: "house.fill")
+		cell.imageView?.image = UIImage(systemName: wifi.iconName ?? "house.fill")
 		cell.accessoryType = .disclosureIndicator
 
 		cell.selectedBackgroundView = backgroundView
@@ -161,7 +197,71 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let wifi = fetchedResultsController.object(at: indexPath)
 		let detailVC = WIFIDetailVC()
+		detailVC.wifi = wifi
+		detailVC.wifiController = wifiController
 		navigationController?.pushViewController(detailVC, animated: true)
+	}
+}
+
+// MARK: - Fetched Results Controller Delegate
+extension WiFiTableVC: NSFetchedResultsControllerDelegate {
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		wifiTableView.beginUpdates()
+	}
+
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		wifiTableView.endUpdates()
+	}
+
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+					didChange sectionInfo: NSFetchedResultsSectionInfo,
+					atSectionIndex sectionIndex: Int,
+					for type: NSFetchedResultsChangeType) {
+		let indexSet = IndexSet([sectionIndex])
+		switch type {
+		case .insert:
+			wifiTableView.insertSections(indexSet, with: .automatic)
+		case .delete:
+			wifiTableView.deleteSections(indexSet, with: .automatic)
+		default:
+			print(#line, #file, "unexpected NSFetchedResultsChangeType: \(type)")
+		}
+	}
+
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+					didChange anObject: Any,
+					at indexPath: IndexPath?,
+					for type: NSFetchedResultsChangeType,
+					newIndexPath: IndexPath?) {
+		switch type {
+		case .insert:
+			guard let newIndexPath = newIndexPath else { return }
+			wifiTableView.insertRows(at: [newIndexPath], with: .automatic)
+		case .move:
+			guard let newIndexPath = newIndexPath, let indexPath = indexPath else { return }
+			wifiTableView.moveRow(at: indexPath, to: newIndexPath)
+		case .update:
+			guard let indexPath = indexPath else { return }
+			wifiTableView.reloadRows(at: [indexPath], with: .automatic)
+		case .delete:
+			guard let indexPath = indexPath else { return }
+			wifiTableView.deleteRows(at: [indexPath], with: .automatic)
+		@unknown default:
+			print(#line, #file, "unknown NSFetchedResultsChangeType: \(type)")
+		}
+	}
+
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, sectionIndexTitleForSectionName sectionName: String) -> String? {
+		return sectionName
+	}
+}
+
+extension WiFiTableVC: AddWiFiVCDelegate {
+	func didFinishSaving() {
+		DispatchQueue.main.async {
+			self.wifiTableView.reloadData()
+		}
 	}
 }
