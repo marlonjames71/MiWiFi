@@ -27,13 +27,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		wifiTableVC.title = "WiFi List"
 		wifiTableVC.tabBarItem = UITabBarItem(title: "WiFi List", image: UIImage(systemName: "wifi"), tag: 0)
 
-		return UINavigationController(rootViewController: wifiTableVC)
+		let navController = UINavigationController(rootViewController: wifiTableVC)
+		navController.navigationBar.tintColor = .miTintColor
+
+		return navController
+	}
+
+	func createWIFISettingsNC() -> UINavigationController {
+		let wifiSettingsVC = WiFiSettingsVC()
+		wifiSettingsVC.title = "Settings"
+		wifiSettingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.horizontal.3"), tag: 1)
+
+		let navController = UINavigationController(rootViewController: wifiSettingsVC)
+		navController.navigationBar.tintColor = .miTintColor
+
+		return navController
 	}
 
 	func createTabBar() -> UITabBarController {
 		let tabBar = UITabBarController()
-		UITabBar.appearance().tintColor = .systemBlue
-		tabBar.viewControllers = [createWIFITableNC()]
+		UITabBar.appearance().tintColor = .miTintColor
+		tabBar.viewControllers = [createWIFITableNC(), createWIFISettingsNC()]
 
 		return tabBar
 	}

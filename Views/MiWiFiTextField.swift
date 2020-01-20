@@ -25,16 +25,18 @@ class MiWiFiTextField: UITextField {
 		self.autocorrectionType = autocorrectionType
 		self.placeholder = placeholder
 		self.autocapitalizationType = autocapitalizationType
+		configure()
 	}
 
 	private func configure() {
 		translatesAutoresizingMaskIntoConstraints = false
-
+		backgroundColor = .clear
+		tintColor = .miTintColor
 		textColor = .label
 		font = UIFont.preferredFont(forTextStyle: .title3)
 		adjustsFontSizeToFitWidth = true
 		minimumFontSize = 12
 		clearButtonMode = .whileEditing
+		borderStyle = .roundedRect
 	}
-
 }

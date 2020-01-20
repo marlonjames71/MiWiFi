@@ -21,12 +21,11 @@ class MiWiFiButton: UIButton {
 
 	init(backgroundColor: UIColor, tintColor: UIColor, textColor: UIColor, title: String, image: UIImage?) {
 		super.init(frame: .zero)
+		configureButton()
 		setTitleColor(textColor, for: .normal)
 		self.tintColor = tintColor
 		self.backgroundColor = backgroundColor
 		self.setTitle(title, for: .normal)
-		self.setImage(image, for: .normal)
-		configureButton()
 	}
 
 	private func configureButton() {

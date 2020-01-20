@@ -10,14 +10,12 @@ import UIKit
 
 class MiWiFiTextFieldView: UIView {
 
-	let underline = UIView()
 	let textField = UITextField()
 	let iconImageView = UIImageView()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		backgroundColor = .clear
-		configureUnderline()
+//		backgroundColor = .clear
 		configureTextField()
 	}
 
@@ -31,24 +29,13 @@ class MiWiFiTextFieldView: UIView {
 		textField.placeholder = placeholder
 	}
 
-	private func configureUnderline() {
-		addSubview(underline)
-		underline.translatesAutoresizingMaskIntoConstraints = false
-
-		underline.backgroundColor = .secondaryLabel
-		NSLayoutConstraint.activate([
-			underline.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-			underline.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
-			underline.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-			underline.heightAnchor.constraint(equalToConstant: 1)
-		])
-	}
-
 	private func configureTextField() {
 		addSubview(textField)
 		translatesAutoresizingMaskIntoConstraints = false
 
-		textField.borderStyle = .none
+//		textField.borderStyle = .line
+		textField.layer.borderColor = UIColor.systemGray4.cgColor
+		textField.layer.borderWidth = 1
 		textField.textColor = .label
 		textField.font = UIFont.preferredFont(forTextStyle: .title3)
 		textField.adjustsFontSizeToFitWidth = true
@@ -56,7 +43,7 @@ class MiWiFiTextFieldView: UIView {
 		textField.minimumFontSize = 12
 		textField.clearButtonMode = .whileEditing
 		NSLayoutConstraint.activate([
-			textField.bottomAnchor.constraint(equalTo: underline.topAnchor, constant: 8),
+			textField.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 8),
 			textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
 			textField.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
 			textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
