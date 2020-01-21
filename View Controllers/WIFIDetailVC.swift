@@ -27,6 +27,9 @@ class WIFIDetailVC: UIViewController {
 	private func updateViews() {
 		guard let wifi = wifi else { return }
 		title = wifi.name
+
+		let qrImageView = MiWiFiImageView(with: wifi)
+		layoutImageView(imageView: qrImageView)
 	}
 
 	private func configureNavController() {
@@ -36,8 +39,22 @@ class WIFIDetailVC: UIViewController {
 		navigationItem.rightBarButtonItem = editButton
 	}
 
+	private func layoutImageView(imageView: UIImageView) {
+		view.addSubview(imageView)
+		NSLayoutConstraint.activate([
+			imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+			imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+			imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+			imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
+		])
+	}
+
 	@objc private func editButtonTapped(_ sender: UIBarButtonItem) {
-		print("Edit tapped")
+		guard let wifi = wifi else { return }
+		let editVC = AddWIFIVC()
+		editVC.wifi = wifi
+		editVC.modalPresentationStyle = .overFullScreen
+		present(editVC, animated: true)
 	}
 }
 

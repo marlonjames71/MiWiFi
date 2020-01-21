@@ -41,7 +41,12 @@ class AddWIFIVC: UIViewController {
 	weak var delegate: AddWiFiVCDelegate?
 
 	var wifiController: WifiController?
-	var wifi: Wifi?
+
+	var wifi: Wifi? {
+		didSet {
+			updateViews()
+		}
+	}
 
 	var icon: IconName = .home
 	var desc: String = "Home"
@@ -193,6 +198,13 @@ class AddWIFIVC: UIViewController {
 
 		iconSegControl.selectedSegmentIndex = 0
 		iconSegControl.addTarget(self, action: #selector(segControlDidChange), for: .valueChanged)
+	}
+
+	private func updateViews() {
+		guard let wifi = wifi else { return }
+		nameTextField.text = wifi.name
+		wifiNameTextField.text = wifi.wifiName
+		passwordTextField.text = wifi.password
 	}
 
 	@objc private func saveTapped(_ sender: UIButton) {

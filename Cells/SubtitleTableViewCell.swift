@@ -10,6 +10,12 @@ import UIKit
 
 class SubtitleTableViewCell: UITableViewCell {
 
+	var wifi: Wifi? {
+		didSet {
+			updateViews()
+		}
+	}
+
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 	}
@@ -23,10 +29,14 @@ class SubtitleTableViewCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+	func updateViews() {
+		guard let wifi = wifi else { return }
+		textLabel?.text = wifi.name
+		detailTextLabel?.text = wifi.wifiName
+		detailTextLabel?.textColor = .secondaryLabel
+		imageView?.tintColor = wifi.isFavorite == true ? UIColor.systemOrange : UIColor.miTintColor
+		imageView?.image = UIImage(systemName: wifi.iconName ?? "house.fill")
+		accessoryType = .disclosureIndicator
+	}
 
 }
