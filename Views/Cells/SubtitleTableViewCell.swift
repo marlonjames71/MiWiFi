@@ -23,11 +23,6 @@ class SubtitleTableViewCell: UITableViewCell {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
 	func updateViews() {
 		guard let wifi = wifi else { return }
