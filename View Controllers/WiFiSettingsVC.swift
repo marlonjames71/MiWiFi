@@ -20,7 +20,7 @@ class WiFiSettingsVC: UIViewController {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
 			appearance.shadowImage = UIImage()
-			appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
+			appearance.backgroundColor = UIColor.systemBackground
 			appearance.shadowColor = .clear
 			tabBarItem.standardAppearance = appearance
 		}
