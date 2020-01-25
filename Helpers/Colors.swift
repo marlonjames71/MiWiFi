@@ -11,4 +11,6 @@ import UIKit
 extension UIColor {
 	static let miwifiButtonBGColor = UIColor(named: "MiWiFi Button BG Color")!
 	static let miTintColor = UIColor(named: "miTintColor")!
+	static let miBackground = UIColor(named: "miBackground")!
+	static let miSecondaryBG = UIColor(named: "miSecondaryBG")!
 }
