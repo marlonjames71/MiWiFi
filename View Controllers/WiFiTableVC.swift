@@ -13,11 +13,8 @@ class WiFiTableVC: UIViewController {
 
 	// MARK: - Properties & Outlets
 	let wifiTableView = UITableView(frame: .zero, style: .plain)
-	let addWiFiButton = MiWiFiButton(backgroundColor: .miTintColor,
-									 tintColor: .miTintColor,
-									 textColor: .white,
-									 title: "Add WiFi",
-									 image: nil)
+
+	let addButton = UIButton(type: .system)
 
 	let wifiController = WifiController()
 
@@ -50,7 +47,7 @@ class WiFiTableVC: UIViewController {
 		configureTabBar()
 		configureNavController()
 		configureListTableView()
-		configureAddWIFIButton()
+		configureAddButton()
     }
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -62,8 +59,9 @@ class WiFiTableVC: UIViewController {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
 			appearance.shadowImage = UIImage()
-			appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
+			appearance.backgroundColor = UIColor.systemBackground
 			appearance.shadowColor = .clear
+			tabBarItem.standardAppearance = appearance
 		}
 	}
 
@@ -94,16 +92,21 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.rowHeight = 60
 	}
 
-	private func configureAddWIFIButton() {
-		view.addSubview(addWiFiButton)
+	private func configureAddButton() {
+		view.addSubview(addButton)
+		addButton.translatesAutoresizingMaskIntoConstraints = false
+		addButton.addTarget(self, action: #selector(addWifiButtonTapped(_:)), for: .touchUpInside)
+
+		addButton.tintColor = .miTintColor
+		let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
+		addButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: configuration), for: .normal)
 
 		NSLayoutConstraint.activate([
-			addWiFiButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-			addWiFiButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-			addWiFiButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-			addWiFiButton.heightAnchor.constraint(equalToConstant: 40)
+			addButton.heightAnchor.constraint(equalToConstant: 50),
+			addButton.widthAnchor.constraint(equalTo: addButton.heightAnchor),
+			addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+			addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
 		])
-		addWiFiButton.addTarget(self, action: #selector(addWifiButtonTapped), for: .touchUpInside)
 	}
 
 	// MARK: - Actions
@@ -112,7 +115,7 @@ class WiFiTableVC: UIViewController {
 		Alerts.showOptionsActionSheet(vc: self)
 	}
 
-	@objc private func addWifiButtonTapped() {
+	@objc private func addWifiButtonTapped(_ sender: UIButton) {
 		let addWifiVC = AddWIFIVC()
 		addWifiVC.wifiController = wifiController
 		addWifiVC.modalPresentationStyle = .overFullScreen
@@ -194,8 +197,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let wifi = fetchedResultsController.object(at: indexPath)
-		let detailVC = WIFIDetailVC()
-		detailVC.wifi = wifi
+		let detailVC = WIFIDetailVC(with: wifi)
 		detailVC.wifiController = wifiController
 		navigationController?.pushViewController(detailVC, animated: true)
 	}
