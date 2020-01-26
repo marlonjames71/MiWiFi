@@ -22,13 +22,16 @@ class WIFIDetailVC: UIViewController {
 		super.init(nibName: nil, bundle: nil)
 	}
 
+
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		fatalError("Use init(with wifi: Wifi)")
 	}
 
+
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,24 +40,28 @@ class WIFIDetailVC: UIViewController {
 		configureWifiInfoView()
     }
 
+
 	private func configureView() {
 		view.backgroundColor = .miBackground
 		layoutImageView(imageView: qrImageView)
 	}
 
-	private func configureNavController() {
+
+	func configureNavController() {
 		title = wifi.name
 		let star = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
 		let starImageView = UIImageView(image: star)
 
 		if wifi.isFavorite {
 			navigationItem.titleView = starImageView
+		} else {
+			navigationItem.titleView = nil
 		}
 
-		let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped(_:)))
-		editButton.tintColor = .miTintColor
-		navigationItem.rightBarButtonItem = editButton
+		let optionsButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(optionsButtonTapped(_:)))
+		navigationItem.rightBarButtonItem = optionsButton
 	}
+
 
 	private func layoutImageView(imageView: UIImageView) {
 		view.addSubview(imageView)
@@ -65,6 +72,7 @@ class WIFIDetailVC: UIViewController {
 			imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
 		])
 	}
+
 
 	private func configureWifiInfoView() {
 		let infoView = WiFiInfoView(with: wifi)
@@ -77,13 +85,11 @@ class WIFIDetailVC: UIViewController {
 		])
 	}
 
-	@objc private func editButtonTapped(_ sender: UIBarButtonItem) {
-		let editVC = AddWIFIVC()
-		editVC.wifi = wifi
-		editVC.modalPresentationStyle = .overFullScreen
-		present(editVC, animated: true)
+
+	@objc private func optionsButtonTapped(_ sender: UIBarButtonItem) {
+		guard let controller = wifiController else { return }
+		Alerts.showOptionsActionSheetForDetailVC(vc: self, wifi: wifi, wifiController: controller)
 	}
 }
-
 
 
