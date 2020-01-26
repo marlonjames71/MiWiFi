@@ -44,9 +44,9 @@ class WiFiInfoView: UIView {
 	}
 
 	private func configureView() {
-		backgroundColor = .miSecondaryBG
-		layer.cornerCurve = .continuous
-		layer.cornerRadius = 12
+		backgroundColor = .miBackground
+//		layer.cornerCurve = .continuous
+//		layer.cornerRadius = 12
 		clipsToBounds = true
 		translatesAutoresizingMaskIntoConstraints = false
 	}
@@ -74,10 +74,10 @@ class WiFiInfoView: UIView {
 		NSLayoutConstraint.activate([
 			divider.heightAnchor.constraint(equalToConstant: 1),
 
-			mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+			mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
 			mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
 			mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-			mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+			mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
 
 			networkImageView.widthAnchor.constraint(equalTo: networkImageView.heightAnchor),
 			passwordImageView.widthAnchor.constraint(equalTo: passwordImageView.heightAnchor),
