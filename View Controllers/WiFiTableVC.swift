@@ -53,13 +53,14 @@ class WiFiTableVC: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		wifiTableView.reloadData()
+		configureNavController()
 	}
 
 	private func configureTabBar() {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
 			appearance.shadowImage = UIImage()
-			appearance.backgroundColor = UIColor.systemBackground
+			appearance.backgroundColor = UIColor.miBackground
 			appearance.shadowColor = .clear
 			tabBarItem.standardAppearance = appearance
 		}
@@ -90,6 +91,7 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.dataSource = self
 		wifiTableView.delegate = self
 		wifiTableView.rowHeight = 60
+		wifiTableView.backgroundColor = .miBackground
 	}
 
 	private func configureAddButton() {
@@ -189,7 +191,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "WifiCell", for: indexPath) as? SubtitleTableViewCell
 		let wifi = fetchedResultsController.object(at: indexPath)
 		cell?.wifi = wifi
-
+		cell?.backgroundColor = .miBackground
 		cell?.selectedBackgroundView = backgroundView
 
 		return cell ?? UITableViewCell()

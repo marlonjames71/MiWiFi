@@ -12,7 +12,7 @@ class WiFiSettingsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .systemBackground
+		view.backgroundColor = .miBackground
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTintColor]
 		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTintColor]
@@ -20,7 +20,7 @@ class WiFiSettingsVC: UIViewController {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
 			appearance.shadowImage = UIImage()
-			appearance.backgroundColor = UIColor.systemBackground
+			appearance.backgroundColor = .miBackground
 			appearance.shadowColor = .clear
 			tabBarItem.standardAppearance = appearance
 		}
