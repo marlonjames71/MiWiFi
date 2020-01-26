@@ -187,7 +187,7 @@ class AddWIFIVC: UIViewController {
 
 		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .selected)
 		iconSegControl.selectedSegmentTintColor = .miTintColor
-		iconSegControl.backgroundColor = .systemBackground
+		iconSegControl.backgroundColor = .miBackground
 		iconSegControl.tintColor = .miTintColor
 
 		iconSegControl.insertSegment(withTitle: "Home", at: 0, animated: true)
