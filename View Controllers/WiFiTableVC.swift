@@ -50,11 +50,13 @@ class WiFiTableVC: UIViewController {
 		configureAddButton()
     }
 
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		wifiTableView.reloadData()
 		configureNavController()
 	}
+
 
 	private func configureTabBar() {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
@@ -66,16 +68,15 @@ class WiFiTableVC: UIViewController {
 		}
 	}
 
+
 	private func configureNavController() {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTintColor,
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTintColor,
 																   .font : UIFont.roundedFont(ofSize: 20, weight: .bold)]
-		
-		let optionsButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(optionsButtonTapped(_:)))
-		navigationItem.rightBarButtonItem = optionsButton
 	}
+
 
 	private func configureListTableView() {
 		view.addSubview(wifiTableView)
@@ -94,6 +95,7 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.backgroundColor = .miBackground
 	}
 
+
 	private func configureAddButton() {
 		view.addSubview(addButton)
 		addButton.translatesAutoresizingMaskIntoConstraints = false
@@ -111,12 +113,8 @@ class WiFiTableVC: UIViewController {
 		])
 	}
 
+
 	// MARK: - Actions
-
-	@objc private func optionsButtonTapped(_ sender: UIBarButtonItem) {
-		Alerts.showOptionsActionSheet(vc: self)
-	}
-
 	@objc private func addWifiButtonTapped(_ sender: UIButton) {
 		let addWifiVC = AddWIFIVC()
 		addWifiVC.wifiController = wifiController
@@ -125,22 +123,23 @@ class WiFiTableVC: UIViewController {
 	}
 }
 
+
 extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return fetchedResultsController.sections?.count ?? 1
 	}
 
+
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		fetchedResultsController.sections?[section].numberOfObjects ?? 0
 	}
 
+
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let wifi = fetchedResultsController.object(at: indexPath)
 		let cell = wifiTableView.cellForRow(at: indexPath) as? SubtitleTableViewCell
-		let detailAction = UIContextualAction(style: .normal, title: "View") { action, view, completion in
-			let detailVC = WIFIDetailVC()
-			let navController = UINavigationController(rootViewController: detailVC)
-			self.present(navController, animated: true)
+		let moreOptionsAction = UIContextualAction(style: .normal, title: "View") { action, view, completion in
+			Alerts.showOptionsActionSheetForTableVC(vc: self, wifi: wifi, wifiController: self.wifiController)
 			completion(true)
 		}
 
@@ -156,30 +155,32 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			completion(true)
 		}
 
-		detailAction.backgroundColor = .miTintColor
-		detailAction.image = UIImage(systemName: "qrcode")
+		moreOptionsAction.backgroundColor = .systemBackground
+		moreOptionsAction.image = UIImage(systemName: "ellipsis.circle.fill")?.withTintColor(.systemTeal, renderingMode: .alwaysOriginal)
 
-		favoriteAction.backgroundColor = .systemOrange
-		favoriteAction.image = UIImage(systemName: "star.fill")
+		favoriteAction.backgroundColor = .systemBackground
+		favoriteAction.image = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
 
-		let configuration = UISwipeActionsConfiguration(actions: [favoriteAction, detailAction])
+		let configuration = UISwipeActionsConfiguration(actions: [favoriteAction, moreOptionsAction])
 		configuration.performsFirstActionWithFullSwipe = true
 		return configuration
 	}
+
 
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let action = UIContextualAction(style: .normal, title: "Delete") { (action, view, completion) in
 			let wifi = self.fetchedResultsController.object(at: indexPath)
-			self.wifiController.delete(wifi: wifi)
+			Alerts.presentSecondaryDeletePromptOnTableVC(vc: self, wifi: wifi, wifiController: self.wifiController)
 			completion(true)
 		}
 
-		action.image = UIImage(systemName: "trash.fill")
-		action.backgroundColor = .systemPink
+		action.image = UIImage(systemName: "trash.fill")?.withTintColor(.systemPink, renderingMode: .alwaysOriginal)
+		action.backgroundColor = .systemBackground
 		let configuration = UISwipeActionsConfiguration(actions: [action])
 		configuration.performsFirstActionWithFullSwipe = true
 		return configuration
 	}
+
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let backgroundView: UIView = {
@@ -197,6 +198,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		return cell ?? UITableViewCell()
 	}
 
+
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let wifi = fetchedResultsController.object(at: indexPath)
 		let detailVC = WIFIDetailVC(with: wifi)
@@ -204,6 +206,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		navigationController?.pushViewController(detailVC, animated: true)
 	}
 }
+
 
 // MARK: - Fetched Results Controller Delegate
 extension WiFiTableVC: NSFetchedResultsControllerDelegate {
@@ -251,14 +254,6 @@ extension WiFiTableVC: NSFetchedResultsControllerDelegate {
 			wifiTableView.deleteRows(at: [indexPath], with: .automatic)
 		@unknown default:
 			print(#line, #file, "unknown NSFetchedResultsChangeType: \(type)")
-		}
-	}
-}
-
-extension WiFiTableVC: AddWiFiVCDelegate {
-	func didFinishSaving() {
-		DispatchQueue.main.async {
-			self.wifiTableView.reloadData()
 		}
 	}
 }
