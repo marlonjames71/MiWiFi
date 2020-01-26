@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol AddWiFiVCDelegate: AnyObject {
-	func didFinishSaving()
-}
-
 class AddWIFIVC: UIViewController {
 
 	enum IconName: String {
@@ -37,8 +33,6 @@ class AddWIFIVC: UIViewController {
 	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "WiFi password", autocorrectionType: .no, autocapitalizationType: .none)
 
 	lazy var bottomConstraint = dismissButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70)
-
-	weak var delegate: AddWiFiVCDelegate?
 
 	var wifiController: WifiController?
 
@@ -207,14 +201,35 @@ class AddWIFIVC: UIViewController {
 		passwordTextField.text = wifi.password
 	}
 
+	private func updateWifi(wifi: Wifi, controller: WifiController) {
+		if let nickname = nameTextField.text,
+			let networkname = wifiNameTextField.text,
+			!nickname.isEmpty,
+			!networkname.isEmpty {
+			controller.updateWifi(wifi: wifi,
+								  name: nickname,
+								  wifiName: networkname,
+								  password: passwordTextField.text ?? "Nopass",
+								  locationDesc: desc,
+								  iconName: icon.rawValue,
+								  isFavorite: wifi.isFavorite)
+			dismiss(animated: true)
+		}
+	}
+
 	@objc private func saveTapped(_ sender: UIButton) {
 		guard let controller = wifiController else { return }
+
+		if let wifi = wifi {
+			updateWifi(wifi: wifi, controller: controller)
+			return
+		}
+
 		guard let name = nameTextField.text,
 			let wifiName = wifiNameTextField.text,
 			let wifiPassword = passwordTextField.text else { return }
 
 		controller.addWifi(name: name, wifiName: wifiName, password: wifiPassword, locationDesc: desc, iconName: icon.rawValue)
-		delegate?.didFinishSaving()
 		dismiss(animated: true)
 	}
 
