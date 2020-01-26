@@ -61,19 +61,23 @@ class WiFiInfoView: UIView {
 		let networkLabelStackView = UIStackView.fillStackView(spacing: 4, with: [networkHeaderLabel, networkValueLabel])
 		let passwordLabelStackView = UIStackView.fillStackView(spacing: 4, with: [passwordHeaderLabel, passwordValueLabel])
 
+		let divider = UIView()
+		divider.backgroundColor = .tertiaryLabel
+
 		networkStackView = UIStackView.fillStackView(axis: .horizontal, spacing: 12, with: [networkImageView, networkLabelStackView])
 		passwordStackView = UIStackView.fillStackView(axis: .horizontal, spacing: 12, with: [passwordImageView, passwordLabelStackView])
-		mainStackView = UIStackView.fillStackView(spacing: 16, with: [networkStackView, passwordStackView])
+		mainStackView = UIStackView.fillStackView(spacing: 10, with: [networkStackView, divider, passwordStackView])
 
 		addSubview(mainStackView)
 		mainStackView.translatesAutoresizingMaskIntoConstraints = false
 
 		NSLayoutConstraint.activate([
+			divider.heightAnchor.constraint(equalToConstant: 1),
 
-			mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+			mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
 			mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
 			mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-			mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+			mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
 
 			networkImageView.widthAnchor.constraint(equalTo: networkImageView.heightAnchor),
 			passwordImageView.widthAnchor.constraint(equalTo: passwordImageView.heightAnchor),
