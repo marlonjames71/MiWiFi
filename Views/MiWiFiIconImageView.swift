@@ -33,14 +33,17 @@ class MiWiFiIconImageView: UIImageView {
 	private func configure() {
 		translatesAutoresizingMaskIntoConstraints = false
 		tintColor = .miTintColor
+		contentMode = .center
+
+		let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular)
 
 		guard let icon = icon else { return }
 
 		switch icon {
 		case .network:
-			image = UIImage(systemName: icon.rawValue)
+			image = UIImage(systemName: icon.rawValue, withConfiguration: configuration)
 		case .password:
-			image = UIImage(systemName: icon.rawValue)
+			image = UIImage(systemName: icon.rawValue, withConfiguration: configuration)
 		}
 	}
 }
