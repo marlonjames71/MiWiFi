@@ -6,11 +6,25 @@
 //  Copyright © 2020 Marlon Raskin. All rights reserved.
 //
 
+import LocalAuthentication
 import UIKit
+
+protocol WiFiInfoViewDelegate: AnyObject {
+	func showPasswordRequestedFailed()
+	func biometricAuthenticationNotAvailable()
+}
 
 class WiFiInfoView: UIView {
 
 	var wifi: Wifi
+
+	let tapToRevealStr = "Tap to Reveal"
+
+	var isRevealed: Bool = false {
+		didSet {
+			updatePasswordText()
+		}
+	}
 
 	let networkHeaderLabel = MiWiFiHeaderLabel(textAlignment: .left, fontSize: 12)
 	let networkValueLabel = MiWiFiBodyLabel(textAlignment: .left, fontSize: 18)
@@ -25,6 +39,8 @@ class WiFiInfoView: UIView {
 	var mainStackView = UIStackView()
 
 	let tapGestureRecognizer = UITapGestureRecognizer()
+
+	var delegate: WiFiInfoViewDelegate?
 
 	init(frame: CGRect = .zero, with wifi: Wifi) {
 		self.wifi = wifi
@@ -84,6 +100,24 @@ class WiFiInfoView: UIView {
 		])
 	}
 
+	private func updatePasswordText() {
+		if isRevealed {
+			UIView.animate(withDuration: 0.5) { self.passwordValueLabel.alpha = 0 }
+			UIView.animate(withDuration: 0.5) {
+				self.passwordValueLabel.textColor = .label
+				self.passwordValueLabel.text = self.wifi.password
+				self.passwordValueLabel.alpha = 1
+			}
+		} else {
+			UIView.animate(withDuration: 0.5) { self.passwordValueLabel.alpha = 0 }
+			UIView.animate(withDuration: 0.5) {
+				self.passwordValueLabel.textColor = .miTintColor
+				self.passwordValueLabel.text = self.tapToRevealStr
+				self.passwordValueLabel.alpha = 1
+			}
+		}
+	}
+
 	private func loadContent() {
 		networkImageView.icon = .network
 		passwordImageView.icon = .password
@@ -92,10 +126,36 @@ class WiFiInfoView: UIView {
 		passwordHeaderLabel.text = "Password"
 
 		networkValueLabel.text = wifi.wifiName
-		passwordValueLabel.text = "Tap to Reveal"
+		passwordValueLabel.text = tapToRevealStr
+		passwordValueLabel.textColor = .miTintColor
 	}
 
+	#warning("Refactor tap gesture to be on WiFiInfoView to get alerts presenting on DetailVC")
 	@objc private func revealPassword(_ sender: UITapGestureRecognizer) {
+		let context = LAContext()
+		var error: NSError?
+
+		guard passwordValueLabel.text == tapToRevealStr else {
+			isRevealed = false
+			return
+		}
+
+		if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+			let reason = "We need to make sure you're authorized to view the password"
+
+			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
+				guard let self = self else { return }
+				DispatchQueue.main.async {
+					if success {
+						self.isRevealed = true
+					} else {
+						self.delegate?.showPasswordRequestedFailed()
+					}
+				}
+			}
+		} else {
+			self.delegate?.biometricAuthenticationNotAvailable()
+		}
 		print("Reveal Bitch!")
 	}
 }

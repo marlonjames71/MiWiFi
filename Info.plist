@@ -47,6 +47,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>In order to view the password, $(PRODUCT_NAME) needs to verify the user.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

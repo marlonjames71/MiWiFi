@@ -118,6 +118,18 @@ struct Alerts {
 		[deletAction, cancelAction].forEach { actionSheet.addAction($0) }
 		vc.present(actionSheet, animated: true)
 	}
+
+	static func presentFailedVerificationWithFaceIDAlert(on vc: WIFIDetailVC) {
+		let alertController = UIAlertController(title: "Verification Failed", message: "You could not be verified. Please try again.", preferredStyle: .alert)
+		alertController.addAction(UIAlertAction(title: "OK", style: .default))
+		vc.present(alertController, animated: true)
+	}
+
+	static func presentBiometryNotAvailableAlert(on vc: WIFIDetailVC) {
+		let alertController = UIAlertController(title: "Biometry Failed", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
+		alertController.addAction(UIAlertAction(title: "OK", style: .default))
+		vc.present(alertController, animated: true)
+	}
 }
 
 extension UIAlertController {
