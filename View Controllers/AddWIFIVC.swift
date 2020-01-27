@@ -16,6 +16,7 @@ class AddWIFIVC: UIViewController {
 		case misc = "wifi"
 	}
 
+
 	private let tapToDismissGestureContainer = UIView()
 	private let modalView = UIView()
 	private let titleLabel = UILabel()
@@ -42,6 +43,7 @@ class AddWIFIVC: UIViewController {
 		}
 	}
 
+
 	var icon: IconName = .home
 	var desc: String = "Home"
 
@@ -63,9 +65,11 @@ class AddWIFIVC: UIViewController {
 		nameTextField.becomeFirstResponder()
     }
 
+
 	deinit {
 		print("deinit")
 	}
+
 
 	private func configureFXView() {
 		let blurEffect = UIBlurEffect(style: .regular)
@@ -88,6 +92,7 @@ class AddWIFIVC: UIViewController {
 		view.addSubview(blurredEffectView)
 	}
 
+
 	private func configureTitleLabel() {
 		view.addSubview(titleLabel)
 		titleLabel.textColor = .label
@@ -100,6 +105,7 @@ class AddWIFIVC: UIViewController {
 			titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
 		])
 	}
+
 
 	private func configureSaveButton()  {
 		view.addSubview(saveButton)
@@ -119,6 +125,7 @@ class AddWIFIVC: UIViewController {
 		])
 	}
 
+
 	private func configureIconImageView() {
 		view.addSubview(iconImageView)
 		iconImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -134,6 +141,7 @@ class AddWIFIVC: UIViewController {
 			iconImageView.widthAnchor.constraint(equalToConstant: 30)
 		])
 	}
+
 
 	private func configureElementStackView() {
 		view.addSubview(elementStackView)
@@ -162,6 +170,7 @@ class AddWIFIVC: UIViewController {
 		])
 	}
 
+
 	private func configureDismissButton() {
 		view.addSubview(dismissButton)
 		dismissButton.translatesAutoresizingMaskIntoConstraints = false
@@ -173,6 +182,7 @@ class AddWIFIVC: UIViewController {
 			bottomConstraint
 		])
 	}
+
 
 	private func configureSegControl() {
 		view.addSubview(iconSegControl)
@@ -194,28 +204,35 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.addTarget(self, action: #selector(segControlDidChange), for: .valueChanged)
 	}
 
+
 	private func updateViews() {
 		guard let wifi = wifi else { return }
-		nameTextField.text = wifi.name
-		wifiNameTextField.text = wifi.wifiName
-		passwordTextField.text = wifi.password
+		nameTextField.text = wifi.nickname
+		wifiNameTextField.text = wifi.networkName
+		passwordTextField.text = KeychainWrapper.standard.string(forKey: wifi.passwordID?.uuidString ?? "No Password")
 	}
+
 
 	private func updateWifi(wifi: Wifi, controller: WifiController) {
 		if let nickname = nameTextField.text,
 			let networkname = wifiNameTextField.text,
+			let id = wifi.passwordID,
 			!nickname.isEmpty,
 			!networkname.isEmpty {
+
 			controller.updateWifi(wifi: wifi,
-								  name: nickname,
-								  wifiName: networkname,
-								  password: passwordTextField.text ?? "Nopass",
+								  nickname: nickname,
+								  networkName: networkname,
+								  passwordID: id,
 								  locationDesc: desc,
 								  iconName: icon.rawValue,
 								  isFavorite: wifi.isFavorite)
 			dismiss(animated: true)
+
+			savePasswordToKeychain(id: id)
 		}
 	}
+
 
 	@objc private func saveTapped(_ sender: UIButton) {
 		guard let controller = wifiController else { return }
@@ -225,18 +242,32 @@ class AddWIFIVC: UIViewController {
 			return
 		}
 
+		let id = UUID()
 		guard let name = nameTextField.text,
-			let wifiName = wifiNameTextField.text,
-			let wifiPassword = passwordTextField.text else { return }
+			let wifiName = wifiNameTextField.text else { return }
 
-		controller.addWifi(name: name, wifiName: wifiName, password: wifiPassword, locationDesc: desc, iconName: icon.rawValue)
+		savePasswordToKeychain(id: id)
+
+		controller.addWifi(nickname: name, networkName: wifiName, passwordID: id, locationDesc: desc, iconName: icon.rawValue)
+
 		dismiss(animated: true)
 	}
+
+	private func savePasswordToKeychain(id: UUID) {
+		if let password = passwordTextField.text,
+			!password.isEmpty {
+			KeychainWrapper.standard.set(password, forKey: id.uuidString)
+		} else {
+			KeychainWrapper.standard.set("", forKey: id.uuidString)
+		}
+	}
+
 
 	@objc private func cancelButtonTapped() {
 		navigationController?.popViewController(animated: true)
 		dismiss(animated: true)
 	}
+
 
 	@objc private func segControlDidChange() {
 		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
@@ -258,6 +289,7 @@ class AddWIFIVC: UIViewController {
 		}
 	}
 
+
 	@objc func keyboardFrameWillChange(notification: NSNotification) {
 			if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
 				let duration: NSNumber = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber ?? 0.2
@@ -268,6 +300,7 @@ class AddWIFIVC: UIViewController {
 				}
 			}
 		}
+
 
 	@objc func keyboardWillHide(notification: NSNotification) {
 			let duration: NSNumber = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber ?? 0.2
