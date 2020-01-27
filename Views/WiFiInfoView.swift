@@ -42,6 +42,7 @@ class WiFiInfoView: UIView {
 
 	var delegate: WiFiInfoViewDelegate?
 
+
 	init(frame: CGRect = .zero, with wifi: Wifi) {
 		self.wifi = wifi
 		super.init(frame: frame)
@@ -51,27 +52,30 @@ class WiFiInfoView: UIView {
 		configureTapGesture()
 	}
 
+
 	override init(frame: CGRect) {
 		fatalError("Use init(frame with wifi")
 	}
+
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+
 	private func configureView() {
 		backgroundColor = .miBackground
-//		layer.cornerCurve = .continuous
-//		layer.cornerRadius = 12
 		clipsToBounds = true
 		translatesAutoresizingMaskIntoConstraints = false
 	}
+
 
 	private func configureTapGesture() {
 		tapGestureRecognizer.addTarget(self, action: #selector(revealPassword(_:)))
 		passwordValueLabel.isUserInteractionEnabled = true
 		passwordValueLabel.addGestureRecognizer(tapGestureRecognizer)
 	}
+
 
 	private func configureLayout() {
 		let networkLabelStackView = UIStackView.fillStackView(spacing: 4, with: [networkHeaderLabel, networkValueLabel])
@@ -100,12 +104,15 @@ class WiFiInfoView: UIView {
 		])
 	}
 
+
 	private func updatePasswordText() {
+		guard passwordValueLabel.text != "No Password" else { return }
 		if isRevealed {
 			UIView.animate(withDuration: 0.5) { self.passwordValueLabel.alpha = 0 }
 			UIView.animate(withDuration: 0.5) {
+				guard let id = self.wifi.passwordID else { return }
 				self.passwordValueLabel.textColor = .label
-				self.passwordValueLabel.text = self.wifi.password
+				self.passwordValueLabel.text = KeychainWrapper.standard.string(forKey: id.uuidString)
 				self.passwordValueLabel.alpha = 1
 			}
 		} else {
@@ -118,6 +125,13 @@ class WiFiInfoView: UIView {
 		}
 	}
 
+	private func fetchPasswordFromKeychain() -> String? {
+		guard let id = wifi.passwordID else { return nil }
+		let password = KeychainWrapper.standard.string(forKey: id.uuidString)
+		return password
+	}
+
+
 	private func loadContent() {
 		networkImageView.icon = .network
 		passwordImageView.icon = .password
@@ -125,9 +139,17 @@ class WiFiInfoView: UIView {
 		networkHeaderLabel.text = "Network"
 		passwordHeaderLabel.text = "Password"
 
-		networkValueLabel.text = wifi.wifiName
-		passwordValueLabel.text = tapToRevealStr
-		passwordValueLabel.textColor = .miTintColor
+		networkValueLabel.text = wifi.networkName
+
+		if let password = fetchPasswordFromKeychain() {
+			if password == "" {
+				passwordValueLabel.text = "No Password"
+				passwordValueLabel.textColor = .secondaryLabel
+			} else {
+				passwordValueLabel.text = tapToRevealStr
+				passwordValueLabel.textColor = .miTintColor
+			}
+		}
 	}
 
 	#warning("Refactor tap gesture to be on WiFiInfoView to get alerts presenting on DetailVC")
@@ -156,6 +178,5 @@ class WiFiInfoView: UIView {
 		} else {
 			self.delegate?.biometricAuthenticationNotAvailable()
 		}
-		print("Reveal Bitch!")
 	}
 }

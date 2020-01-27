@@ -24,7 +24,6 @@ class MiWiFiImageView: UIImageView {
 		super.init(frame: frame)
 		configure()
 		configureQRCode()
-		print(wifi)
 	}
 
 	required init?(coder: NSCoder) {
@@ -61,13 +60,15 @@ class MiWiFiImageView: UIImageView {
 	}
 
 	private func configureWifiCodeString() -> String {
-		let pass = wifi.password ?? "nopass"
-		let network = wifi.wifiName ?? "NoName"
+		guard let id = wifi.passwordID else { return "" }
+		let password = KeychainWrapper.standard.string(forKey: id.uuidString)
+		let pass = password != "" ? password : "nopass"
+		let network = wifi.networkName ?? "NoName"
 
 		if pass == "nopass" {
 			return #"WIFI:S:"\#(network)";;"#
 		} else {
-			return #"WIFI:T:WPA;S:"\#(network);P:"\#(pass)";;"#
+			return #"WIFI:T:WPA;S:"\#(network);P:"\#(pass ?? "No Password")";;"#
 		}
 	}
 }

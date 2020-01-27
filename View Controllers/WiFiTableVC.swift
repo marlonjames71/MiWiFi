@@ -21,7 +21,7 @@ class WiFiTableVC: UIViewController {
 	lazy var fetchedResultsController: NSFetchedResultsController<Wifi> = {
 		let fetchRequest: NSFetchRequest<Wifi> = Wifi.fetchRequest()
 		let favoriteDescriptor = NSSortDescriptor(key: "isFavorite", ascending: false)
-		let nameDescriptor = NSSortDescriptor(key: "name", ascending: true)
+		let nameDescriptor = NSSortDescriptor(key: "nickname", ascending: true)
 		fetchRequest.sortDescriptors = [favoriteDescriptor, nameDescriptor]
 
 		let moc = CoreDataStack.shared.mainContext
@@ -144,10 +144,11 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		}
 
 		let favoriteAction = UIContextualAction(style: .normal, title: "Favorite") { action, view, completion in
+			guard let id = wifi.passwordID else { return }
 			self.wifiController.updateWifi(wifi: wifi,
-										   name: wifi.name ?? "",
-										   wifiName: wifi.wifiName ?? "",
-										   password: wifi.password ?? "",
+										   nickname: wifi.nickname ?? "",
+										   networkName: wifi.networkName ?? "",
+										   passwordID: id,
 										   locationDesc: wifi.locationDesc ?? "",
 										   iconName: wifi.iconName ?? "home.fill",
 										   isFavorite: !wifi.isFavorite)

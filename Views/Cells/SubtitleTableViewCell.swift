@@ -26,8 +26,8 @@ class SubtitleTableViewCell: UITableViewCell {
 
 	func updateViews() {
 		guard let wifi = wifi else { return }
-		textLabel?.text = wifi.name
-		detailTextLabel?.text = wifi.wifiName
+		textLabel?.text = wifi.nickname
+		detailTextLabel?.text = wifi.networkName
 		detailTextLabel?.textColor = .secondaryLabel
 		imageView?.tintColor = wifi.isFavorite == true ? UIColor.systemOrange : UIColor.miTintColor
 		imageView?.image = UIImage(systemName: wifi.iconName ?? "house.fill")

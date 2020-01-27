@@ -48,7 +48,7 @@ class WIFIDetailVC: UIViewController {
 
 
 	func configureNavController() {
-		title = wifi.name
+		title = wifi.nickname
 		let star = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
 		let starImageView = UIImageView(image: star)
 
@@ -92,4 +92,14 @@ class WIFIDetailVC: UIViewController {
 	}
 }
 
+#warning("You've added Keychain wrappers, now you just have to make a new xcdatamodel with UUID's and save to keychain")
+extension WIFIDetailVC: WiFiInfoViewDelegate {
+	func showPasswordRequestedFailed() {
+		Alerts.presentFailedVerificationWithFaceIDAlert(on: self)
+		print("Request Failed")
+	}
 
+	func biometricAuthenticationNotAvailable() {
+		Alerts.presentBiometryNotAvailableAlert(on: self)
+	}
+}
