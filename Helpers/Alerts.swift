@@ -12,8 +12,8 @@ struct Alerts {
 	static func showOptionsActionSheetForTableVC(vc: WiFiTableVC, wifi: Wifi, wifiController: WifiController) {
 		let titleStr = """
 		Print or Share wifi
-		Nickname: \(wifi.name ?? "")
-		Network: \(wifi.wifiName ?? "")
+		Nickname: \(wifi.nickname ?? "")
+		Network: \(wifi.networkName ?? "")
 		"""
 		let actionSheet = UIAlertController(title: titleStr, message: nil, preferredStyle: .actionSheet)
 
@@ -61,10 +61,11 @@ struct Alerts {
 		let image = wifi.isFavorite ? unfavoriteImage : favoriteImage
 
 		let favoriteAction = UIAlertAction(title: title, style: .default) { _ in
+			guard let id = wifi.passwordID else { return }
 			wifiController.updateWifi(wifi: wifi,
-									  name: wifi.name ?? "",
-									  wifiName: wifi.wifiName ?? "",
-									  password: wifi.password ?? "",
+									  nickname: wifi.nickname ?? "",
+									  networkName: wifi.networkName ?? "",
+									  passwordID: id,
 									  locationDesc: wifi.locationDesc ?? "",
 									  iconName: wifi.iconName ?? "home.fill",
 									  isFavorite: !wifi.isFavorite)
@@ -91,10 +92,12 @@ struct Alerts {
 	}
 
 	static func presentSecondaryDeletePromptOnDetailVC(vc: WIFIDetailVC, wifi: Wifi, wifiController: WifiController) {
-		let deletStr = "Are you sure you want to delete \(wifi.name ?? "")?"
+		let deletStr = "Are you sure you want to delete \(wifi.nickname ?? "")?"
 		let actionSheet = UIAlertController(title: deletStr, message: nil, preferredStyle: .actionSheet)
 
 		let deletAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+			guard let id = wifi.passwordID else { return }
+			KeychainWrapper.standard.removeObject(forKey: id.uuidString)
 			wifiController.delete(wifi: wifi)
 			vc.navigationController?.popViewController(animated: true)
 		}
@@ -106,10 +109,12 @@ struct Alerts {
 	}
 
 	static func presentSecondaryDeletePromptOnTableVC(vc: WiFiTableVC, wifi: Wifi, wifiController: WifiController) {
-		let deletStr = "Are you sure you want to delete \(wifi.name ?? "")?"
+		let deletStr = "Are you sure you want to delete \(wifi.nickname ?? "")?"
 		let actionSheet = UIAlertController(title: deletStr, message: nil, preferredStyle: .actionSheet)
 
 		let deletAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+			guard let id = wifi.passwordID else { return }
+			KeychainWrapper.standard.removeObject(forKey: id.uuidString)
 			wifiController.delete(wifi: wifi)
 		}
 
