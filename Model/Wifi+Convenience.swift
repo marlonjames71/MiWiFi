@@ -10,11 +10,11 @@ import Foundation
 import CoreData
 
 extension Wifi {
-	@discardableResult convenience init(name: String, wifiName: String, password: String, locationDesc: String, iconName: String, isFavorite: Bool = false, context: NSManagedObjectContext) {
+	@discardableResult convenience init(nickname: String, networkName: String, passwordID: UUID, locationDesc: String, iconName: String, isFavorite: Bool = false, context: NSManagedObjectContext) {
 		self.init(context: context)
-		self.name = name
-		self.wifiName = wifiName
-		self.password = password
+		self.nickname = nickname
+		self.networkName = networkName
+		self.passwordID = passwordID
 		self.locationDesc = locationDesc
 		self.iconName = iconName
 		self.isFavorite = isFavorite
