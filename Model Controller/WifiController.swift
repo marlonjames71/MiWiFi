@@ -12,15 +12,15 @@ import CoreData
 class WifiController {
 	static let shared = WifiController()
 
-	func addWifi(name: String, wifiName: String, password: String, locationDesc: String, iconName: String, isFavorite: Bool = false) {
-		Wifi(name: name, wifiName: wifiName, password: password, locationDesc: locationDesc, iconName: iconName, isFavorite: isFavorite, context: .mainContext)
+	func addWifi(nickname: String, networkName: String, passwordID: UUID, locationDesc: String, iconName: String, isFavorite: Bool = false) {
+		Wifi(nickname: nickname, networkName: networkName, passwordID: passwordID, locationDesc: locationDesc, iconName: iconName, isFavorite: isFavorite, context: .mainContext)
 		saveToPersistentStore()
 	}
 
-	func updateWifi(wifi: Wifi, name: String, wifiName: String, password: String, locationDesc: String, iconName: String, isFavorite: Bool) {
-		wifi.name = name
-		wifi.wifiName = wifiName
-		wifi.password = password
+	func updateWifi(wifi: Wifi, nickname: String, networkName: String, passwordID: UUID, locationDesc: String, iconName: String, isFavorite: Bool) {
+		wifi.nickname = nickname
+		wifi.networkName = networkName
+		wifi.passwordID = passwordID
 		wifi.locationDesc = locationDesc
 		wifi.iconName = iconName
 		wifi.isFavorite = isFavorite
