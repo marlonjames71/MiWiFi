@@ -11,17 +11,35 @@ import CoreData
 
 class WiFiTableVC: UIViewController {
 
+	enum Mode {
+		case view
+		case select
+	}
+
+	var mode: Mode = .view {
+		didSet {
+			switch mode {
+			case .view:
+				navigationItem.leftBarButtonItem = nil
+				wifiTableView.setEditing(false, animated: true)
+			case .select:
+				navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash,
+																   target: self,
+																   action: #selector(deleteSelectedWifiObjects(_:)))
+				wifiTableView.setEditing(true, animated: true)
+			}
+		}
+	}
+
 	// MARK: - Properties & Outlets
 	let wifiTableView = UITableView(frame: .zero, style: .plain)
 
 	let addButton = UIButton(type: .system)
 
-	let wifiController = WifiController()
-
 	lazy var fetchedResultsController: NSFetchedResultsController<Wifi> = {
 		let fetchRequest: NSFetchRequest<Wifi> = Wifi.fetchRequest()
-		let favoriteDescriptor = NSSortDescriptor(key: "isFavorite", ascending: false)
-		let nameDescriptor = NSSortDescriptor(key: "nickname", ascending: true)
+		let favoriteDescriptor = NSSortDescriptor(keyPath: \Wifi.isFavorite, ascending: false)
+		let nameDescriptor = NSSortDescriptor(keyPath: \Wifi.nickname, ascending: true)
 		fetchRequest.sortDescriptors = [favoriteDescriptor, nameDescriptor]
 
 		let moc = CoreDataStack.shared.mainContext
@@ -75,6 +93,8 @@ class WiFiTableVC: UIViewController {
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTintColor,
 																   .font : UIFont.roundedFont(ofSize: 20, weight: .bold)]
+		let count = fetchedResultsController.fetchedObjects?.count ?? 0
+		navigationItem.rightBarButtonItem = count > 0 ? editButtonItem : nil
 	}
 
 
@@ -93,6 +113,9 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.delegate = self
 		wifiTableView.rowHeight = 60
 		wifiTableView.backgroundColor = .miBackground
+		wifiTableView.allowsMultipleSelection = false
+		wifiTableView.allowsSelectionDuringEditing = true
+		wifiTableView.allowsMultipleSelectionDuringEditing = true
 	}
 
 
@@ -114,12 +137,30 @@ class WiFiTableVC: UIViewController {
 	}
 
 
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+
+		if(editing && !wifiTableView.isEditing){
+			mode = .select
+		}else{
+			mode = .view
+		}
+	}
+
+
 	// MARK: - Actions
 	@objc private func addWifiButtonTapped(_ sender: UIButton) {
 		let addWifiVC = AddWIFIVC()
-		addWifiVC.wifiController = wifiController
 		addWifiVC.modalPresentationStyle = .overFullScreen
 		present(addWifiVC, animated: true)
+	}
+
+
+	@objc private func deleteSelectedWifiObjects(_ sender: UIBarButtonItem) {
+		guard let indexPaths = wifiTableView.indexPathsForSelectedRows else { return }
+		var wifiObjects: [Wifi] = []
+		indexPaths.forEach { wifiObjects.append(fetchedResultsController.object(at: $0)) }
+		Alerts.presentSecondaryDeletePromptForMultipleObjects(on: self, wifiObjects: wifiObjects)
 	}
 }
 
@@ -134,18 +175,31 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		fetchedResultsController.sections?[section].numberOfObjects ?? 0
 	}
 
+	func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+		return true
+	}
+
+	func tableView(_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
+		mode = .select
+		super.setEditing(true, animated: true)
+	}
+
+	func tableViewDidEndMultipleSelectionInteraction(_ tableView: UITableView) {
+		print("\(#function)")
+	}
+
 
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let wifi = fetchedResultsController.object(at: indexPath)
 		let cell = wifiTableView.cellForRow(at: indexPath) as? SubtitleTableViewCell
 		let moreOptionsAction = UIContextualAction(style: .normal, title: "View") { action, view, completion in
-			Alerts.showOptionsActionSheetForTableVC(vc: self, wifi: wifi, wifiController: self.wifiController)
+			Alerts.showOptionsActionSheetForTableVC(vc: self, wifi: wifi)
 			completion(true)
 		}
 
 		let favoriteAction = UIContextualAction(style: .normal, title: "Favorite") { action, view, completion in
 			guard let id = wifi.passwordID else { return }
-			self.wifiController.updateWifi(wifi: wifi,
+			WifiController.shared.updateWifi(wifi: wifi,
 										   nickname: wifi.nickname ?? "",
 										   networkName: wifi.networkName ?? "",
 										   passwordID: id,
@@ -171,7 +225,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let action = UIContextualAction(style: .normal, title: "Delete") { (action, view, completion) in
 			let wifi = self.fetchedResultsController.object(at: indexPath)
-			Alerts.presentSecondaryDeletePromptOnTableVC(vc: self, wifi: wifi, wifiController: self.wifiController)
+			Alerts.presentSecondaryDeletePromptOnTableVC(vc: self, wifi: wifi)
 			completion(true)
 		}
 
@@ -201,10 +255,11 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let wifi = fetchedResultsController.object(at: indexPath)
-		let detailVC = WIFIDetailVC(with: wifi)
-		detailVC.wifiController = wifiController
-		navigationController?.pushViewController(detailVC, animated: true)
+		if !isEditing {
+			let wifi = fetchedResultsController.object(at: indexPath)
+			let detailVC = WIFIDetailVC(with: wifi)
+			navigationController?.pushViewController(detailVC, animated: true)
+		}
 	}
 }
 
@@ -216,6 +271,14 @@ extension WiFiTableVC: NSFetchedResultsControllerDelegate {
 	}
 
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		if let count = fetchedResultsController.fetchedObjects?.count {
+			if navigationItem.rightBarButtonItem == nil && count > 0 {
+				navigationItem.rightBarButtonItem = editButtonItem
+			} else if count == 0 {
+				navigationItem.rightBarButtonItem = nil
+			}
+		}
+
 		wifiTableView.endUpdates()
 	}
 
