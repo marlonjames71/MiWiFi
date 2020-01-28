@@ -10,8 +10,6 @@ import UIKit
 
 class WIFIDetailVC: UIViewController {
 
-	var wifiController: WifiController?
-
 	let wifi: Wifi
 
 	let qrImageView: MiWiFiImageView
@@ -87,12 +85,11 @@ class WIFIDetailVC: UIViewController {
 
 
 	@objc private func optionsButtonTapped(_ sender: UIBarButtonItem) {
-		guard let controller = wifiController else { return }
-		Alerts.showOptionsActionSheetForDetailVC(vc: self, wifi: wifi, wifiController: controller)
+		Alerts.showOptionsActionSheetForDetailVC(vc: self, wifi: wifi)
 	}
 }
 
-#warning("You've added Keychain wrappers, now you just have to make a new xcdatamodel with UUID's and save to keychain")
+
 extension WIFIDetailVC: WiFiInfoViewDelegate {
 	func showPasswordRequestedFailed() {
 		Alerts.presentFailedVerificationWithFaceIDAlert(on: self)

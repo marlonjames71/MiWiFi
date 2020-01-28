@@ -35,8 +35,6 @@ class AddWIFIVC: UIViewController {
 
 	lazy var bottomConstraint = dismissButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70)
 
-	var wifiController: WifiController?
-
 	var wifi: Wifi? {
 		didSet {
 			updateViews()
@@ -213,32 +211,30 @@ class AddWIFIVC: UIViewController {
 	}
 
 
-	private func updateWifi(wifi: Wifi, controller: WifiController) {
+	private func updateWifi(wifi: Wifi) {
 		if let nickname = nameTextField.text,
 			let networkname = wifiNameTextField.text,
 			let id = wifi.passwordID,
 			!nickname.isEmpty,
 			!networkname.isEmpty {
 
-			controller.updateWifi(wifi: wifi,
+			WifiController.shared.updateWifi(wifi: wifi,
 								  nickname: nickname,
 								  networkName: networkname,
 								  passwordID: id,
 								  locationDesc: desc,
 								  iconName: icon.rawValue,
 								  isFavorite: wifi.isFavorite)
-			dismiss(animated: true)
-
+			
 			savePasswordToKeychain(id: id)
+			dismiss(animated: true)
 		}
 	}
 
 
 	@objc private func saveTapped(_ sender: UIButton) {
-		guard let controller = wifiController else { return }
-
 		if let wifi = wifi {
-			updateWifi(wifi: wifi, controller: controller)
+			updateWifi(wifi: wifi)
 			return
 		}
 
@@ -248,8 +244,7 @@ class AddWIFIVC: UIViewController {
 
 		savePasswordToKeychain(id: id)
 
-		controller.addWifi(nickname: name, networkName: wifiName, passwordID: id, locationDesc: desc, iconName: icon.rawValue)
-
+		WifiController.shared.addWifi(nickname: name, networkName: wifiName, passwordID: id, locationDesc: desc, iconName: icon.rawValue)
 		dismiss(animated: true)
 	}
 
