@@ -9,7 +9,12 @@
 import UIKit
 
 struct Alerts {
-	static func showOptionsActionSheetForTableVC(vc: WiFiTableVC, wifi: Wifi, wifiController: WifiController) {
+
+//	func shareAndPrint(image: UIImage?, text: String) {
+//		let avc = UIActivityViewController(activityItems: [image], applicationActivities: [String])
+//	}
+
+	static func showOptionsActionSheetForTableVC(vc: WiFiTableVC, wifi: Wifi) {
 		let titleStr = """
 		Print or Share wifi
 		Nickname: \(wifi.nickname ?? "")
@@ -35,17 +40,16 @@ struct Alerts {
 	}
 
 
-	static func showOptionsActionSheetForDetailVC(vc: WIFIDetailVC, wifi: Wifi, wifiController: WifiController) {
+	static func showOptionsActionSheetForDetailVC(vc: WIFIDetailVC, wifi: Wifi) {
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
 		let deletAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-			presentSecondaryDeletePromptOnDetailVC(vc: vc, wifi: wifi, wifiController: wifiController)
+			presentSecondaryDeletePromptOnDetailVC(vc: vc, wifi: wifi)
 		}
 
 		let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
 			let addWifiVC = AddWIFIVC()
 			addWifiVC.wifi = wifi
-			addWifiVC.wifiController = wifiController
 			addWifiVC.modalPresentationStyle = .overFullScreen
 			vc.present(addWifiVC, animated: true)
 		}
@@ -62,7 +66,7 @@ struct Alerts {
 
 		let favoriteAction = UIAlertAction(title: title, style: .default) { _ in
 			guard let id = wifi.passwordID else { return }
-			wifiController.updateWifi(wifi: wifi,
+			WifiController.shared.updateWifi(wifi: wifi,
 									  nickname: wifi.nickname ?? "",
 									  networkName: wifi.networkName ?? "",
 									  passwordID: id,
@@ -91,31 +95,39 @@ struct Alerts {
 		vc.present(actionSheet, animated: true)
 	}
 
-	static func presentSecondaryDeletePromptOnDetailVC(vc: WIFIDetailVC, wifi: Wifi, wifiController: WifiController) {
+
+	static func presentSecondaryDeletePromptOnDetailVC(vc: WIFIDetailVC, wifi: Wifi) {
 		let deletStr = "Are you sure you want to delete \(wifi.nickname ?? "")?"
 		let actionSheet = UIAlertController(title: deletStr, message: nil, preferredStyle: .actionSheet)
 
 		let deletAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
 			guard let id = wifi.passwordID else { return }
 			KeychainWrapper.standard.removeObject(forKey: id.uuidString)
-			wifiController.delete(wifi: wifi)
+			WifiController.shared.delete(wifi: wifi)
 			vc.navigationController?.popViewController(animated: true)
 		}
 
+
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
 		[deletAction, cancelAction].forEach { actionSheet.addAction($0) }
 		vc.present(actionSheet, animated: true)
 	}
 
-	static func presentSecondaryDeletePromptOnTableVC(vc: WiFiTableVC, wifi: Wifi, wifiController: WifiController) {
-		let deletStr = "Are you sure you want to delete \(wifi.nickname ?? "")?"
-		let actionSheet = UIAlertController(title: deletStr, message: nil, preferredStyle: .actionSheet)
+
+	static func presentSecondaryDeletePromptForMultipleObjects(on vc: WiFiTableVC, wifiObjects: [Wifi]) {
+		let deletStr = "Are you sure you want to delete all selected items?"
+		let messageStr = "This cannot be undone."
+		let actionSheet = UIAlertController(title: deletStr, message: messageStr, preferredStyle: .actionSheet)
 
 		let deletAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-			guard let id = wifi.passwordID else { return }
-			KeychainWrapper.standard.removeObject(forKey: id.uuidString)
-			wifiController.delete(wifi: wifi)
+			for wifi in wifiObjects {
+				guard let id = wifi.passwordID else { return }
+				KeychainWrapper.standard.removeObject(forKey: id.uuidString)
+				WifiController.shared.delete(wifi: wifi)
+			}
+			vc.isEditing = false
+			vc.mode = .view
 		}
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -123,6 +135,24 @@ struct Alerts {
 		[deletAction, cancelAction].forEach { actionSheet.addAction($0) }
 		vc.present(actionSheet, animated: true)
 	}
+
+
+	static func presentSecondaryDeletePromptOnTableVC(vc: WiFiTableVC, wifi: Wifi) {
+		let deletStr = "Are you sure you want to delete \(wifi.nickname ?? "")?"
+		let actionSheet = UIAlertController(title: deletStr, message: nil, preferredStyle: .actionSheet)
+
+		let deletAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+			guard let id = wifi.passwordID else { return }
+			KeychainWrapper.standard.removeObject(forKey: id.uuidString)
+			WifiController.shared.delete(wifi: wifi)
+		}
+
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+		[deletAction, cancelAction].forEach { actionSheet.addAction($0) }
+		vc.present(actionSheet, animated: true)
+	}
+
 
 	static func presentFailedVerificationWithFaceIDAlert(on vc: WIFIDetailVC) {
 		let alertController = UIAlertController(title: "Verification Failed", message: "You could not be verified. Please try again.", preferredStyle: .alert)
@@ -130,12 +160,14 @@ struct Alerts {
 		vc.present(alertController, animated: true)
 	}
 
+
 	static func presentBiometryNotAvailableAlert(on vc: WIFIDetailVC) {
 		let alertController = UIAlertController(title: "Biometry Failed", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
 		alertController.addAction(UIAlertAction(title: "OK", style: .default))
 		vc.present(alertController, animated: true)
 	}
 }
+
 
 extension UIAlertController {
 	override open func viewDidLayoutSubviews() {
