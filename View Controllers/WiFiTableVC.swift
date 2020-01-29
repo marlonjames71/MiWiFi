@@ -32,9 +32,11 @@ class WiFiTableVC: UIViewController {
 	}
 
 	// MARK: - Properties & Outlets
-	let wifiTableView = UITableView(frame: .zero, style: .plain)
+	private let wifiTableView = UITableView(frame: .zero, style: .plain)
 
-	let addButton = UIButton(type: .system)
+	private let addButton = UIButton(type: .system)
+
+	private let emptyStateView = MiWiFiEmptyStateView(message: #"It's so empty in here. Try adding a network by tapping the "+" button below!"#)
 
 	lazy var fetchedResultsController: NSFetchedResultsController<Wifi> = {
 		let fetchRequest: NSFetchRequest<Wifi> = Wifi.fetchRequest()
@@ -65,6 +67,7 @@ class WiFiTableVC: UIViewController {
 		configureTabBar()
 		configureNavController()
 		configureListTableView()
+		configureEmptyStateView()
 		configureAddButton()
     }
 
@@ -93,8 +96,15 @@ class WiFiTableVC: UIViewController {
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTintColor,
 																   .font : UIFont.roundedFont(ofSize: 20, weight: .bold)]
+
 		let count = fetchedResultsController.fetchedObjects?.count ?? 0
 		navigationItem.rightBarButtonItem = count > 0 ? editButtonItem : nil
+	}
+
+	private func configureEmptyStateView() {
+		view.addSubview(emptyStateView)
+		emptyStateView.frame = view.bounds
+		emptyStateView.isHidden  = fetchedResultsController.fetchedObjects?.count ?? 0 > 0 ? true : false
 	}
 
 
@@ -129,7 +139,7 @@ class WiFiTableVC: UIViewController {
 		addButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: configuration), for: .normal)
 
 		NSLayoutConstraint.activate([
-			addButton.heightAnchor.constraint(equalToConstant: 50),
+			addButton.heightAnchor.constraint(equalToConstant: 60),
 			addButton.widthAnchor.constraint(equalTo: addButton.heightAnchor),
 			addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 			addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
@@ -274,8 +284,12 @@ extension WiFiTableVC: NSFetchedResultsControllerDelegate {
 		if let count = fetchedResultsController.fetchedObjects?.count {
 			if navigationItem.rightBarButtonItem == nil && count > 0 {
 				navigationItem.rightBarButtonItem = editButtonItem
+				UIView.animate(withDuration: 1) {
+					self.emptyStateView.isHidden = true
+				}
 			} else if count == 0 {
 				navigationItem.rightBarButtonItem = nil
+				emptyStateView.isHidden = false
 			}
 		}
 
