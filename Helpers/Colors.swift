@@ -13,4 +13,5 @@ extension UIColor {
 	static let miTintColor = UIColor(named: "miTintColor")!
 	static let miBackground = UIColor(named: "miBackground")!
 	static let miGrayColor = UIColor(named: "miGrayColor")!
+	static let miTintColor2 = UIColor(named: "miTintColor2")!
 }

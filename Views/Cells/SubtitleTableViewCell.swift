@@ -28,7 +28,16 @@ class SubtitleTableViewCell: UITableViewCell {
 		guard let wifi = wifi else { return }
 		textLabel?.text = wifi.nickname
 		detailTextLabel?.text = wifi.networkName
-		detailTextLabel?.textColor = .secondaryLabel
+
+		if let id = wifi.passwordID {
+			let password = KeychainWrapper.standard.string(forKey: id.uuidString)
+			if password == "" {
+				detailTextLabel?.textColor = .secondaryLabel
+			} else {
+				detailTextLabel?.textColor = .miTintColor2
+			}
+		}
+
 		imageView?.tintColor = wifi.isFavorite == true ? UIColor.systemOrange : UIColor.miTintColor
 		imageView?.image = UIImage(systemName: wifi.iconName ?? "house.fill")
 		accessoryType = .disclosureIndicator
