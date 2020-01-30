@@ -39,7 +39,6 @@ class MiWiFiEmptyStateView: UIView {
 		super.init(frame: .zero)
 		messageLabel.text = message
 		configure()
-		print(UIScreen.main.bounds.height)
 	}
 
 	private func configure() {
