@@ -10,30 +10,43 @@ import UIKit
 
 class AddWIFIVC: UIViewController {
 
-	enum IconName: String {
-		case home = "house.fill"
-		case work = "briefcase.fill"
-		case misc = "wifi"
+	enum IconInfo: String {
+		case home = "Home"
+		case homeIconName = "house.fill"
+		case work = "Work"
+		case workIconName = "briefcase.fill"
+		case misc = "Misc"
+		case miscIconName = "wifi"
+
+		var homeImage: UIImage {
+			return UIImage(systemName: "house.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25))!
+		}
+
+		var workImage: UIImage {
+			return UIImage(systemName: "briefcase.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25))!
+		}
+
+		var miscImage: UIImage {
+			return UIImage(systemName: "wifi", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25))!
+		}
 	}
 
 
 	private let tapToDismissGestureContainer = UIView()
 	private let modalView = UIView()
-	private let titleLabel = UILabel()
-	private let saveButton = UIButton(type: .system)
-	private let dismissButton = UIButton(type: .system)
 	private let mainStackView = UIStackView()
 	private let elementStackView = UIStackView()
 	private let buttonStackView = UIStackView()
 	private let bottomSafeAreaConstraint = NSLayoutConstraint()
 	private let iconSegControl = UISegmentedControl()
-	private let iconImageView = UIImageView()
 
-	private let nameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Name this entry", autocorrectionType: .yes, autocapitalizationType: .words)
-	private let wifiNameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "WiFi name", autocorrectionType: .no, autocapitalizationType: .none)
-	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "WiFi password", autocorrectionType: .no, autocapitalizationType: .none)
+	private let iconButton = UIButton()
+	private let configuration = UIImage.SymbolConfiguration(pointSize: 25)
+	private let largeGrayWifiIcon = MiWiFiEmptyStateView(message: "")
 
-	lazy var bottomConstraint = dismissButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70)
+	private let nicknameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .yes, autocapitalizationType: .words)
+	private let networkTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none)
+	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none)
 
 	var wifi: Wifi? {
 		didSet {
@@ -41,27 +54,47 @@ class AddWIFIVC: UIViewController {
 		}
 	}
 
-
-	var icon: IconName = .home
+	var icon: IconInfo = .homeIconName
 	var desc: String = "Home"
 
+
+// MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .clear
+		view.backgroundColor = .miBackground
+		navigationController?.presentationController?.delegate = self
 
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+		
 
-		configureFXView()
-		configureTitleLabel()
-		configureIconImageView()
-		configureSaveButton()
+		configureLargeWifiIcon()
+		configureNavBar()
 		configureSegControl()
 		configureElementStackView()
-		configureDismissButton()
+		updateViews()
+		configureTapGestureForView()
 
-		nameTextField.becomeFirstResponder()
+		nicknameTextField.becomeFirstResponder()
     }
+
+
+	private func updateViews() {
+		guard let wifi = wifi else { return }
+		title = wifi.nickname
+		nicknameTextField.text = wifi.nickname
+		networkTextField.text = wifi.networkName
+		passwordTextField.text = KeychainWrapper.standard.string(forKey: wifi.passwordID?.uuidString ?? "No Password")
+
+		if wifi.iconName == IconInfo.homeIconName.rawValue {
+			iconSegControl.selectedSegmentIndex = 0
+			iconButton.setImage(IconInfo.home.homeImage, for: .normal)
+		} else if wifi.iconName == IconInfo.workIconName.rawValue {
+			iconSegControl.selectedSegmentIndex = 1
+			iconButton.setImage(IconInfo.work.workImage, for: .normal)
+		} else if wifi.iconName == IconInfo.miscIconName.rawValue {
+			iconSegControl.selectedSegmentIndex = 2
+			iconButton.setImage(IconInfo.misc.miscImage, for: .normal)
+		}
+	}
 
 
 	deinit {
@@ -69,75 +102,38 @@ class AddWIFIVC: UIViewController {
 	}
 
 
-	private func configureFXView() {
-		let blurEffect = UIBlurEffect(style: .regular)
-		let blurredEffectView = UIVisualEffectView(effect: blurEffect)
-		blurredEffectView.frame = view.bounds
-
-		let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
-		let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect)
-
-		[titleLabel,
-		 iconImageView,
-		 iconSegControl,
-		 saveButton,
-		 nameTextField,
-		 wifiNameTextField,
-		 passwordTextField,
-		 dismissButton].forEach { vibrancyEffectView.contentView.addSubview($0) }
-
-		blurredEffectView.contentView.addSubview(vibrancyEffectView)
-		view.addSubview(blurredEffectView)
+	// MARK: - Configuartion
+	private func configureLargeWifiIcon() {
+		view.addSubview(largeGrayWifiIcon)
+		largeGrayWifiIcon.frame = view.bounds
 	}
 
 
-	private func configureTitleLabel() {
-		view.addSubview(titleLabel)
-		titleLabel.textColor = .label
-		titleLabel.font = UIFont.preferredFont(forTextStyle: .title2)
-		titleLabel.text = "Add WiFi"
-
-		titleLabel.translatesAutoresizingMaskIntoConstraints = false
-		NSLayoutConstraint.activate([
-			titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
-			titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
-		])
+	private func configureTapGestureForView() {
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapViewToDimissKeyboard(_:)))
+		tapGesture.numberOfTapsRequired = 1
+		view.addGestureRecognizer(tapGesture)
 	}
 
 
-	private func configureSaveButton()  {
-		view.addSubview(saveButton)
-		saveButton.translatesAutoresizingMaskIntoConstraints = false
-		saveButton.addTarget(self, action: #selector(saveTapped(_:)), for: .touchUpInside)
-		let title = NSAttributedString(string: "Save", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .medium)])
-		saveButton.setAttributedTitle(title, for: .normal)
-		saveButton.tintColor = .miTintColor
+	private func configureNavBar() {
+		navigationController?.navigationBar.prefersLargeTitles = true
+		navigationController?.navigationBar.barTintColor = .clear
+		navigationController?.navigationBar.tintColor = .miTintColor
 
-		dismissButton.setTitle("Dismiss", for: .normal)
-		dismissButton.setTitleColor(.label, for: .normal)
-		dismissButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.label,
+		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 
-		NSLayoutConstraint.activate([
-			saveButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-			saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-		])
-	}
+		if wifi == nil {
+			title = "Add WiFi"
+		}
 
-
-	private func configureIconImageView() {
-		view.addSubview(iconImageView)
-		iconImageView.translatesAutoresizingMaskIntoConstraints = false
-		iconImageView.tintColor = .miTintColor
-		iconImageView.contentMode = .center
-		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
-		iconImageView.image = UIImage(systemName: "house.fill", withConfiguration: configuration)
-
-		NSLayoutConstraint.activate([
-			iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-			iconImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-			iconImageView.heightAnchor.constraint(equalToConstant: 30),
-			iconImageView.widthAnchor.constraint(equalToConstant: 30)
-		])
+		let cancelBarbutton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped(_:)))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
+		navigationItem.leftBarButtonItem = cancelBarbutton
+		iconButton.setImage(IconInfo.home.homeImage, for: .normal)
+		iconButton.tintColor = .miTintColor
+		navigationItem.titleView = iconButton
 	}
 
 
@@ -148,36 +144,32 @@ class AddWIFIVC: UIViewController {
 		elementStackView.axis = .vertical
 		elementStackView.alignment = .fill
 		elementStackView.distribution = .fill
-		elementStackView.spacing = 30
 
-		[nameTextField, wifiNameTextField, passwordTextField].forEach {
-			$0.heightAnchor.constraint(equalToConstant: 40).isActive = true
-			$0.delegate = self
+		if UIScreen.main.bounds.height <= 667 {
+			elementStackView.spacing = 25
+			[nicknameTextField, networkTextField, passwordTextField].forEach {
+				$0.heightAnchor.constraint(equalToConstant: 40).isActive = true
+			}
+		} else {
+			elementStackView.spacing = 30
+			[nicknameTextField, networkTextField, passwordTextField].forEach {
+				$0.heightAnchor.constraint(equalToConstant: 50).isActive = true
+			}
 		}
 
+		[nicknameTextField, networkTextField, passwordTextField].forEach { $0.delegate = self }
+
+		nicknameTextField.addTarget(self, action: #selector(updateTitleWhileEditing(_:)), for: .editingChanged)
+
 		[iconSegControl,
-		 nameTextField,
-		 wifiNameTextField,
+		 nicknameTextField,
+		 networkTextField,
 		 passwordTextField].forEach { elementStackView.addArrangedSubview($0) }
 
 		NSLayoutConstraint.activate([
-			elementStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+			elementStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
 			elementStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
 			elementStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-//			elementStackView.bottomAnchor.constraint(equalTo: modalView.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-		])
-	}
-
-
-	private func configureDismissButton() {
-		view.addSubview(dismissButton)
-		dismissButton.translatesAutoresizingMaskIntoConstraints = false
-
-		NSLayoutConstraint.activate([
-			dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-			dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-			dismissButton.heightAnchor.constraint(equalToConstant: 30),
-			bottomConstraint
 		])
 	}
 
@@ -192,28 +184,51 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.backgroundColor = .miBackground
 		iconSegControl.tintColor = .miTintColor
 
-		iconSegControl.insertSegment(withTitle: "Home", at: 0, animated: true)
-		iconSegControl.insertSegment(withTitle: "Work", at: 1, animated: true)
-		iconSegControl.insertSegment(withTitle: "Misc", at: 2, animated: true)
+		iconSegControl.insertSegment(withTitle: IconInfo.home.rawValue, at: 0, animated: true)
+		iconSegControl.insertSegment(withTitle: IconInfo.work.rawValue, at: 1, animated: true)
+		iconSegControl.insertSegment(withTitle: IconInfo.misc.rawValue, at: 2, animated: true)
 
 		iconSegControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
-		iconSegControl.selectedSegmentIndex = 0
+		if wifi == nil {
+			iconSegControl.selectedSegmentIndex = 0
+		}
+
 		iconSegControl.addTarget(self, action: #selector(segControlDidChange), for: .valueChanged)
 	}
 
 
-	private func updateViews() {
-		guard let wifi = wifi else { return }
-		nameTextField.text = wifi.nickname
-		wifiNameTextField.text = wifi.networkName
-		passwordTextField.text = KeychainWrapper.standard.string(forKey: wifi.passwordID?.uuidString ?? "No Password")
+	// MARK: - Actions & Methods
+	@objc private func tapViewToDimissKeyboard(_ sender: UITapGestureRecognizer) {
+		[nicknameTextField, networkTextField, passwordTextField].forEach { $0.resignFirstResponder() }
+	}
+
+	#warning("Start here!")
+	@objc private func watchChangesOccured() {
+		if wifi == nil {
+			[nicknameTextField, networkTextField, passwordTextField].forEach {
+				if $0.text == "" {
+					isModalInPresentation = false
+				} else {
+					isModalInPresentation = true
+				}
+			}
+		} else if wifi != nil {
+			let wifiPassword = KeychainWrapper.standard.string(forKey: wifi?.passwordID?.uuidString ?? "")
+			if wifi?.nickname != nicknameTextField.text ||
+				wifi?.networkName != networkTextField.text ||
+				wifiPassword != passwordTextField.text {
+				isModalInPresentation = true
+			} else {
+				isModalInPresentation = false
+			}
+		}
 	}
 
 
 	private func updateWifi(wifi: Wifi) {
-		if let nickname = nameTextField.text,
-			let networkname = wifiNameTextField.text,
+		if let nickname = nicknameTextField.text,
+			let networkname = networkTextField.text,
 			let id = wifi.passwordID,
 			!nickname.isEmpty,
 			!networkname.isEmpty {
@@ -232,21 +247,45 @@ class AddWIFIVC: UIViewController {
 	}
 
 
-	@objc private func saveTapped(_ sender: UIButton) {
+	func saveWifi() {
 		if let wifi = wifi {
 			updateWifi(wifi: wifi)
 			return
 		}
 
 		let id = UUID()
-		guard let name = nameTextField.text,
-			let wifiName = wifiNameTextField.text else { return }
+		guard let name = nicknameTextField.text,
+			let wifiName = networkTextField.text else { return }
 
 		savePasswordToKeychain(id: id)
 
 		WifiController.shared.addWifi(nickname: name, networkName: wifiName, passwordID: id, locationDesc: desc, iconName: icon.rawValue)
+	}
+
+
+	@objc private func updateTitleWhileEditing(_ sender: UITextField) {
+		guard let text = nicknameTextField.text else { return  }
+
+		if let wifi = wifi {
+			title = text != "" ? text : wifi.nickname
+			if text == "" {
+				navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miGrayColor,
+				.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
+			} else {
+				navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.label,
+				.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
+			}
+		} else {
+			title = text != "" ? text : "Add WiFi"
+		}
+	}
+
+
+	@objc private func saveTapped(_ sender: UIBarButtonItem) {
+		saveWifi()
 		dismiss(animated: true)
 	}
+
 
 	private func savePasswordToKeychain(id: UUID) {
 		if let password = passwordTextField.text,
@@ -258,57 +297,41 @@ class AddWIFIVC: UIViewController {
 	}
 
 
-	@objc private func cancelButtonTapped() {
-		navigationController?.popViewController(animated: true)
+	@objc private func cancelButtonTapped(_ sender: UIBarButtonItem) {
 		dismiss(animated: true)
 	}
 
 
 	@objc private func segControlDidChange() {
-		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .light)
 		switch iconSegControl.selectedSegmentIndex {
 		case 0:
-			iconImageView.image = UIImage(systemName: "house.fill", withConfiguration: configuration)
-			icon = .home
-			desc = "Home"
+			iconButton.setImage(IconInfo.home.homeImage, for: .normal)
+			icon = .homeIconName
+			desc = IconInfo.home.rawValue
 		case 1:
-			iconImageView.image = UIImage(systemName: "briefcase.fill", withConfiguration: configuration)
-			icon = .work
-			desc = "Work"
+			iconButton.setImage(IconInfo.work.workImage, for: .normal)
+			icon = .workIconName
+			desc = IconInfo.work.rawValue
 		case 2:
-			iconImageView.image = UIImage(systemName: "wifi", withConfiguration: configuration)
-			icon = .misc
-			desc = "Misc"
+			iconButton.setImage(IconInfo.misc.miscImage, for: .normal)
+			icon = .miscIconName
+			desc = IconInfo.misc.rawValue
 		default:
 			break
 		}
 	}
-
-
-	@objc func keyboardFrameWillChange(notification: NSNotification) {
-			if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-				let duration: NSNumber = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber ?? 0.2
-
-				UIView.animate(withDuration: TimeInterval(truncating: duration)) {
-					self.bottomConstraint.constant = -(keyboardRect.height + 8)
-					self.view.layoutSubviews()
-				}
-			}
-		}
-
-
-	@objc func keyboardWillHide(notification: NSNotification) {
-			let duration: NSNumber = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber ?? 0.2
-
-			UIView.animate(withDuration: TimeInterval(truncating: duration)) {
-				self.bottomConstraint.constant = -70
-				self.view.layoutSubviews()
-			}
-		}
 }
 
 extension AddWIFIVC: UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		textField.resignFirstResponder()
+	}
+}
+
+
+extension AddWIFIVC: UIAdaptivePresentationControllerDelegate {
+	func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+		watchChangesOccured()
+		presentSaveActionSheet(vc: self)
 	}
 }

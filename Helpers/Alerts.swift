@@ -49,9 +49,10 @@ struct Alerts {
 
 		let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
 			let addWifiVC = AddWIFIVC()
+			let navController = UINavigationController(rootViewController: addWifiVC)
 			addWifiVC.wifi = wifi
-			addWifiVC.modalPresentationStyle = .overFullScreen
-			vc.present(addWifiVC, animated: true)
+			addWifiVC.modalPresentationStyle = .automatic
+			vc.present(navController, animated: true)
 		}
 //		editAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
 		editAction.setValue(UIImage(systemName: "square.and.pencil"), forKey: "image")
