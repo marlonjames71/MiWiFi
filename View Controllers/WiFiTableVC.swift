@@ -161,8 +161,9 @@ class WiFiTableVC: UIViewController {
 	// MARK: - Actions
 	@objc private func addWifiButtonTapped(_ sender: UIButton) {
 		let addWifiVC = AddWIFIVC()
-		addWifiVC.modalPresentationStyle = .overFullScreen
-		present(addWifiVC, animated: true)
+		let navController = UINavigationController(rootViewController: addWifiVC)
+		navController.modalPresentationStyle = .automatic
+		present(navController, animated: true)
 	}
 
 
