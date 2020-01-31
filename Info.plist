@@ -49,6 +49,10 @@
 	</array>
 	<key>NSFaceIDUsageDescription</key>
 	<string>In order to view the password, $(PRODUCT_NAME) needs to verify the user.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) Needs permission to save photos to your library.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) Needs permission to save photos to your library.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
