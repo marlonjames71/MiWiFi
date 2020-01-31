@@ -33,6 +33,8 @@ class WIFIDetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+		let tapAndHoldGesture = UILongPressGestureRecognizer(target: self, action: #selector(tapAndHold))
+		view.addGestureRecognizer(tapAndHoldGesture)
 		configureNavController()
 		configureView()
 		configureWifiInfoView()
@@ -81,6 +83,19 @@ class WIFIDetailVC: UIViewController {
 			infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
 			infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 		])
+	}
+
+
+	@objc func tapAndHold() {
+		presentShareQRActionSheet(title: "Choose how you want to share.",
+								  message: "You can share just the QR code, or the QR code and network information.",
+								  shareQRHandler: { _ in
+			let qrImage = self.qrImageView.screenshot()
+			self.share(image: qrImage)
+		}, shareViewHandler: { _ in
+			let viewImage = self.view.screenshot()
+			self.share(image: viewImage)
+		})
 	}
 
 
