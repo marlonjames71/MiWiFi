@@ -10,36 +10,6 @@ import UIKit
 
 struct Alerts {
 
-//	func shareAndPrint(image: UIImage?, text: String) {
-//		let avc = UIActivityViewController(activityItems: [image], applicationActivities: [String])
-//	}
-
-	static func showOptionsActionSheetForTableVC(vc: WiFiTableVC, wifi: Wifi) {
-		let titleStr = """
-		Print or Share wifi
-		Nickname: \(wifi.nickname ?? "")
-		Network: \(wifi.networkName ?? "")
-		"""
-		let actionSheet = UIAlertController(title: titleStr, message: nil, preferredStyle: .actionSheet)
-
-		let printAction = UIAlertAction(title: "Print", style: .default) { (action) in
-			// code goes here
-		}
-		printAction.setValue(UIImage(systemName: "printer.fill"), forKey: "image")
-
-		let shareAction = UIAlertAction(title: "Share", style: .default) { (action) in
-			// code goes here
-		}
-		shareAction.setValue(UIImage(systemName: "square.and.arrow.up.fill"), forKey: "image")
-
-		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
-
-		[printAction, shareAction, cancelAction].forEach { actionSheet.addAction($0) }
-		vc.present(actionSheet, animated: true)
-	}
-
-
 	static func showOptionsActionSheetForDetailVC(vc: WIFIDetailVC, wifi: Wifi) {
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
