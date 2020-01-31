@@ -13,6 +13,7 @@ class MiWiFiEmptyStateView: UIView {
 	let messageLabel = MiWiFiBodyLabel(textAlignment: .center, fontSize: 24)
 	let logoImageView = UIImageView()
 
+	// Adjusts constraints so empty state icon matches perfectly with the "Add WiFi" button on TableVC
 	lazy var iPhone8Anchors = (trailing: logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 194),
 							   bottom: logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 22))
 

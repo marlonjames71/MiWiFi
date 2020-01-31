@@ -203,10 +203,6 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let wifi = fetchedResultsController.object(at: indexPath)
 		let cell = wifiTableView.cellForRow(at: indexPath) as? SubtitleTableViewCell
-		let moreOptionsAction = UIContextualAction(style: .normal, title: "View") { action, view, completion in
-			Alerts.showOptionsActionSheetForTableVC(vc: self, wifi: wifi)
-			completion(true)
-		}
 
 		let favoriteAction = UIContextualAction(style: .normal, title: "Favorite") { action, view, completion in
 			guard let id = wifi.passwordID else { return }
@@ -221,13 +217,10 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			completion(true)
 		}
 
-		moreOptionsAction.backgroundColor = .systemBackground
-		moreOptionsAction.image = UIImage(systemName: "ellipsis.circle.fill")?.withTintColor(.systemTeal, renderingMode: .alwaysOriginal)
-
 		favoriteAction.backgroundColor = .systemBackground
 		favoriteAction.image = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
 
-		let configuration = UISwipeActionsConfiguration(actions: [favoriteAction, moreOptionsAction])
+		let configuration = UISwipeActionsConfiguration(actions: [favoriteAction])
 		configuration.performsFirstActionWithFullSwipe = true
 		return configuration
 	}
