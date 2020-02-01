@@ -140,9 +140,4 @@ struct Alerts {
 }
 
 
-extension UIAlertController {
-	override open func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-		self.view.tintColor = .miTintColor
-    }
-}
+

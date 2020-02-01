@@ -19,7 +19,7 @@ extension UIViewController {
 
 	func share(image: UIImage) {
 		let activityController = UIActivityViewController(activityItems: [image], applicationActivities: [])
-		self.present(activityController, animated: true)
+		present(activityController, animated: true)
 	}
 
 
@@ -41,8 +41,8 @@ extension UIViewController {
 	func presentShareQRActionSheet(title: String?, message: String?, shareQRHandler: ((UIAlertAction) -> Void)? = nil, shareViewHandler: ((UIAlertAction) -> Void)? = nil, completionHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
 
-        let shareQRAction = UIAlertAction(title: "Share QR Code Only", style: .default, handler: shareQRHandler)
-		let shareViewAction = UIAlertAction(title: "Share QR & Network Info", style: .default, handler: shareViewHandler)
+        let shareQRAction = UIAlertAction(title: "QR Code Only", style: .default, handler: shareQRHandler)
+		let shareViewAction = UIAlertAction(title: "QR Code & Network Info", style: .default, handler: shareViewHandler)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
         alertController.addAction(shareQRAction)
@@ -51,6 +51,7 @@ extension UIViewController {
 
         present(alertController, animated: true, completion: completionHandler)
     }
+
 
 	// Use this alert when user selects ellipsis leading swipe action to share QR code
 	func presentOptionsActionSheetOnTableVC(wifi: Wifi, printOrShareHandler: ((UIAlertAction) -> Void)? = nil, completion: (() -> Void)? = nil) {
@@ -72,5 +73,74 @@ extension UIViewController {
 	}
 
 
-	
+	/// Use this action sheet when user taps ellipsis on DetailVC
+	func presentOptionsActionSheet(favoriteStr: String,
+											 favoriteImage: UIImage,
+											 deleteHandler: ((UIAlertAction) -> Void)? = nil,
+											 editHandler: ((UIAlertAction) -> Void)? = nil,
+											 favoriteHandler: ((UIAlertAction) -> Void)? = nil,
+											 shareAndPrintHandler: ((UIAlertAction) -> Void)? = nil,
+											 completion: (() -> Void)? = nil) {
+
+		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
+		let editAction = UIAlertAction(title: "Edit", style: .default, handler: editHandler)
+		let favoriteAction = UIAlertAction(title: favoriteStr, style: .default, handler: favoriteHandler)
+		let shareOrPrintAction = UIAlertAction(title: "Share or Print", style: .default, handler: shareAndPrintHandler)
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+		let configuration = UIImage.SymbolConfiguration(pointSize: 25)
+		editAction.setValue(UIImage(systemName: "square.and.pencil", withConfiguration: configuration), forKey: "image")
+		favoriteAction.setValue(favoriteImage.withConfiguration(configuration), forKey: "image")
+		shareOrPrintAction.setValue(UIImage(systemName: "arrow.up.doc.fill", withConfiguration: configuration), forKey: "image")
+
+		[deleteAction, editAction, favoriteAction, shareOrPrintAction, cancelAction].forEach { alertController.addAction($0) }
+		present(alertController, animated: true, completion: completion)
+
+	}
+
+
+	/// Use this action sheet if user selects delete when promted by action sheet from ellipsis on DetailVC -> Used for single deletion
+	func presentSecondaryDeleteAlertSingle(wifi: Wifi, deleteHandler: ((UIAlertAction) -> Void)? = nil, completionHandler: (() -> Void)? = nil) {
+		let deleteStr = "Are you sure you want to delete \(wifi.nickname ?? "this WiFi")?"
+		let alertController = UIAlertController(title: deleteStr, message: nil, preferredStyle: .actionSheet)
+
+		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+		[deleteAction, cancelAction].forEach { alertController.addAction($0) }
+		present(alertController, animated: true, completion: completionHandler)
+	}
+
+
+	func presentSecondaryDeleteAlertMultiple(count: Int? = 0, deleteHandler: ((UIAlertAction) -> Void)? = nil, completionHandler: (() -> Void)? = nil) {
+		// This should never be prompted if count is 0 as the user will not have the option to multi select
+		let multiDeleteStr = "Are you sure you want to delete \(count ?? 0) networks?"
+		let singleDeleteStr = "Are you sure you want to delete this network?"
+		let deleteStr = count == 1 ? singleDeleteStr : multiDeleteStr
+
+		let alertController = UIAlertController(title: deleteStr, message: "This cannot be undone.", preferredStyle: .actionSheet)
+
+		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+		[deleteAction, cancelAction].forEach { alertController.addAction($0) }
+		present(alertController, animated: true, completion: completionHandler)
+	}
+
+
+	// MARK: - FaceID Alerts
+	func presentFailedVerificationWithFaceIDAlert() {
+		let alertController = UIAlertController(title: "Verification Failed", message: "You could not be verified. Please try again.", preferredStyle: .alert)
+		alertController.addAction(UIAlertAction(title: "OK", style: .default))
+		present(alertController, animated: true)
+	}
+
+
+	func presentBiometryNotAvailableAlert() {
+		let alertController = UIAlertController(title: "Biometry Failed", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
+		alertController.addAction(UIAlertAction(title: "OK", style: .default))
+		present(alertController, animated: true)
+	}
 }

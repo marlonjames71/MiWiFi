@@ -171,7 +171,16 @@ class WiFiTableVC: UIViewController {
 		guard let indexPaths = wifiTableView.indexPathsForSelectedRows else { return }
 		var wifiObjects: [Wifi] = []
 		indexPaths.forEach { wifiObjects.append(fetchedResultsController.object(at: $0)) }
-		Alerts.presentSecondaryDeletePromptForMultipleObjects(on: self, wifiObjects: wifiObjects)
+
+		presentSecondaryDeleteAlertMultiple(count: indexPaths.count, deleteHandler: { _ in
+			for wifi in wifiObjects {
+				guard let id = wifi.passwordID else { return }
+				KeychainWrapper.standard.removeObject(forKey: id.uuidString)
+				WifiController.shared.delete(wifi: wifi)
+			}
+			self.isEditing = false
+			self.mode = .view
+		})
 	}
 }
 
@@ -229,7 +238,11 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let action = UIContextualAction(style: .normal, title: "Delete") { (action, view, completion) in
 			let wifi = self.fetchedResultsController.object(at: indexPath)
-			Alerts.presentSecondaryDeletePromptOnTableVC(vc: self, wifi: wifi)
+			self.presentSecondaryDeleteAlertSingle(wifi: wifi, deleteHandler: { _ in
+				guard let id = wifi.passwordID else { return }
+				KeychainWrapper.standard.removeObject(forKey: id.uuidString)
+				WifiController.shared.delete(wifi: wifi)
+			})
 			completion(true)
 		}
 

@@ -86,9 +86,9 @@ class WIFIDetailVC: UIViewController {
 	}
 
 
-	@objc func tapAndHold() {
-		presentShareQRActionSheet(title: "Choose how you want to share.",
-								  message: "You can share just the QR code, or the QR code and network information.",
+	private func presentShareAndPrintAlert() {
+		presentShareQRActionSheet(title: "Choose how you want to print or share.",
+								  message: "You can print or share just the QR code, or the QR code and network information.",
 								  shareQRHandler: { _ in
 			let qrImage = self.qrImageView.screenshot()
 			self.share(image: qrImage)
@@ -99,8 +99,47 @@ class WIFIDetailVC: UIViewController {
 	}
 
 
+	@objc func tapAndHold() {
+		presentShareAndPrintAlert()
+	}
+
+
 	@objc private func optionsButtonTapped(_ sender: UIBarButtonItem) {
-		Alerts.showOptionsActionSheetForDetailVC(vc: self, wifi: wifi)
+		let favoriteImage = UIImage(systemName: "star")!
+		let unfavoriteImage = UIImage(systemName: "star.fill")!
+								.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+		let favStr = "Favorite"
+		let unfavStr = "Unfavorite"
+
+		let favoriteStr = wifi.isFavorite ? unfavStr : favStr
+		let image = wifi.isFavorite ? unfavoriteImage : favoriteImage
+
+		presentOptionsActionSheet(favoriteStr: favoriteStr, favoriteImage: image, deleteHandler: { delete in
+			self.presentSecondaryDeleteAlertSingle(wifi: self.wifi, deleteHandler: { _ in
+				guard let id = self.wifi.passwordID else { return }
+				KeychainWrapper.standard.removeObject(forKey: id.uuidString)
+				WifiController.shared.delete(wifi: self.wifi)
+				self.navigationController?.popViewController(animated: true)
+			})
+		}, editHandler: { edit in
+			let addWifiVC = AddWIFIVC()
+			let navController = UINavigationController(rootViewController: addWifiVC)
+			addWifiVC.wifi = self.wifi
+			addWifiVC.modalPresentationStyle = .automatic
+			self.present(navController, animated: true)
+		}, favoriteHandler: { favorite in
+			guard let id = self.wifi.passwordID else { return }
+			WifiController.shared.updateWifi(wifi: self.wifi,
+											 nickname: self.wifi.nickname ?? "",
+											 networkName: self.wifi.networkName ?? "",
+											 passwordID: id,
+											 locationDesc: self.wifi.locationDesc ?? "",
+											 iconName: self.wifi.iconName ?? "home.fill",
+											 isFavorite: !self.wifi.isFavorite)
+			self.configureNavController()
+		}, shareAndPrintHandler: { shareAndPrint in
+			self.presentShareAndPrintAlert()
+		})
 	}
 }
 
