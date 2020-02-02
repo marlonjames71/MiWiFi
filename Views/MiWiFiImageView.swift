@@ -68,7 +68,7 @@ class MiWiFiImageView: UIImageView {
 		if pass == "nopass" {
 			return #"WIFI:S:"\#(network)";;"#
 		} else {
-			return #"WIFI:T:WPA;S:"\#(network);P:"\#(pass ?? "No Password")";;"#
+			return #"WIFI:T:WPA;S:\#(network);P:\#(pass ?? "No Password");;"#
 		}
 	}
 }
