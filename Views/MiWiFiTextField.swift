@@ -31,7 +31,7 @@ class MiWiFiTextField: UITextField {
 	private func configure() {
 		translatesAutoresizingMaskIntoConstraints = false
 		backgroundColor = .clear
-		tintColor = .miTintColor
+		tintColor = .miNeonYellowGreen
 		textColor = .label
 		font = UIFont.preferredFont(forTextStyle: .title3)
 		adjustsFontSizeToFitWidth = true

@@ -32,13 +32,13 @@ class SubtitleTableViewCell: UITableViewCell {
 		if let id = wifi.passwordID {
 			let password = KeychainWrapper.standard.string(forKey: id.uuidString)
 			if password == "" {
-				detailTextLabel?.textColor = .secondaryLabel
+				detailTextLabel?.textColor = .systemGray2
 			} else {
-				detailTextLabel?.textColor = .miTintColor2
+				detailTextLabel?.textColor = .secondaryLabel
 			}
 		}
 
-		imageView?.tintColor = wifi.isFavorite == true ? UIColor.systemOrange : UIColor.miTintColor
+		imageView?.tintColor = wifi.isFavorite == true ? UIColor.miNeonTeal : UIColor.miNeonYellowGreen
 		imageView?.image = UIImage(systemName: wifi.iconName ?? "house.fill")
 		accessoryType = .disclosureIndicator
 	}

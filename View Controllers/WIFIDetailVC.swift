@@ -42,7 +42,7 @@ class WIFIDetailVC: UIViewController {
 
 
 	private func configureView() {
-		view.backgroundColor = .miBackground
+		view.backgroundColor = .miBlueGreyBG
 		layoutImageView(imageView: qrImageView)
 	}
 
@@ -107,7 +107,7 @@ class WIFIDetailVC: UIViewController {
 	@objc private func optionsButtonTapped(_ sender: UIBarButtonItem) {
 		let favoriteImage = UIImage(systemName: "star")!
 		let unfavoriteImage = UIImage(systemName: "star.fill")!
-								.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+			.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
 		let favStr = "Favorite"
 		let unfavStr = "Unfavorite"
 

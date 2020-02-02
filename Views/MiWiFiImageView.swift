@@ -51,8 +51,8 @@ class MiWiFiImageView: UIImageView {
 		qrGen.renderEffects = true
 		qrGen.gradientStyle = .linear
 		qrGen.gradientBackgroundVisible = false
-		qrGen.gradientStartColor = .miTintColor
-		qrGen.gradientEndColor = .systemOrange
+		qrGen.gradientStartColor = .miNeonYellowGreen
+		qrGen.gradientEndColor = .miNeonTeal
 		qrGen.gradientStartPoint = CGPoint(x: 0.2, y: 0.4)
 		qrGen.gradientEndPoint = CGPoint(x: 1, y: 1)
 

@@ -61,7 +61,7 @@ class AddWIFIVC: UIViewController {
 // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .miBackground
+		view.backgroundColor = .miBlueGreyBG
 		navigationController?.presentationController?.delegate = self
 
 		
@@ -119,7 +119,7 @@ class AddWIFIVC: UIViewController {
 	private func configureNavBar() {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.barTintColor = .clear
-		navigationController?.navigationBar.tintColor = .miTintColor
+		navigationController?.navigationBar.tintColor = .miNeonYellowGreen
 
 		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.label,
 		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
@@ -132,7 +132,7 @@ class AddWIFIVC: UIViewController {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
 		navigationItem.leftBarButtonItem = cancelBarbutton
 		iconButton.setImage(IconInfo.home.homeImage, for: .normal)
-		iconButton.tintColor = .miTintColor
+		iconButton.tintColor = .miNeonTeal
 		navigationItem.titleView = iconButton
 	}
 
@@ -180,9 +180,9 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.sizeToFit()
 
 		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .selected)
-		iconSegControl.selectedSegmentTintColor = .miTintColor
-		iconSegControl.backgroundColor = .miBackground
-		iconSegControl.tintColor = .miTintColor
+		iconSegControl.selectedSegmentTintColor = .miDarkTeal
+		iconSegControl.backgroundColor = .miBlueGreyBG
+		iconSegControl.tintColor = .miDarkTeal
 
 		iconSegControl.insertSegment(withTitle: IconInfo.home.rawValue, at: 0, animated: true)
 		iconSegControl.insertSegment(withTitle: IconInfo.work.rawValue, at: 1, animated: true)

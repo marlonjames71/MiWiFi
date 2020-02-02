@@ -14,4 +14,14 @@ extension UIColor {
 	static let miBackground = UIColor(named: "miBackground")!
 	static let miGrayColor = UIColor(named: "miGrayColor")!
 	static let miTintColor2 = UIColor(named: "miTintColor2")!
+	static let miTintColor3 = UIColor(named: "miTintColor3")!
+	static let miTitleColor = UIColor(named: "miTitleColor")!
+
+	static let miBlueGreyBG = UIColor(named: "miBlueGreyBG")!
+	static let miNeonTeal = UIColor(named: "miNeonTeal")!
+	static let miNeonYellowGreen = UIColor(named: "miNeonYellowGreen")!
+	static let miDarkBlue = UIColor(named: "miDarkBlue")!
+	static let miDarkTeal = UIColor(named: "miDarkTeal")!
+	static let miBlueGreyAccent = UIColor(named: "miBlueGreyAccent")!
+	static let miRevealColor = UIColor(named: "miRevealColor")!
 }

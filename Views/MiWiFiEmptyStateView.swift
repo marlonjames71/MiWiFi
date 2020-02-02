@@ -50,7 +50,7 @@ class MiWiFiEmptyStateView: UIView {
 		messageLabel.textColor = .secondaryLabel
 
 		logoImageView.image = UIImage(named: "wifiemptystate")
-		logoImageView.tintColor = .miGrayColor
+		logoImageView.tintColor = .miDarkTeal
 		logoImageView.translatesAutoresizingMaskIntoConstraints = false
 
 		NSLayoutConstraint.activate([

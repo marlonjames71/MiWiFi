@@ -64,7 +64,7 @@ class WiFiInfoView: UIView {
 
 
 	private func configureView() {
-		backgroundColor = .miBackground
+		backgroundColor = .clear
 		clipsToBounds = true
 		translatesAutoresizingMaskIntoConstraints = false
 	}
@@ -118,7 +118,7 @@ class WiFiInfoView: UIView {
 		} else {
 			UIView.animate(withDuration: 0.5) { self.passwordValueLabel.alpha = 0 }
 			UIView.animate(withDuration: 0.5) {
-				self.passwordValueLabel.textColor = .miTintColor
+				self.passwordValueLabel.textColor = .miRevealColor
 				self.passwordValueLabel.text = self.tapToRevealStr
 				self.passwordValueLabel.alpha = 1
 			}
@@ -147,7 +147,7 @@ class WiFiInfoView: UIView {
 				passwordValueLabel.textColor = .secondaryLabel
 			} else {
 				passwordValueLabel.text = tapToRevealStr
-				passwordValueLabel.textColor = .miTintColor
+				passwordValueLabel.textColor = .miRevealColor
 			}
 		}
 	}

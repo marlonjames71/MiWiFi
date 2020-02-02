@@ -62,7 +62,7 @@ class WiFiTableVC: UIViewController {
 	// MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .systemBackground
+		view.backgroundColor = .miBlueGreyBG
 
 		configureTabBar()
 		configureNavController()
@@ -83,7 +83,7 @@ class WiFiTableVC: UIViewController {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
 			appearance.shadowImage = UIImage()
-			appearance.backgroundColor = UIColor.miBackground
+			appearance.backgroundColor = UIColor.miBlueGreyBG
 			appearance.shadowColor = .clear
 			tabBarItem.standardAppearance = appearance
 		}
@@ -92,9 +92,9 @@ class WiFiTableVC: UIViewController {
 
 	private func configureNavController() {
 		navigationController?.navigationBar.prefersLargeTitles = true
-		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTintColor,
+		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
-		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTintColor,
+		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
 																   .font : UIFont.roundedFont(ofSize: 20, weight: .bold)]
 
 		let count = fetchedResultsController.fetchedObjects?.count ?? 0
@@ -122,7 +122,7 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.dataSource = self
 		wifiTableView.delegate = self
 		wifiTableView.rowHeight = 60
-		wifiTableView.backgroundColor = .miBackground
+		wifiTableView.backgroundColor = .miBlueGreyBG
 		wifiTableView.allowsMultipleSelection = false
 		wifiTableView.allowsSelectionDuringEditing = true
 		wifiTableView.allowsMultipleSelectionDuringEditing = true
@@ -134,7 +134,7 @@ class WiFiTableVC: UIViewController {
 		addButton.translatesAutoresizingMaskIntoConstraints = false
 		addButton.addTarget(self, action: #selector(addWifiButtonTapped(_:)), for: .touchUpInside)
 
-		addButton.tintColor = .miTintColor
+		addButton.tintColor = .miNeonTeal
 		let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
 		addButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: configuration), for: .normal)
 
@@ -226,7 +226,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			completion(true)
 		}
 
-		favoriteAction.backgroundColor = .systemBackground
+		favoriteAction.backgroundColor = .miDarkBlue
 		favoriteAction.image = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
 
 		let configuration = UISwipeActionsConfiguration(actions: [favoriteAction])
@@ -246,8 +246,8 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			completion(true)
 		}
 
-		action.image = UIImage(systemName: "trash.fill")?.withTintColor(.systemPink, renderingMode: .alwaysOriginal)
-		action.backgroundColor = .systemBackground
+		action.image = UIImage(systemName: "trash.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+		action.backgroundColor = .miDarkBlue
 		let configuration = UISwipeActionsConfiguration(actions: [action])
 		configuration.performsFirstActionWithFullSwipe = true
 		return configuration
@@ -257,14 +257,14 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let backgroundView: UIView = {
 			let view = UIView()
-			view.backgroundColor = UIColor.miTintColor.withAlphaComponent(0.2)
+			view.backgroundColor = UIColor.miDarkTeal.withAlphaComponent(0.3)
 			return view
 		}()
 
 		let cell = tableView.dequeueReusableCell(withIdentifier: "WifiCell", for: indexPath) as? SubtitleTableViewCell
 		let wifi = fetchedResultsController.object(at: indexPath)
 		cell?.wifi = wifi
-		cell?.backgroundColor = .miBackground
+		cell?.backgroundColor = .miBlueGreyBG
 		cell?.selectedBackgroundView = backgroundView
 
 		return cell ?? UITableViewCell()
