@@ -214,14 +214,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		let cell = wifiTableView.cellForRow(at: indexPath) as? SubtitleTableViewCell
 
 		let favoriteAction = UIContextualAction(style: .normal, title: "Favorite") { action, view, completion in
-			guard let id = wifi.passwordID else { return }
-			WifiController.shared.updateWifi(wifi: wifi,
-										   nickname: wifi.nickname ?? "",
-										   networkName: wifi.networkName ?? "",
-										   passwordID: id,
-										   locationDesc: wifi.locationDesc ?? "",
-										   iconName: wifi.iconName ?? "home.fill",
-										   isFavorite: !wifi.isFavorite)
+			WifiController.shared.updateFavorite(wifi: wifi, isFavorite: !wifi.isFavorite)
 			cell?.updateViews()
 			completion(true)
 		}

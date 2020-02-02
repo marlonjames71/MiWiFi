@@ -27,6 +27,11 @@ class WifiController {
 		saveToPersistentStore()
 	}
 
+	func updateFavorite(wifi: Wifi, isFavorite: Bool) {
+		wifi.isFavorite = isFavorite
+		saveToPersistentStore()
+	}
+
 	func delete(wifi: Wifi) {
 		let moc = NSManagedObjectContext.mainContext
 		moc.delete(wifi)
