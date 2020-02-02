@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol AddWiFiVCDelegate: AnyObject {
+	func didFinishUpdating()
+}
+
 class AddWIFIVC: UIViewController {
 
 	enum IconInfo: String {
@@ -57,13 +61,15 @@ class AddWIFIVC: UIViewController {
 	var icon: IconInfo = .homeIconName
 	var desc: String = "Home"
 
+	weak var delegate: AddWiFiVCDelegate?
+
 
 // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 		view.backgroundColor = .miBlueGreyBG
 		navigationController?.presentationController?.delegate = self
-
+		isModalInPresentation = true
 		
 
 		configureLargeWifiIcon()
@@ -242,6 +248,7 @@ class AddWIFIVC: UIViewController {
 								  isFavorite: wifi.isFavorite)
 			
 			savePasswordToKeychain(id: id)
+			delegate?.didFinishUpdating()
 			dismiss(animated: true)
 		}
 	}

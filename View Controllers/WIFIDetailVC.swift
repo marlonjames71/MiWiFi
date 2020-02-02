@@ -12,11 +12,15 @@ class WIFIDetailVC: UIViewController {
 
 	let wifi: Wifi
 
-	let qrImageView: MiWiFiImageView
+	var qrImageView: MiWiFiImageView
+	var infoView: WiFiInfoView
+
+	let hapticFeedback = UIImpactFeedbackGenerator(style: .rigid)
 
 	init(with wifi: Wifi) {
 		self.wifi = wifi
 		self.qrImageView = MiWiFiImageView(with: wifi)
+		self.infoView = WiFiInfoView(with: wifi)
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -31,14 +35,15 @@ class WIFIDetailVC: UIViewController {
 	}
 
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		let tapAndHoldGesture = UILongPressGestureRecognizer(target: self, action: #selector(tapAndHold))
 		view.addGestureRecognizer(tapAndHoldGesture)
 		configureNavController()
 		configureView()
 		configureWifiInfoView()
-    }
+		hapticFeedback.prepare()
+	}
 
 
 	private func configureView() {
@@ -75,8 +80,6 @@ class WIFIDetailVC: UIViewController {
 
 
 	private func configureWifiInfoView() {
-		let infoView = WiFiInfoView(with: wifi)
-
 		view.addSubview(infoView)
 		NSLayoutConstraint.activate([
 			infoView.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: 30),
@@ -87,11 +90,13 @@ class WIFIDetailVC: UIViewController {
 
 
 	private func presentShareAndPrintAlert() {
-		presentShareQRActionSheet(title: "Choose how you want to print or share.",
-								  message: "You can print or share just the QR code, or the QR code and network information.",
+		let title = "Choose how you want to print or share."
+		let message = "You can print or share just the QR code, or the QR code and network information."
+		presentShareQRActionSheet(title: title,
+								  message: message,
 								  shareQRHandler: { _ in
-			let qrImage = self.qrImageView.screenshot()
-			self.share(image: qrImage)
+									let qrImage = self.qrImageView.screenshot()
+									self.share(image: qrImage)
 		}, shareViewHandler: { _ in
 			let viewImage = self.view.screenshot()
 			self.share(image: viewImage)
@@ -125,6 +130,7 @@ class WIFIDetailVC: UIViewController {
 			let addWifiVC = AddWIFIVC()
 			let navController = UINavigationController(rootViewController: addWifiVC)
 			addWifiVC.wifi = self.wifi
+			addWifiVC.delegate = self
 			addWifiVC.modalPresentationStyle = .automatic
 			self.present(navController, animated: true)
 		}, favoriteHandler: { favorite in
@@ -152,5 +158,17 @@ extension WIFIDetailVC: WiFiInfoViewDelegate {
 
 	func biometricAuthenticationNotAvailable() {
 		Alerts.presentBiometryNotAvailableAlert(on: self)
+	}
+}
+
+extension WIFIDetailVC: AddWiFiVCDelegate {
+	func didFinishUpdating() {
+		qrImageView.removeFromSuperview()
+		infoView.removeFromSuperview()
+		self.qrImageView = MiWiFiImageView(with: wifi)
+		self.infoView = WiFiInfoView(with: wifi)
+		configureNavController()
+		configureView()
+		configureWifiInfoView()
 	}
 }
