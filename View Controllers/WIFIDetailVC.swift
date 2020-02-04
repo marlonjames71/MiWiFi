@@ -10,12 +10,10 @@ import UIKit
 
 class WIFIDetailVC: UIViewController {
 
-	let wifi: Wifi
+	private let wifi: Wifi
 
-	var qrImageView: MiWiFiImageView
-	var infoView: WiFiInfoView
-
-	let hapticFeedback = UIImpactFeedbackGenerator(style: .rigid)
+	private var qrImageView: MiWiFiImageView
+	private var infoView: WiFiInfoView
 
 	init(with wifi: Wifi) {
 		self.wifi = wifi
@@ -37,18 +35,15 @@ class WIFIDetailVC: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let tapAndHoldGesture = UILongPressGestureRecognizer(target: self, action: #selector(tapAndHold))
-		view.addGestureRecognizer(tapAndHoldGesture)
 		configureNavController()
 		configureView()
 		configureWifiInfoView()
-		hapticFeedback.prepare()
 	}
 
 
 	private func configureView() {
 		view.backgroundColor = .miBlueGreyBG
-		layoutImageView(imageView: qrImageView)
+		layoutAndConfigureImageView(imageView: qrImageView)
 	}
 
 
@@ -68,7 +63,7 @@ class WIFIDetailVC: UIViewController {
 	}
 
 
-	private func layoutImageView(imageView: UIImageView) {
+	private func layoutAndConfigureImageView(imageView: UIImageView) {
 		view.addSubview(imageView)
 		NSLayoutConstraint.activate([
 			imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
@@ -76,6 +71,10 @@ class WIFIDetailVC: UIViewController {
 			imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
 			imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
 		])
+
+		let interaction = UIContextMenuInteraction(delegate: self)
+		imageView.addInteraction(interaction)
+		imageView.isUserInteractionEnabled = true
 	}
 
 
@@ -86,6 +85,30 @@ class WIFIDetailVC: UIViewController {
 			infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
 			infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 		])
+	}
+
+	private func makeContextMenu() -> UIMenu {
+		let qrIcon = UIImage(systemName: "qrcode")?.withTintColor(.miNeonYellowGreen, renderingMode: .alwaysOriginal)
+		let viewIcon = UIImage(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")?.withTintColor(.miNeonYellowGreen, renderingMode: .alwaysOriginal)
+
+		let shareQR = UIAction(title: "QR Code Only", image: qrIcon, discoverabilityTitle: "Shares Only the QR Code", attributes: []) { _ in
+			let image = self.qrImageView.screenshot()
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+				self.share(image: image)
+			})
+		}
+
+		let shareView = UIAction(title: "QR Code & Network Info", image: viewIcon, discoverabilityTitle: "Shares QR Code & Info", attributes: []) { _ in
+			let image = self.view.screenshot()
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+				self.share(image: image)
+			})
+		}
+
+		let shareMenu = UIMenu(title: "", image: nil, options: .displayInline, children: [shareQR, shareView])
+		let menu = UIMenu(title: "Share or Print", image: nil, children: [shareMenu])
+
+		return menu
 	}
 
 
@@ -101,11 +124,6 @@ class WIFIDetailVC: UIViewController {
 			let viewImage = self.view.screenshot()
 			self.share(image: viewImage)
 		})
-	}
-
-
-	@objc func tapAndHold() {
-		presentShareAndPrintAlert()
 	}
 
 
@@ -134,14 +152,7 @@ class WIFIDetailVC: UIViewController {
 			addWifiVC.modalPresentationStyle = .automatic
 			self.present(navController, animated: true)
 		}, favoriteHandler: { favorite in
-			guard let id = self.wifi.passwordID else { return }
-			WifiController.shared.updateWifi(wifi: self.wifi,
-											 nickname: self.wifi.nickname ?? "",
-											 networkName: self.wifi.networkName ?? "",
-											 passwordID: id,
-											 locationDesc: self.wifi.locationDesc ?? "",
-											 iconName: self.wifi.iconName ?? "home.fill",
-											 isFavorite: !self.wifi.isFavorite)
+			WifiController.shared.updateFavorite(wifi: self.wifi, isFavorite: !self.wifi.isFavorite)
 			self.configureNavController()
 		}, shareAndPrintHandler: { shareAndPrint in
 			self.presentShareAndPrintAlert()
@@ -165,10 +176,21 @@ extension WIFIDetailVC: AddWiFiVCDelegate {
 	func didFinishUpdating() {
 		qrImageView.removeFromSuperview()
 		infoView.removeFromSuperview()
+
 		self.qrImageView = MiWiFiImageView(with: wifi)
 		self.infoView = WiFiInfoView(with: wifi)
+
 		configureNavController()
 		configureView()
 		configureWifiInfoView()
+	}
+}
+
+
+extension WIFIDetailVC: UIContextMenuInteractionDelegate {
+	func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+		return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+			return self.makeContextMenu()
+		}
 	}
 }
