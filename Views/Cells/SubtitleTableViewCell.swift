@@ -38,7 +38,7 @@ class SubtitleTableViewCell: UITableViewCell {
 			}
 		}
 
-		imageView?.tintColor = wifi.isFavorite == true ? UIColor.miNeonTeal : UIColor.miNeonYellowGreen
+		imageView?.tintColor = wifi.isFavorite == true ? UIColor.systemOrange : UIColor.miNeonTeal
 		imageView?.image = UIImage(systemName: wifi.iconName ?? "house.fill")
 		accessoryType = .disclosureIndicator
 	}
