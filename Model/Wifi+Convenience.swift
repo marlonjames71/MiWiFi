@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-extension Wifi {
+extension Wifi: MenuIdentifiable {
 	@discardableResult convenience init(nickname: String, networkName: String, passwordID: UUID, locationDesc: String, iconName: String, isFavorite: Bool = false, context: NSManagedObjectContext) {
 		self.init(context: context)
 		self.nickname = nickname
@@ -18,5 +18,9 @@ extension Wifi {
 		self.locationDesc = locationDesc
 		self.iconName = iconName
 		self.isFavorite = isFavorite
+	}
+
+	var passwordIDStr: String {
+		self.passwordID?.uuidString ?? ""
 	}
 }

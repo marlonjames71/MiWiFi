@@ -219,8 +219,11 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			completion(true)
 		}
 
+		let star = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+		let starSlash = UIImage(systemName: "star.slash.fill")?.withTintColor(.secondaryLabel, renderingMode: .alwaysOriginal)
+		let starImage = wifi.isFavorite ? starSlash : star
 		favoriteAction.backgroundColor = .miDarkBlue
-		favoriteAction.image = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+		favoriteAction.image = starImage
 
 		let configuration = UISwipeActionsConfiguration(actions: [favoriteAction])
 		configuration.performsFirstActionWithFullSwipe = true
@@ -266,27 +269,36 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
 		let wifi = self.fetchedResultsController.object(at: indexPath)
+		let nickname = wifi.nickname ?? ""
 
-		let configuration = UIContextMenuConfiguration(identifier: "\(indexPath.row)" as NSCopying, previewProvider: { () -> UIViewController? in
+		let configuration = UIContextMenuConfiguration(identifier: wifi.menuID, previewProvider: { () -> UIViewController? in
 			return WIFIDetailVC(with: wifi)
 		}) { action in
+
 			let favoriteStr = wifi.isFavorite ? "Unfavorite" : "Favorite"
 			let favStar = UIImage(systemName: "star")
 			let unfavStar = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
 			let starImage = wifi.isFavorite ? unfavStar : favStar
-			let favorite = UIAction(title: favoriteStr, image: starImage, identifier: UIAction.Identifier(rawValue: "favorite")) { action in
-				WifiController.shared.updateFavorite(wifi: wifi, isFavorite: !wifi.isFavorite)
+
+			let favorite = UIAction(title: favoriteStr, image: starImage) { action in
 				let cell = tableView.cellForRow(at: indexPath) as? SubtitleTableViewCell
-				cell?.updateViews()
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+					WifiController.shared.updateFavorite(wifi: wifi, isFavorite: !wifi.isFavorite)
+					let indexPath = self.wifiTableView.indexPath(for: cell ?? UITableViewCell())
+					let newCell = self.wifiTableView.cellForRow(at: indexPath!) as! SubtitleTableViewCell
+					newCell.updateViews()
+				}
 			}
 
-			let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), identifier: nil, attributes: .destructive) { UIAction in
-				WifiController.shared.delete(wifi: wifi)
+			let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash.fill"), attributes: .destructive) { UIAction in
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+					WifiController.shared.delete(wifi: wifi)
+				}
 			}
 
-			let deleteMenu = UIMenu(title: "Delete", image: UIImage(systemName: "trash.fill"), identifier: nil, options: .destructive, children: [deleteAction])
+			let deleteMenu = UIMenu(title: "Delete", image: UIImage(systemName: "trash.fill"), options: .destructive, children: [deleteAction])
 
-			return UIMenu(title: "", identifier: UIMenu.Identifier(rawValue: "favorite"), children: [favorite, deleteMenu])
+			return UIMenu(title: "WiFi: \(nickname)", identifier: UIMenu.Identifier(rawValue: "favorite"), children: [favorite, deleteMenu])
 		}
 
 		return configuration
@@ -294,12 +306,15 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 
 	func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-//		let id = configuration.identifier as! String
-		guard let indexPath = wifiTableView.indexPathForSelectedRow else { return }
-		let wifi = fetchedResultsController.object(at: indexPath)
 
-		animator.addCompletion {
-			self.show(WIFIDetailVC(with: wifi), sender: self)
+		guard let wifi = fetchedResultsController.fetchedObjects?.item(for: configuration) else { return }
+
+		let viewController = WIFIDetailVC(with: wifi)
+
+		animator.addCompletion { [weak self] in
+			guard let self = self else { return }
+
+			self.show(viewController, sender: self)
 		}
 	}
 
