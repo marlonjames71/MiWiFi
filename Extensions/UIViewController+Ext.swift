@@ -32,7 +32,7 @@ extension UIViewController {
 		let discardAction = UIAlertAction(title: "Discard", style: .default, handler: discardHandler)
 		let resumeAction = UIAlertAction(title: "Resume Editing", style: .cancel)
 
-		[saveAction, discardAction, resumeAction].forEach { alertController.addAction($0) }
+		[saveAction, discardAction, resumeAction].forEach(alertController.addAction)
 		present(alertController, animated: true)
 	}
 
@@ -45,10 +45,7 @@ extension UIViewController {
 		let shareViewAction = UIAlertAction(title: "QR Code & Network Info", style: .default, handler: shareViewHandler)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-        alertController.addAction(shareQRAction)
-		alertController.addAction(shareViewAction)
-		alertController.addAction(cancelAction)
-
+		[shareQRAction, shareViewAction, cancelAction].forEach(alertController.addAction)
         present(alertController, animated: true, completion: completionHandler)
     }
 
@@ -68,7 +65,7 @@ extension UIViewController {
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-		[printOrShareAction, cancelAction].forEach { alertController.addAction($0) }
+		[printOrShareAction, cancelAction].forEach(alertController.addAction)
 		present(alertController, animated: true, completion: completion)
 	}
 
@@ -90,12 +87,12 @@ extension UIViewController {
 		let shareOrPrintAction = UIAlertAction(title: "Share or Print", style: .default, handler: shareAndPrintHandler)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-		let configuration = UIImage.SymbolConfiguration(pointSize: 25)
+		let configuration = UIImage.SymbolConfiguration(pointSize: 20)
 		editAction.setValue(UIImage(systemName: "square.and.pencil", withConfiguration: configuration), forKey: "image")
 		favoriteAction.setValue(favoriteImage.withConfiguration(configuration), forKey: "image")
 		shareOrPrintAction.setValue(UIImage(systemName: "arrow.up.doc.fill", withConfiguration: configuration), forKey: "image")
 
-		[deleteAction, editAction, favoriteAction, shareOrPrintAction, cancelAction].forEach { alertController.addAction($0) }
+		[deleteAction, editAction, favoriteAction, shareOrPrintAction, cancelAction].forEach(alertController.addAction)
 		present(alertController, animated: true, completion: completion)
 
 	}
@@ -109,7 +106,7 @@ extension UIViewController {
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-		[deleteAction, cancelAction].forEach { alertController.addAction($0) }
+		[deleteAction, cancelAction].forEach(alertController.addAction)
 		present(alertController, animated: true, completion: completionHandler)
 	}
 
@@ -125,7 +122,7 @@ extension UIViewController {
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-		[deleteAction, cancelAction].forEach { alertController.addAction($0) }
+		[deleteAction, cancelAction].forEach(alertController.addAction)
 		present(alertController, animated: true, completion: completionHandler)
 	}
 
