@@ -42,14 +42,14 @@ class WIFIDetailVC: UIViewController {
 
 
 	private func configureView() {
-		view.backgroundColor = .miBlueGreyBG
+		view.backgroundColor = .miBackground
 		layoutAndConfigureImageView(imageView: qrImageView)
 	}
 
 
 	func configureNavController() {
 		title = wifi.nickname
-		let star = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+		let star = UIImage(systemName: "star.fill")?.withTintColor(.miFavoriteTint, renderingMode: .alwaysOriginal)
 		let starImageView = UIImageView(image: star)
 
 		if wifi.isFavorite {
@@ -88,8 +88,8 @@ class WIFIDetailVC: UIViewController {
 	}
 
 	private func makeContextMenu() -> UIMenu {
-		let qrIcon = UIImage(systemName: "qrcode")?.withTintColor(.miNeonYellowGreen, renderingMode: .alwaysOriginal)
-		let viewIcon = UIImage(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")?.withTintColor(.miNeonYellowGreen, renderingMode: .alwaysOriginal)
+		let qrIcon = UIImage(systemName: "qrcode")?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
+		let viewIcon = UIImage(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
 
 		let shareQR = UIAction(title: "QR Code Only", image: qrIcon, discoverabilityTitle: "Shares Only the QR Code", attributes: []) { _ in
 			let image = self.qrImageView.screenshot()
@@ -130,7 +130,7 @@ class WIFIDetailVC: UIViewController {
 	@objc private func optionsButtonTapped(_ sender: UIBarButtonItem) {
 		let favoriteImage = UIImage(systemName: "star")!
 		let unfavoriteImage = UIImage(systemName: "star.fill")!
-			.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+			.withTintColor(.miFavoriteTint, renderingMode: .alwaysOriginal)
 		let favStr = "Favorite"
 		let unfavStr = "Unfavorite"
 
@@ -153,6 +153,8 @@ class WIFIDetailVC: UIViewController {
 			self.present(navController, animated: true)
 		}, favoriteHandler: { favorite in
 			WifiController.shared.updateFavorite(wifi: self.wifi, isFavorite: !self.wifi.isFavorite)
+			self.qrImageView.layoutSubviews()
+			self.infoView.configureView()
 			self.configureNavController()
 		}, shareAndPrintHandler: { shareAndPrint in
 			self.presentShareAndPrintAlert()

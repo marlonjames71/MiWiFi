@@ -67,7 +67,7 @@ class AddWIFIVC: UIViewController {
 // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .miBlueGreyBG
+		view.backgroundColor = .miSecondaryBackground
 		navigationController?.presentationController?.delegate = self
 		isModalInPresentation = true
 		
@@ -125,9 +125,9 @@ class AddWIFIVC: UIViewController {
 	private func configureNavBar() {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.barTintColor = .clear
-		navigationController?.navigationBar.tintColor = .miNeonYellowGreen
+		navigationController?.navigationBar.tintColor = .miGlobalTint
 
-		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.label,
+		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
 		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 
 		if wifi == nil {
@@ -138,7 +138,7 @@ class AddWIFIVC: UIViewController {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
 		navigationItem.leftBarButtonItem = cancelBarbutton
 		iconButton.setImage(IconInfo.home.homeImage, for: .normal)
-		iconButton.tintColor = .miNeonTeal
+		iconButton.tintColor = .miIconTint
 		navigationItem.titleView = iconButton
 	}
 
@@ -186,9 +186,9 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.sizeToFit()
 
 		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .selected)
-		iconSegControl.selectedSegmentTintColor = .miDarkTeal
-		iconSegControl.backgroundColor = .miBlueGreyBG
-		iconSegControl.tintColor = .miDarkTeal
+		iconSegControl.selectedSegmentTintColor = .miIconTint
+		iconSegControl.backgroundColor = .miBackground
+		iconSegControl.tintColor = .miIconTint
 
 		iconSegControl.insertSegment(withTitle: IconInfo.home.rawValue, at: 0, animated: true)
 		iconSegControl.insertSegment(withTitle: IconInfo.work.rawValue, at: 1, animated: true)

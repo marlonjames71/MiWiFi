@@ -15,7 +15,7 @@ class MiWiFiTextFieldView: UIView {
 	let container = UIView()
 	let contextLabel = MiWiFiPlaceholderLabel(textAlignment: .center, fontSize: 11)
 
-	let activeColor = UIColor.miTintColor.cgColor
+	let activeColor = UIColor.miSecondaryAccent.cgColor
 	let inactiveColor = UIColor.secondaryLabel.cgColor
 
 
@@ -87,7 +87,7 @@ class MiWiFiTextFieldView: UIView {
 	private func configurePlaceholderLabel() {
 		container.addSubview(contextLabel)
 
-		contextLabel.textColor = textField.isFirstResponder ? .miTintColor : .secondaryLabel
+		contextLabel.textColor = textField.isFirstResponder ? .miSecondaryAccent : .secondaryLabel
 
 		NSLayoutConstraint.activate([
 			contextLabel.heightAnchor.constraint(equalToConstant: 13),

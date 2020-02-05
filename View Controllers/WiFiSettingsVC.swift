@@ -14,8 +14,8 @@ class WiFiSettingsVC: UIViewController {
         super.viewDidLoad()
 		view.backgroundColor = .miBackground
 		navigationController?.navigationBar.prefersLargeTitles = true
-		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTintColor]
-		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTintColor]
+		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTitleColor]
+		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTitleColor]
 
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
@@ -25,7 +25,7 @@ class WiFiSettingsVC: UIViewController {
 			tabBarItem.standardAppearance = appearance
 		}
 
-		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTintColor,
+		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 	}
 

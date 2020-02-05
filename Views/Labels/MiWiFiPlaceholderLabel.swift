@@ -27,7 +27,7 @@ class MiWiFiPlaceholderLabel: UILabel {
 	}
 
 	private func configure() {
-		textColor = .miTintColor
+		textColor = .secondaryLabel
 		adjustsFontSizeToFitWidth = true
 		minimumScaleFactor = 0.9
 		lineBreakMode = .byTruncatingTail

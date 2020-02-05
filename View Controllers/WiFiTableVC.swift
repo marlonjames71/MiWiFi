@@ -62,7 +62,7 @@ class WiFiTableVC: UIViewController {
 	// MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .miBlueGreyBG
+		view.backgroundColor = .miBackground
 
 		configureTabBar()
 		configureNavController()
@@ -83,7 +83,8 @@ class WiFiTableVC: UIViewController {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
 			appearance.shadowImage = UIImage()
-			appearance.backgroundColor = UIColor.miBlueGreyBG
+//			appearance.backgroundColor = UIColor.miBlueGreyBG
+			appearance.backgroundColor = .miBackground
 			appearance.shadowColor = .clear
 			tabBarItem.standardAppearance = appearance
 		}
@@ -122,7 +123,7 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.dataSource = self
 		wifiTableView.delegate = self
 		wifiTableView.rowHeight = 60
-		wifiTableView.backgroundColor = .miBlueGreyBG
+		wifiTableView.backgroundColor = .miBackground
 		wifiTableView.allowsMultipleSelection = false
 		wifiTableView.allowsSelectionDuringEditing = true
 		wifiTableView.allowsMultipleSelectionDuringEditing = true
@@ -134,7 +135,7 @@ class WiFiTableVC: UIViewController {
 		addButton.translatesAutoresizingMaskIntoConstraints = false
 		addButton.addTarget(self, action: #selector(addWifiButtonTapped(_:)), for: .touchUpInside)
 
-		addButton.tintColor = .miNeonTeal
+		addButton.tintColor = .miAddButtonColor
 		let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
 		addButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: configuration), for: .normal)
 
@@ -219,10 +220,10 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			completion(true)
 		}
 
-		let star = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+		let star = UIImage(systemName: "star.fill")?.withTintColor(.miFavoriteTint, renderingMode: .alwaysOriginal)
 		let starSlash = UIImage(systemName: "star.slash.fill")?.withTintColor(.secondaryLabel, renderingMode: .alwaysOriginal)
 		let starImage = wifi.isFavorite ? starSlash : star
-		favoriteAction.backgroundColor = .miDarkBlue
+		favoriteAction.backgroundColor = .miBackground
 		favoriteAction.image = starImage
 
 		let configuration = UISwipeActionsConfiguration(actions: [favoriteAction])
@@ -243,7 +244,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		}
 
 		action.image = UIImage(systemName: "trash.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
-		action.backgroundColor = .miDarkBlue
+		action.backgroundColor = .miBackground
 		let configuration = UISwipeActionsConfiguration(actions: [action])
 		configuration.performsFirstActionWithFullSwipe = true
 		return configuration
@@ -253,14 +254,14 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let backgroundView: UIView = {
 			let view = UIView()
-			view.backgroundColor = UIColor.miDarkTeal.withAlphaComponent(0.3)
+			view.backgroundColor = UIColor.miGrayColor.withAlphaComponent(0.4)
 			return view
 		}()
 
 		let cell = tableView.dequeueReusableCell(withIdentifier: "WifiCell", for: indexPath) as? SubtitleTableViewCell
 		let wifi = fetchedResultsController.object(at: indexPath)
 		cell?.wifi = wifi
-		cell?.backgroundColor = .miBlueGreyBG
+		cell?.backgroundColor = .miBackground
 		cell?.selectedBackgroundView = backgroundView
 
 		return cell ?? UITableViewCell()
@@ -277,7 +278,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 			let favoriteStr = wifi.isFavorite ? "Unfavorite" : "Favorite"
 			let favStar = UIImage(systemName: "star")
-			let unfavStar = UIImage(systemName: "star.fill")?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
+			let unfavStar = UIImage(systemName: "star.fill")?.withTintColor(.miFavoriteTint, renderingMode: .alwaysOriginal)
 			let starImage = wifi.isFavorite ? unfavStar : favStar
 
 			let favorite = UIAction(title: favoriteStr, image: starImage) { action in

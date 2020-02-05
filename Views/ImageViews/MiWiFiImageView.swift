@@ -41,19 +41,20 @@ class MiWiFiImageView: UIImageView {
 		clipsToBounds = true
 		contentMode = .scaleAspectFit
 		image = placeholderImage
-		backgroundColor = .miBlueGreyBG
+		backgroundColor = .miBackground
 		translatesAutoresizingMaskIntoConstraints = false
 	}
 
 	func configureQRCode() {
+		let secondColor: UIColor = wifi.isFavorite ? .miFavoriteTint : .miSecondaryAccent
 		let qrData = configureWifiCodeString().data(using: .utf8)
 		let qrGen = QRettyCodeImageGenerator(data: qrData, correctionLevel: .H, size: self.frame.width, style: .dots)
 		qrGen.renderEffects = true
 		qrGen.gradientStyle = .linear
 		qrGen.gradientBackgroundVisible = false
-		qrGen.gradientStartColor = .miNeonYellowGreen
-		qrGen.gradientEndColor = .miNeonTeal
-		qrGen.gradientStartPoint = CGPoint(x: 0.2, y: 0.4)
+		qrGen.gradientStartColor = .miAddButtonColor
+		qrGen.gradientEndColor = secondColor
+		qrGen.gradientStartPoint = CGPoint(x: 0.7, y: 0.1)
 		qrGen.gradientEndPoint = CGPoint(x: 1, y: 1)
 
 		self.image = qrGen.image

@@ -32,10 +32,10 @@ class MiWiFiIconImageView: UIImageView {
 
 	private func configure() {
 		translatesAutoresizingMaskIntoConstraints = false
-		tintColor = .miDarkTeal
+//		tintColor = .miDarkTeal
 		contentMode = .center
 
-		let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular)
+		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .regular)
 
 		guard let icon = icon else { return }
 

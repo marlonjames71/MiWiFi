@@ -1,4 +1,7 @@
 {
+  "properties" : {
+    "localizable" : true
+  },
   "info" : {
     "version" : 1,
     "author" : "xcode"
@@ -9,10 +12,10 @@
       "color" : {
         "color-space" : "srgb",
         "components" : {
-          "red" : "0.524",
+          "red" : "0x79",
           "alpha" : "1.000",
-          "blue" : "0.481",
-          "green" : "0.693"
+          "blue" : "0xBF",
+          "green" : "0xBA"
         }
       }
     },
@@ -27,10 +30,10 @@
       "color" : {
         "color-space" : "display-p3",
         "components" : {
-          "red" : "0.741",
+          "red" : "0xBD",
           "alpha" : "1.000",
-          "blue" : "0.663",
-          "green" : "0.913"
+          "blue" : "0xA5",
+          "green" : "0xE8"
         }
       }
     }

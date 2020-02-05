@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		wifiTableVC.tabBarItem = UITabBarItem(title: "WiFi List", image: UIImage(systemName: "wifi"), tag: 0)
 
 		let navController = UINavigationController(rootViewController: wifiTableVC)
-		navController.navigationBar.tintColor = .miNeonYellowGreen
+		navController.navigationBar.tintColor = .miGlobalTint
 
 		return navController
 	}
@@ -39,14 +39,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		wifiSettingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.horizontal.3"), tag: 1)
 
 		let navController = UINavigationController(rootViewController: wifiSettingsVC)
-		navController.navigationBar.tintColor = .miNeonYellowGreen
+		navController.navigationBar.tintColor = .miGlobalTint
 
 		return navController
 	}
 
 	func createTabBar() -> UITabBarController {
 		let tabBar = UITabBarController()
-		UITabBar.appearance().tintColor = .miNeonYellowGreen
+		UITabBar.appearance().tintColor = .miGlobalTint
 		tabBar.viewControllers = [createWIFITableNC(), createWIFISettingsNC()]
 
 		return tabBar
