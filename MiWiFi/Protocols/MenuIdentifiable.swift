@@ -36,4 +36,4 @@ extension Array where Element: MenuIdentifiable {
         return firstIndex(where: { $0.menuID == configuration.identifier as? NSString })
     }
 
-}
+}                                   

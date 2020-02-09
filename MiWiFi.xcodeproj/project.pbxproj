@@ -1,0 +1,642 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		37162CCB23BB4A0D00407766 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CCA23BB4A0D00407766 /* AppDelegate.swift */; };
+		37162CCD23BB4A0D00407766 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CCC23BB4A0D00407766 /* SceneDelegate.swift */; };
+		37162CD423BB4A0F00407766 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37162CD323BB4A0F00407766 /* Assets.xcassets */; };
+		37162CD723BB4A0F00407766 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37162CD523BB4A0F00407766 /* LaunchScreen.storyboard */; };
+		37162CDF23BB4F7700407766 /* WiFiTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CDE23BB4F7700407766 /* WiFiTableVC.swift */; };
+		37162CE123BB6BD800407766 /* MiWiFiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE023BB6BD800407766 /* MiWiFiButton.swift */; };
+		37162CE323BB797900407766 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE223BB797900407766 /* Colors.swift */; };
+		37162CE523BBEDA200407766 /* AddWIFIVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE423BBEDA200407766 /* AddWIFIVC.swift */; };
+		37162CE723BBF52700407766 /* MiWiFiTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE623BBF52700407766 /* MiWiFiTextFieldView.swift */; };
+		37162CE923BC1A5B00407766 /* MiWiFiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */; };
+		374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86623E530CA004FC394 /* UIAlert+Ext.swift */; };
+		374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */; };
+		374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08323D6B734002701FC /* QRettyCode.framework */; };
+		374F59BF23F0040A009921E3 /* SwiftyBinaryFormatter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08423D6B734002701FC /* SwiftyBinaryFormatter.framework */; };
+		375F15C423E38D7C00293079 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F15C323E38D7C00293079 /* UIView+Ext.swift */; };
+		37DA410023C8F4CC00777231 /* WIFIDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA40FF23C8F4CC00777231 /* WIFIDetailVC.swift */; };
+		37E8B04A23D56B55002701FC /* WiFiSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */; };
+		37E8B04C23D58B87002701FC /* UIFontRounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B04B23D58B87002701FC /* UIFontRounded.swift */; };
+		37E8B04E23D5931D002701FC /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B04D23D5931D002701FC /* Alerts.swift */; };
+		37E8B05223D5A3E5002701FC /* wifi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05023D5A3E5002701FC /* wifi.xcdatamodeld */; };
+		37E8B05423D5A48E002701FC /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05323D5A48E002701FC /* CoreDataStack.swift */; };
+		37E8B05723D5A519002701FC /* WifiController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05623D5A519002701FC /* WifiController.swift */; };
+		37E8B05923D5A533002701FC /* Wifi+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05823D5A533002701FC /* Wifi+Convenience.swift */; };
+		37E8B05C23D5B068002701FC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05B23D5B068002701FC /* SubtitleTableViewCell.swift */; };
+		37E8B05E23D643DC002701FC /* MiWiFiImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05D23D643DC002701FC /* MiWiFiImageView.swift */; };
+		37E8B08223D6B599002701FC /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 37E8B08123D6B599002701FC /* Cartfile */; };
+		37E8B08A23D6B7B9002701FC /* output.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = 37E8B08823D6B7B9002701FC /* output.xcfilelist */; };
+		37E8B08B23D6B7B9002701FC /* input.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = 37E8B08923D6B7B9002701FC /* input.xcfilelist */; };
+		37E8B08D23D8454D002701FC /* WiFiInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B08C23D8454D002701FC /* WiFiInfoView.swift */; };
+		37E8B09023D970B5002701FC /* MiWiFiBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B08F23D970B5002701FC /* MiWiFiBodyLabel.swift */; };
+		37E8B09223D9716D002701FC /* MiWiFiHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09123D9716D002701FC /* MiWiFiHeaderLabel.swift */; };
+		37E8B09423DBA7B9002701FC /* MiWiFiIconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09323DBA7B9002701FC /* MiWiFiIconImageView.swift */; };
+		37E8B09623DD0DC9002701FC /* UIStackView+StackViewTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09523DD0DC9002701FC /* UIStackView+StackViewTemplate.swift */; };
+		37E8B09A23DDA8E6002701FC /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09823DDA8E6002701FC /* KeychainWrapper.swift */; };
+		37E8B09B23DDA8E6002701FC /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09923DDA8E6002701FC /* KeychainItemAccessibility.swift */; };
+		37E8B09E23E100BC002701FC /* MiWiFiEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09D23E100BC002701FC /* MiWiFiEmptyStateView.swift */; };
+		37E8B0A123E10407002701FC /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B0A023E10407002701FC /* UIViewController+Ext.swift */; };
+		37E8B0A423E15B1F002701FC /* MiWiFiPlaceholderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B0A323E15B1F002701FC /* MiWiFiPlaceholderLabel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		37162CC723BB4A0D00407766 /* MiWiFi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiWiFi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		37162CCA23BB4A0D00407766 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		37162CCC23BB4A0D00407766 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		37162CD323BB4A0F00407766 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		37162CD623BB4A0F00407766 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		37162CD823BB4A0F00407766 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		37162CDE23BB4F7700407766 /* WiFiTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiTableVC.swift; sourceTree = "<group>"; };
+		37162CE023BB6BD800407766 /* MiWiFiButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiButton.swift; sourceTree = "<group>"; };
+		37162CE223BB797900407766 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		37162CE423BBEDA200407766 /* AddWIFIVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWIFIVC.swift; sourceTree = "<group>"; };
+		37162CE623BBF52700407766 /* MiWiFiTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiTextFieldView.swift; sourceTree = "<group>"; };
+		37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiTextField.swift; sourceTree = "<group>"; };
+		374DA86623E530CA004FC394 /* UIAlert+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlert+Ext.swift"; sourceTree = "<group>"; };
+		374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuIdentifiable.swift; sourceTree = "<group>"; };
+		375F15C323E38D7C00293079 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
+		37DA40FF23C8F4CC00777231 /* WIFIDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WIFIDetailVC.swift; sourceTree = "<group>"; };
+		37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiSettingsVC.swift; sourceTree = "<group>"; };
+		37E8B04B23D58B87002701FC /* UIFontRounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontRounded.swift; sourceTree = "<group>"; };
+		37E8B04D23D5931D002701FC /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
+		37E8B05123D5A3E5002701FC /* wifi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = wifi.xcdatamodel; sourceTree = "<group>"; };
+		37E8B05323D5A48E002701FC /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		37E8B05623D5A519002701FC /* WifiController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiController.swift; sourceTree = "<group>"; };
+		37E8B05823D5A533002701FC /* Wifi+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wifi+Convenience.swift"; sourceTree = "<group>"; };
+		37E8B05B23D5B068002701FC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		37E8B05D23D643DC002701FC /* MiWiFiImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiImageView.swift; sourceTree = "<group>"; };
+		37E8B08123D6B599002701FC /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		37E8B08323D6B734002701FC /* QRettyCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QRettyCode.framework; path = Carthage/Build/iOS/QRettyCode.framework; sourceTree = "<group>"; };
+		37E8B08423D6B734002701FC /* SwiftyBinaryFormatter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyBinaryFormatter.framework; path = Carthage/Build/iOS/SwiftyBinaryFormatter.framework; sourceTree = "<group>"; };
+		37E8B08823D6B7B9002701FC /* output.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = output.xcfilelist; sourceTree = "<group>"; };
+		37E8B08923D6B7B9002701FC /* input.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = input.xcfilelist; sourceTree = "<group>"; };
+		37E8B08C23D8454D002701FC /* WiFiInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiInfoView.swift; sourceTree = "<group>"; };
+		37E8B08F23D970B5002701FC /* MiWiFiBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiBodyLabel.swift; sourceTree = "<group>"; };
+		37E8B09123D9716D002701FC /* MiWiFiHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiHeaderLabel.swift; sourceTree = "<group>"; };
+		37E8B09323DBA7B9002701FC /* MiWiFiIconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiIconImageView.swift; sourceTree = "<group>"; };
+		37E8B09523DD0DC9002701FC /* UIStackView+StackViewTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+StackViewTemplate.swift"; sourceTree = "<group>"; };
+		37E8B09823DDA8E6002701FC /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		37E8B09923DDA8E6002701FC /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemAccessibility.swift; sourceTree = "<group>"; };
+		37E8B09C23DE6C27002701FC /* wifi 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "wifi 2.xcdatamodel"; sourceTree = "<group>"; };
+		37E8B09D23E100BC002701FC /* MiWiFiEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiEmptyStateView.swift; sourceTree = "<group>"; };
+		37E8B0A023E10407002701FC /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
+		37E8B0A323E15B1F002701FC /* MiWiFiPlaceholderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiPlaceholderLabel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		37162CC423BB4A0D00407766 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				374F59BF23F0040A009921E3 /* SwiftyBinaryFormatter.framework in Frameworks */,
+				374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		37162CBE23BB4A0D00407766 = {
+			isa = PBXGroup;
+			children = (
+				37E8B08123D6B599002701FC /* Cartfile */,
+				37E8B08923D6B7B9002701FC /* input.xcfilelist */,
+				37E8B08823D6B7B9002701FC /* output.xcfilelist */,
+				37162CC923BB4A0D00407766 /* MiWiFi */,
+				37162CC823BB4A0D00407766 /* Products */,
+				37E8B07E23D6B51D002701FC /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		37162CC823BB4A0D00407766 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				37162CC723BB4A0D00407766 /* MiWiFi.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		37162CC923BB4A0D00407766 /* MiWiFi */ = {
+			isa = PBXGroup;
+			children = (
+				374DA86823E8EA1F004FC394 /* Protocols */,
+				37E8B09F23E103D1002701FC /* Extensions */,
+				37E8B06023D65DD6002701FC /* Frameworks */,
+				37DA40FB23C866E800777231 /* View Controllers */,
+				37DA40FE23C8F47100777231 /* Views */,
+				37E8B05523D5A4F8002701FC /* Model Controller */,
+				37E8B04F23D5A2DA002701FC /* Model */,
+				37DA40FC23C8F42A00777231 /* Helpers */,
+				37DA40FD23C8F44000777231 /* Resources */,
+				37162CD823BB4A0F00407766 /* Info.plist */,
+			);
+			path = MiWiFi;
+			sourceTree = "<group>";
+		};
+		374DA86823E8EA1F004FC394 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		374DA86B23E8FFFE004FC394 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				37162CE023BB6BD800407766 /* MiWiFiButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		374DA86C23E9000E004FC394 /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B09D23E100BC002701FC /* MiWiFiEmptyStateView.swift */,
+				37E8B08C23D8454D002701FC /* WiFiInfoView.swift */,
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		374DA86D23E9001B004FC394 /* ImageViews */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B09323DBA7B9002701FC /* MiWiFiIconImageView.swift */,
+				37E8B05D23D643DC002701FC /* MiWiFiImageView.swift */,
+			);
+			path = ImageViews;
+			sourceTree = "<group>";
+		};
+		374DA86E23E9004F004FC394 /* TextFields */ = {
+			isa = PBXGroup;
+			children = (
+				37162CE623BBF52700407766 /* MiWiFiTextFieldView.swift */,
+				37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */,
+			);
+			path = TextFields;
+			sourceTree = "<group>";
+		};
+		37DA40FB23C866E800777231 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				37162CDE23BB4F7700407766 /* WiFiTableVC.swift */,
+				37DA40FF23C8F4CC00777231 /* WIFIDetailVC.swift */,
+				37162CE423BBEDA200407766 /* AddWIFIVC.swift */,
+				37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		37DA40FC23C8F42A00777231 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				37162CE223BB797900407766 /* Colors.swift */,
+				37E8B04D23D5931D002701FC /* Alerts.swift */,
+				37E8B09923DDA8E6002701FC /* KeychainItemAccessibility.swift */,
+				37E8B09823DDA8E6002701FC /* KeychainWrapper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		37DA40FD23C8F44000777231 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				37162CCA23BB4A0D00407766 /* AppDelegate.swift */,
+				37162CCC23BB4A0D00407766 /* SceneDelegate.swift */,
+				37162CD323BB4A0F00407766 /* Assets.xcassets */,
+				37162CD523BB4A0F00407766 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		37DA40FE23C8F47100777231 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				374DA86E23E9004F004FC394 /* TextFields */,
+				374DA86D23E9001B004FC394 /* ImageViews */,
+				374DA86C23E9000E004FC394 /* Custom Views */,
+				374DA86B23E8FFFE004FC394 /* Buttons */,
+				37E8B08E23D9708B002701FC /* Labels */,
+				37E8B05A23D5B03B002701FC /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		37E8B04F23D5A2DA002701FC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B05023D5A3E5002701FC /* wifi.xcdatamodeld */,
+				37E8B05323D5A48E002701FC /* CoreDataStack.swift */,
+				37E8B05823D5A533002701FC /* Wifi+Convenience.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		37E8B05523D5A4F8002701FC /* Model Controller */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B05623D5A519002701FC /* WifiController.swift */,
+			);
+			path = "Model Controller";
+			sourceTree = "<group>";
+		};
+		37E8B05A23D5B03B002701FC /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B05B23D5B068002701FC /* SubtitleTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		37E8B06023D65DD6002701FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		37E8B07E23D6B51D002701FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B08323D6B734002701FC /* QRettyCode.framework */,
+				37E8B08423D6B734002701FC /* SwiftyBinaryFormatter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		37E8B08E23D9708B002701FC /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B08F23D970B5002701FC /* MiWiFiBodyLabel.swift */,
+				37E8B09123D9716D002701FC /* MiWiFiHeaderLabel.swift */,
+				37E8B0A323E15B1F002701FC /* MiWiFiPlaceholderLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
+		37E8B09F23E103D1002701FC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				37E8B09523DD0DC9002701FC /* UIStackView+StackViewTemplate.swift */,
+				37E8B04B23D58B87002701FC /* UIFontRounded.swift */,
+				37E8B0A023E10407002701FC /* UIViewController+Ext.swift */,
+				375F15C323E38D7C00293079 /* UIView+Ext.swift */,
+				374DA86623E530CA004FC394 /* UIAlert+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		37162CC623BB4A0D00407766 /* MiWiFi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 37162CDB23BB4A0F00407766 /* Build configuration list for PBXNativeTarget "MiWiFi" */;
+			buildPhases = (
+				37162CC323BB4A0D00407766 /* Sources */,
+				37162CC423BB4A0D00407766 /* Frameworks */,
+				37162CC523BB4A0D00407766 /* Resources */,
+				37E8B08723D6B74C002701FC /* Run Script - Carthage */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MiWiFi;
+			productName = MiWiFi;
+			productReference = 37162CC723BB4A0D00407766 /* MiWiFi.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		37162CBF23BB4A0D00407766 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "Marlon Raskin";
+				TargetAttributes = {
+					37162CC623BB4A0D00407766 = {
+						CreatedOnToolsVersion = 11.3;
+					};
+				};
+			};
+			buildConfigurationList = 37162CC223BB4A0D00407766 /* Build configuration list for PBXProject "MiWiFi" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 37162CBE23BB4A0D00407766;
+			productRefGroup = 37162CC823BB4A0D00407766 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				37162CC623BB4A0D00407766 /* MiWiFi */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		37162CC523BB4A0D00407766 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37E8B08223D6B599002701FC /* Cartfile in Resources */,
+				37E8B08B23D6B7B9002701FC /* input.xcfilelist in Resources */,
+				37162CD723BB4A0F00407766 /* LaunchScreen.storyboard in Resources */,
+				37162CD423BB4A0F00407766 /* Assets.xcassets in Resources */,
+				37E8B08A23D6B7B9002701FC /* output.xcfilelist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		37E8B08723D6B74C002701FC /* Run Script - Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/input.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Run Script - Carthage";
+			outputFileListPaths = (
+				"$(SRCROOT)/output.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n/usr/local/bin/carthage outdated --xcode-warnings\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		37162CC323BB4A0D00407766 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37162CE723BBF52700407766 /* MiWiFiTextFieldView.swift in Sources */,
+				37162CDF23BB4F7700407766 /* WiFiTableVC.swift in Sources */,
+				37162CE323BB797900407766 /* Colors.swift in Sources */,
+				37162CCB23BB4A0D00407766 /* AppDelegate.swift in Sources */,
+				37E8B05223D5A3E5002701FC /* wifi.xcdatamodeld in Sources */,
+				37E8B09E23E100BC002701FC /* MiWiFiEmptyStateView.swift in Sources */,
+				37162CE523BBEDA200407766 /* AddWIFIVC.swift in Sources */,
+				37E8B0A423E15B1F002701FC /* MiWiFiPlaceholderLabel.swift in Sources */,
+				374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */,
+				37E8B08D23D8454D002701FC /* WiFiInfoView.swift in Sources */,
+				37DA410023C8F4CC00777231 /* WIFIDetailVC.swift in Sources */,
+				37E8B09423DBA7B9002701FC /* MiWiFiIconImageView.swift in Sources */,
+				37E8B05E23D643DC002701FC /* MiWiFiImageView.swift in Sources */,
+				37E8B05423D5A48E002701FC /* CoreDataStack.swift in Sources */,
+				37E8B05923D5A533002701FC /* Wifi+Convenience.swift in Sources */,
+				37E8B04A23D56B55002701FC /* WiFiSettingsVC.swift in Sources */,
+				375F15C423E38D7C00293079 /* UIView+Ext.swift in Sources */,
+				37162CCD23BB4A0D00407766 /* SceneDelegate.swift in Sources */,
+				37E8B09223D9716D002701FC /* MiWiFiHeaderLabel.swift in Sources */,
+				37E8B04C23D58B87002701FC /* UIFontRounded.swift in Sources */,
+				37E8B05723D5A519002701FC /* WifiController.swift in Sources */,
+				37E8B05C23D5B068002701FC /* SubtitleTableViewCell.swift in Sources */,
+				37162CE923BC1A5B00407766 /* MiWiFiTextField.swift in Sources */,
+				37E8B09023D970B5002701FC /* MiWiFiBodyLabel.swift in Sources */,
+				37E8B04E23D5931D002701FC /* Alerts.swift in Sources */,
+				37E8B09A23DDA8E6002701FC /* KeychainWrapper.swift in Sources */,
+				37E8B09623DD0DC9002701FC /* UIStackView+StackViewTemplate.swift in Sources */,
+				37E8B09B23DDA8E6002701FC /* KeychainItemAccessibility.swift in Sources */,
+				37162CE123BB6BD800407766 /* MiWiFiButton.swift in Sources */,
+				374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */,
+				37E8B0A123E10407002701FC /* UIViewController+Ext.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		37162CD523BB4A0F00407766 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				37162CD623BB4A0F00407766 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		37162CD923BB4A0F00407766 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		37162CDA23BB4A0F00407766 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		37162CDC23BB4A0F00407766 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D6VB3396MT;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				INFOPLIST_FILE = MiWiFi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.marlonraskin.MiWiFi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		37162CDD23BB4A0F00407766 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D6VB3396MT;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				INFOPLIST_FILE = MiWiFi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.marlonraskin.MiWiFi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		37162CC223BB4A0D00407766 /* Build configuration list for PBXProject "MiWiFi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37162CD923BB4A0F00407766 /* Debug */,
+				37162CDA23BB4A0F00407766 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		37162CDB23BB4A0F00407766 /* Build configuration list for PBXNativeTarget "MiWiFi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37162CDC23BB4A0F00407766 /* Debug */,
+				37162CDD23BB4A0F00407766 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		37E8B05023D5A3E5002701FC /* wifi.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				37E8B09C23DE6C27002701FC /* wifi 2.xcdatamodel */,
+				37E8B05123D5A3E5002701FC /* wifi.xcdatamodel */,
+			);
+			currentVersion = 37E8B09C23DE6C27002701FC /* wifi 2.xcdatamodel */;
+			path = wifi.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 37162CBF23BB4A0D00407766 /* Project object */;
+}

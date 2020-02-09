@@ -15,7 +15,7 @@ class MiWiFiIconImageView: UIImageView {
 		case password = "shield.lefthalf.fill"
 	}
 
-	var icon: Icon? {
+	var icon: Icon? {                                                                                                                                                                                                                       
 		didSet {
 			configure()
 		}
@@ -32,7 +32,6 @@ class MiWiFiIconImageView: UIImageView {
 
 	private func configure() {
 		translatesAutoresizingMaskIntoConstraints = false
-//		tintColor = .miDarkTeal
 		contentMode = .center
 
 		let configuration = UIImage.SymbolConfiguration(pointSize: 25, weight: .regular)

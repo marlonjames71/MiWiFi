@@ -10,7 +10,6 @@ import UIKit
 
 extension UIColor {
 
-
 	// Background
 	static let miBackground = UIColor(named: "miBackground")!
 	static let miSecondaryBackground = UIColor(named: "miSecondaryBackground")!
