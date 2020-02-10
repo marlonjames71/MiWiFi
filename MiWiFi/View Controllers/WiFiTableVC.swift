@@ -112,7 +112,7 @@ class WiFiTableVC: UIViewController {
 	private func configureListTableView() {
 		view.addSubview(wifiTableView)
 		wifiTableView.translatesAutoresizingMaskIntoConstraints = false
-		wifiTableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "WifiCell")
+		wifiTableView.register(MiWiFiCell.self, forCellReuseIdentifier: "WifiCell")
 		NSLayoutConstraint.activate([
 			wifiTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
 			wifiTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
@@ -122,7 +122,7 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.tableFooterView = UIView()
 		wifiTableView.dataSource = self
 		wifiTableView.delegate = self
-		wifiTableView.rowHeight = 60
+		wifiTableView.separatorStyle = .none
 		wifiTableView.backgroundColor = .miBackground
 		wifiTableView.allowsMultipleSelection = false
 		wifiTableView.allowsSelectionDuringEditing = true
@@ -212,7 +212,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let wifi = fetchedResultsController.object(at: indexPath)
-		let cell = wifiTableView.cellForRow(at: indexPath) as? SubtitleTableViewCell
+		let cell = wifiTableView.cellForRow(at: indexPath) as? MiWiFiCell
 
 		let favoriteAction = UIContextualAction(style: .normal, title: "Favorite") { action, view, completion in
 			WifiController.shared.updateFavorite(wifi: wifi, isFavorite: !wifi.isFavorite)
@@ -254,11 +254,11 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let backgroundView: UIView = {
 			let view = UIView()
-			view.backgroundColor = UIColor.miGrayColor.withAlphaComponent(0.4)
+			view.backgroundColor = UIColor.miBackground
 			return view
 		}()
 
-		let cell = tableView.dequeueReusableCell(withIdentifier: "WifiCell", for: indexPath) as? SubtitleTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "WifiCell", for: indexPath) as? MiWiFiCell
 		let wifi = fetchedResultsController.object(at: indexPath)
 		cell?.wifi = wifi
 		cell?.backgroundColor = .miBackground
@@ -282,11 +282,11 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			let starImage = wifi.isFavorite ? unfavStar : favStar
 
 			let favorite = UIAction(title: favoriteStr, image: starImage) { action in
-				let cell = tableView.cellForRow(at: indexPath) as? SubtitleTableViewCell
+				let cell = tableView.cellForRow(at: indexPath) as? MiWiFiCell
 				DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
 					WifiController.shared.updateFavorite(wifi: wifi, isFavorite: !wifi.isFavorite)
 					let indexPath = self.wifiTableView.indexPath(for: cell ?? UITableViewCell())
-					let newCell = self.wifiTableView.cellForRow(at: indexPath!) as! SubtitleTableViewCell
+					let newCell = self.wifiTableView.cellForRow(at: indexPath!) as! MiWiFiCell
 					newCell.updateViews()
 				}
 			}
