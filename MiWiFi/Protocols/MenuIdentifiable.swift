@@ -9,31 +9,29 @@
 import UIKit
 
 protocol MenuIdentifiable {
-
-    var passwordIDStr: String { get }
-
+	var passwordIDStr: String { get }
 }
+
 
 extension MenuIdentifiable {
 
-    var menuID: NSString {
-        NSString(string: passwordIDStr)
-    }
+	var menuID: NSString {
+		NSString(string: passwordIDStr)
+	}
 
-    func isReferenced(by configuration: UIContextMenuConfiguration) -> Bool {
-        return menuID == configuration.identifier as? NSString
-    }
-
+	func isReferenced(by configuration: UIContextMenuConfiguration) -> Bool {
+		return menuID == configuration.identifier as? NSString
+	}
 }
+
 
 extension Array where Element: MenuIdentifiable {
 
-    func item(for configuration: UIContextMenuConfiguration) -> Element? {
-        return first(where: { $0.menuID == configuration.identifier as? NSString })
-    }
+	func item(for configuration: UIContextMenuConfiguration) -> Element? {
+		return first(where: { $0.menuID == configuration.identifier as? NSString })
+	}
 
-    func index(for configuration: UIContextMenuConfiguration) -> Index? {
-        return firstIndex(where: { $0.menuID == configuration.identifier as? NSString })
-    }
-
+	func index(for configuration: UIContextMenuConfiguration) -> Index? {
+		return firstIndex(where: { $0.menuID == configuration.identifier as? NSString })
+	}
 }                                   
