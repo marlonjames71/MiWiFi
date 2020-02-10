@@ -21,6 +21,7 @@
 		374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */; };
 		374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08323D6B734002701FC /* QRettyCode.framework */; };
 		374F59BF23F0040A009921E3 /* SwiftyBinaryFormatter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08423D6B734002701FC /* SwiftyBinaryFormatter.framework */; };
+		374F59C223F1026B009921E3 /* MiWiFiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F59C123F1026B009921E3 /* MiWiFiCell.swift */; };
 		375F15C423E38D7C00293079 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F15C323E38D7C00293079 /* UIView+Ext.swift */; };
 		37DA410023C8F4CC00777231 /* WIFIDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA40FF23C8F4CC00777231 /* WIFIDetailVC.swift */; };
 		37E8B04A23D56B55002701FC /* WiFiSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */; };
@@ -62,6 +63,7 @@
 		37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiTextField.swift; sourceTree = "<group>"; };
 		374DA86623E530CA004FC394 /* UIAlert+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlert+Ext.swift"; sourceTree = "<group>"; };
 		374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuIdentifiable.swift; sourceTree = "<group>"; };
+		374F59C123F1026B009921E3 /* MiWiFiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiWiFiCell.swift; path = "../../../../../Lambda Dev Project/Sprint Challenges/Movie-List-Sprint-Challenge/Movie List/MiWiFiCell.swift"; sourceTree = "<group>"; };
 		375F15C323E38D7C00293079 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		37DA40FF23C8F4CC00777231 /* WIFIDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WIFIDetailVC.swift; sourceTree = "<group>"; };
 		37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiSettingsVC.swift; sourceTree = "<group>"; };
@@ -129,7 +131,6 @@
 			children = (
 				374DA86823E8EA1F004FC394 /* Protocols */,
 				37E8B09F23E103D1002701FC /* Extensions */,
-				37E8B06023D65DD6002701FC /* Frameworks */,
 				37DA40FB23C866E800777231 /* View Controllers */,
 				37DA40FE23C8F47100777231 /* Views */,
 				37E8B05523D5A4F8002701FC /* Model Controller */,
@@ -220,12 +221,12 @@
 		37DA40FE23C8F47100777231 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				37E8B05A23D5B03B002701FC /* Cells */,
 				374DA86E23E9004F004FC394 /* TextFields */,
 				374DA86D23E9001B004FC394 /* ImageViews */,
 				374DA86C23E9000E004FC394 /* Custom Views */,
 				374DA86B23E8FFFE004FC394 /* Buttons */,
 				37E8B08E23D9708B002701FC /* Labels */,
-				37E8B05A23D5B03B002701FC /* Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -252,15 +253,9 @@
 			isa = PBXGroup;
 			children = (
 				37E8B05B23D5B068002701FC /* SubtitleTableViewCell.swift */,
+				374F59C123F1026B009921E3 /* MiWiFiCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		37E8B06023D65DD6002701FC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		37E8B07E23D6B51D002701FC /* Frameworks */ = {
@@ -396,6 +391,7 @@
 				37162CE323BB797900407766 /* Colors.swift in Sources */,
 				37162CCB23BB4A0D00407766 /* AppDelegate.swift in Sources */,
 				37E8B05223D5A3E5002701FC /* wifi.xcdatamodeld in Sources */,
+				374F59C223F1026B009921E3 /* MiWiFiCell.swift in Sources */,
 				37E8B09E23E100BC002701FC /* MiWiFiEmptyStateView.swift in Sources */,
 				37162CE523BBEDA200407766 /* AddWIFIVC.swift in Sources */,
 				37E8B0A423E15B1F002701FC /* MiWiFiPlaceholderLabel.swift in Sources */,
@@ -562,7 +558,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = MiWiFi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -586,7 +581,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = MiWiFi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
