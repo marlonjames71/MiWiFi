@@ -83,7 +83,6 @@ class WiFiTableVC: UIViewController {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
 			appearance.shadowImage = UIImage()
-//			appearance.backgroundColor = UIColor.miBlueGreyBG
 			appearance.backgroundColor = .miBackground
 			appearance.shadowColor = .clear
 			tabBarItem.standardAppearance = appearance
@@ -167,7 +166,7 @@ class WiFiTableVC: UIViewController {
 		present(navController, animated: true)
 	}
 
-
+	#warning("Fix for smoother deletion")
 	@objc private func deleteSelectedWifiObjects(_ sender: UIBarButtonItem) {
 		guard let indexPaths = wifiTableView.indexPathsForSelectedRows else { return }
 		var wifiObjects: [Wifi] = []
@@ -176,8 +175,10 @@ class WiFiTableVC: UIViewController {
 		presentSecondaryDeleteAlertMultiple(count: indexPaths.count, deleteHandler: { _ in
 			for wifi in wifiObjects {
 				guard let id = wifi.passwordID else { return }
-				KeychainWrapper.standard.removeObject(forKey: id.uuidString)
-				WifiController.shared.delete(wifi: wifi)
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+					KeychainWrapper.standard.removeObject(forKey: id.uuidString)
+					WifiController.shared.delete(wifi: wifi)
+				}
 			}
 			self.isEditing = false
 			self.mode = .view
