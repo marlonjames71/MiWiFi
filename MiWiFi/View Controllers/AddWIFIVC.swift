@@ -52,6 +52,8 @@ class AddWIFIVC: UIViewController {
 	private let networkTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none)
 	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none)
 
+	private let saveBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
+
 	var wifi: Wifi? {
 		didSet {
 			updateViews()
@@ -69,7 +71,8 @@ class AddWIFIVC: UIViewController {
         super.viewDidLoad()
 		view.backgroundColor = .miSecondaryBackground
 		navigationController?.presentationController?.delegate = self
-		isModalInPresentation = true
+		saveBarButtonItem.isEnabled = false
+		isModalInPresentation = false
 		
 
 		configureLargeWifiIcon()
@@ -135,7 +138,7 @@ class AddWIFIVC: UIViewController {
 		}
 
 		let cancelBarbutton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped(_:)))
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
+		navigationItem.rightBarButtonItem = saveBarButtonItem
 		navigationItem.leftBarButtonItem = cancelBarbutton
 		iconButton.setImage(IconInfo.home.homeImage, for: .normal)
 		iconButton.tintColor = .miIconTint
@@ -166,6 +169,9 @@ class AddWIFIVC: UIViewController {
 		[nicknameTextField, networkTextField, passwordTextField].forEach { $0.delegate = self }
 
 		nicknameTextField.addTarget(self, action: #selector(updateTitleWhileEditing(_:)), for: .editingChanged)
+		[nicknameTextField, networkTextField, passwordTextField].forEach {
+			$0.addTarget(self, action: #selector(watchChangesOccured(_:)), for: .editingChanged)
+		}
 
 		[iconSegControl,
 		 nicknameTextField,
@@ -186,9 +192,9 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.sizeToFit()
 
 		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .selected)
-		iconSegControl.selectedSegmentTintColor = .miIconTint
+		iconSegControl.selectedSegmentTintColor = .miGrayColor
 		iconSegControl.backgroundColor = .miBackground
-		iconSegControl.tintColor = .miIconTint
+		iconSegControl.tintColor = .miGrayColor
 
 		iconSegControl.insertSegment(withTitle: IconInfo.home.rawValue, at: 0, animated: true)
 		iconSegControl.insertSegment(withTitle: IconInfo.work.rawValue, at: 1, animated: true)
@@ -207,28 +213,6 @@ class AddWIFIVC: UIViewController {
 	// MARK: - Actions & Methods
 	@objc private func tapViewToDimissKeyboard(_ sender: UITapGestureRecognizer) {
 		[nicknameTextField, networkTextField, passwordTextField].forEach { $0.resignFirstResponder() }
-	}
-
-	#warning("Start here!")
-	@objc private func watchChangesOccured() {
-		if wifi == nil {
-			[nicknameTextField, networkTextField, passwordTextField].forEach {
-				if $0.text == "" {
-					isModalInPresentation = false
-				} else {
-					isModalInPresentation = true
-				}
-			}
-		} else if wifi != nil {
-			let wifiPassword = KeychainWrapper.standard.string(forKey: wifi?.passwordID?.uuidString ?? "")
-			if wifi?.nickname != nicknameTextField.text ||
-				wifi?.networkName != networkTextField.text ||
-				wifiPassword != passwordTextField.text {
-				isModalInPresentation = true
-			} else {
-				isModalInPresentation = false
-			}
-		}
 	}
 
 
@@ -261,30 +245,12 @@ class AddWIFIVC: UIViewController {
 		}
 
 		let id = UUID()
-		guard let name = nicknameTextField.text,
-			let wifiName = networkTextField.text else { return }
+		guard let nickname = nicknameTextField.text, !nickname.isEmpty,
+			let networkName = networkTextField.text, !networkName.isEmpty else { return }
 
 		savePasswordToKeychain(id: id)
 
-		WifiController.shared.addWifi(nickname: name, networkName: wifiName, passwordID: id, locationDesc: desc, iconName: icon.rawValue)
-	}
-
-
-	@objc private func updateTitleWhileEditing(_ sender: UITextField) {
-		guard let text = nicknameTextField.text else { return  }
-
-		if let wifi = wifi {
-			title = text != "" ? text : wifi.nickname
-			if text == "" {
-				navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miGrayColor,
-				.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
-			} else {
-				navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.label,
-				.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
-			}
-		} else {
-			title = text != "" ? text : "Add WiFi"
-		}
+		WifiController.shared.addWifi(nickname: nickname, networkName: networkName, passwordID: id, locationDesc: desc, iconName: icon.rawValue)
 	}
 
 
@@ -309,6 +275,53 @@ class AddWIFIVC: UIViewController {
 	}
 
 
+	@objc private func watchChangesOccured(_ sender: UITextField) {
+		guard nicknameTextField.text != "", networkTextField.text != "" else {
+			saveBarButtonItem.isEnabled = false
+			return
+		}
+
+		switch sender {
+		case nicknameTextField:
+			let nicknameCriteria: Bool = sender.text != "" && sender.text != wifi?.nickname
+			saveBarButtonItem.isEnabled = nicknameCriteria
+		case networkTextField:
+			let networkNameCriteria: Bool = sender.text != "" && sender.text != wifi?.networkName
+			saveBarButtonItem.isEnabled = networkNameCriteria
+		case passwordTextField:
+			let wifiPassword = KeychainWrapper.standard.string(forKey: wifi?.passwordID?.uuidString ?? "")
+			if wifiPassword != "" {
+				saveBarButtonItem.isEnabled = sender.text != wifiPassword
+			} else {
+				let passwordCriteria: Bool = sender.text != ""
+				saveBarButtonItem.isEnabled = passwordCriteria
+			}
+		default:
+			break
+		}
+
+		isModalInPresentation = saveBarButtonItem.isEnabled
+	}
+
+
+	@objc private func updateTitleWhileEditing(_ sender: UITextField) {
+		guard let text = nicknameTextField.text else { return  }
+
+		if let wifi = wifi {
+			title = text != "" ? text : wifi.nickname
+			if text == "" {
+				navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miGrayColor,
+				.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
+			} else {
+				navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.label,
+				.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
+			}
+		} else {
+			title = text != "" ? text : "Add WiFi"
+		}
+	}
+
+
 	@objc private func segControlDidChange() {
 		switch iconSegControl.selectedSegmentIndex {
 		case 0:
@@ -326,6 +339,12 @@ class AddWIFIVC: UIViewController {
 		default:
 			break
 		}
+
+		if wifi != nil {
+			saveBarButtonItem.isEnabled = wifi?.iconName != icon.rawValue
+		}
+
+		isModalInPresentation = saveBarButtonItem.isEnabled
 	}
 }
 
@@ -338,7 +357,6 @@ extension AddWIFIVC: UITextFieldDelegate {
 
 extension AddWIFIVC: UIAdaptivePresentationControllerDelegate {
 	func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-		watchChangesOccured()
 		presentAttemptTodismissActionSheet(saveHandler: { _ in
 			self.saveWifi()
 			self.dismiss(animated: true)
