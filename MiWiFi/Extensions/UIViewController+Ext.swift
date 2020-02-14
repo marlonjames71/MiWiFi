@@ -50,7 +50,7 @@ extension UIViewController {
     }
 
 
-	// Use this alert when user selects ellipsis leading swipe action to share QR code
+	/// Use this alert when user selects ellipsis leading swipe action to share QR code
 	func presentOptionsActionSheetOnTableVC(wifi: Wifi, printOrShareHandler: ((UIAlertAction) -> Void)? = nil, completion: (() -> Void)? = nil) {
 		let messageStr = """
 		Nickname: \(wifi.nickname ?? "")
@@ -125,6 +125,10 @@ extension UIViewController {
 		[deleteAction, cancelAction].forEach(alertController.addAction)
 		present(alertController, animated: true, completion: completionHandler)
 	}
+
+
+	// MARK: - ToolBar for MultiSelect
+
 
 
 	// MARK: - FaceID Alerts
