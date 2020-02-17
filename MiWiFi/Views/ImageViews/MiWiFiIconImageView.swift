@@ -13,6 +13,7 @@ class MiWiFiIconImageView: UIImageView {
 	enum Icon: String {
 		case network = "wifi"
 		case password = "shield.lefthalf.fill"
+		case qr = "qrcode"
 	}
 
 
@@ -47,6 +48,9 @@ class MiWiFiIconImageView: UIImageView {
 			image = UIImage(systemName: icon.rawValue, withConfiguration: configuration)
 		case .password:
 			image = UIImage(systemName: icon.rawValue, withConfiguration: configuration)
+		case .qr:
+			image = UIImage(systemName: icon.rawValue, withConfiguration: configuration)?
+				.withTintColor(.miAddButtonColor, renderingMode: .alwaysOriginal)
 		}
 	}
 }

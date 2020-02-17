@@ -127,6 +127,15 @@ extension UIViewController {
 	}
 
 
+	func presentBasicAlert(controllerTitle: String, controllerMessage: String, actionTitle: String) {
+		let ac = UIAlertController(title: controllerTitle, message: controllerMessage, preferredStyle: .alert)
+		let okAction = UIAlertAction(title: actionTitle, style: .default)
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+		[cancelAction, okAction].forEach(ac.addAction)
+		present(ac, animated: true)
+	}
+
+
 	// MARK: - ToolBar for MultiSelect
 
 
