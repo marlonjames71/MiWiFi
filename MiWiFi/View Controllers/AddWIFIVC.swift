@@ -192,9 +192,9 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.sizeToFit()
 
 		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .selected)
-		iconSegControl.selectedSegmentTintColor = .miGrayColor
+		iconSegControl.selectedSegmentTintColor = .miGlobalTint
 		iconSegControl.backgroundColor = .miBackground
-		iconSegControl.tintColor = .miGrayColor
+		iconSegControl.tintColor = .miGlobalTint
 
 		iconSegControl.insertSegment(withTitle: IconInfo.home.rawValue, at: 0, animated: true)
 		iconSegControl.insertSegment(withTitle: IconInfo.work.rawValue, at: 1, animated: true)
