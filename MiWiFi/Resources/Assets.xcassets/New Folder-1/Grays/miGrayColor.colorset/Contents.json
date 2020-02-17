@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "color" : {
-        "color-space" : "srgb",
+        "color-space" : "display-p3",
         "components" : {
-          "red" : "0.850",
+          "red" : "0.415",
           "alpha" : "1.000",
-          "blue" : "0.850",
-          "green" : "0.850"
+          "blue" : "0.294",
+          "green" : "0.214"
         }
       }
     },
@@ -27,10 +27,10 @@
       "color" : {
         "color-space" : "srgb",
         "components" : {
-          "red" : "0x44",
+          "red" : "0x21",
           "alpha" : "1.000",
-          "blue" : "0x4E",
-          "green" : "0x45"
+          "blue" : "0x2C",
+          "green" : "0x26"
         }
       }
     }

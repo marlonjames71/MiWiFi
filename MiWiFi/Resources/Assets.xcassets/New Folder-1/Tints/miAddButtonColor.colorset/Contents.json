@@ -10,12 +10,12 @@
     {
       "idiom" : "universal",
       "color" : {
-        "color-space" : "srgb",
+        "color-space" : "display-p3",
         "components" : {
-          "red" : "0x11",
+          "red" : "0x84",
           "alpha" : "1.000",
-          "blue" : "0xB2",
-          "green" : "0xC7"
+          "blue" : "0x53",
+          "green" : "0x32"
         }
       }
     },
@@ -28,12 +28,12 @@
         }
       ],
       "color" : {
-        "color-space" : "display-p3",
+        "color-space" : "srgb",
         "components" : {
-          "red" : "0xEF",
+          "red" : "0x25",
           "alpha" : "1.000",
-          "blue" : "0x35",
-          "green" : "0x8F"
+          "blue" : "0xC2",
+          "green" : "0xA4"
         }
       }
     }
