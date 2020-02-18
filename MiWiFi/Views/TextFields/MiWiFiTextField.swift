@@ -19,12 +19,13 @@ class MiWiFiTextField: UITextField {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	init(isSecureEntry: Bool, placeholder: String, autocorrectionType: UITextAutocorrectionType, autocapitalizationType: UITextAutocapitalizationType) {
+	init(isSecureEntry: Bool, placeholder: String, autocorrectionType: UITextAutocorrectionType, autocapitalizationType: UITextAutocapitalizationType, returnType: UIReturnKeyType) {
 		super.init(frame: .zero)
 		isSecureTextEntry = isSecureEntry
 		self.autocorrectionType = autocorrectionType
 		self.placeholder = placeholder
 		self.autocapitalizationType = autocapitalizationType
+		self.returnKeyType = returnType
 		configure()
 	}
 

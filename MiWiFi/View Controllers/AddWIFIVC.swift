@@ -48,9 +48,9 @@ class AddWIFIVC: UIViewController {
 	private let configuration = UIImage.SymbolConfiguration(pointSize: 25)
 	private let largeGrayWifiIcon = MiWiFiEmptyStateView(message: "")
 
-	private let nicknameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .yes, autocapitalizationType: .words)
-	private let networkTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none)
-	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none)
+	private let nicknameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .yes, autocapitalizationType: .words, returnType: .continue)
+	private let networkTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue)
+	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none, returnType: .done)
 
 	private let saveBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
 
@@ -251,12 +251,12 @@ class AddWIFIVC: UIViewController {
 		savePasswordToKeychain(id: id)
 
 		WifiController.shared.addWifi(nickname: nickname, networkName: networkName, passwordID: id, locationDesc: desc, iconName: icon.rawValue)
+		dismiss(animated: true)
 	}
 
 
 	@objc private func saveTapped(_ sender: UIBarButtonItem) {
 		saveWifi()
-		dismiss(animated: true)
 	}
 
 
@@ -350,7 +350,18 @@ class AddWIFIVC: UIViewController {
 
 extension AddWIFIVC: UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-		textField.resignFirstResponder()
+		switch textField {
+		case passwordTextField:
+			saveWifi()
+		case nicknameTextField:
+			networkTextField.becomeFirstResponder()
+		case networkTextField:
+			passwordTextField.becomeFirstResponder()
+		default:
+			textField.resignFirstResponder()
+		}
+
+		return false
 	}
 }
 
