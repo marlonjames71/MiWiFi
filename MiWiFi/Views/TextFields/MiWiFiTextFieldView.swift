@@ -8,15 +8,64 @@
 
 import UIKit
 
-class MiWiFiTextFieldView: UIView {
+func configure<T>(_ object: T, using closure: (inout T) -> Void) -> T {
+	var object = object
+	closure(&object)
+	return object
+}
+
+class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
+
+	var labelText: String {
+		get { textField.text ?? "" }
+		set { textField.text = newValue }
+	}
+
+	var color: UIColor = .secondaryLabel
+
+//    private let textfield = configure(UITextField()) {
+//        $0.translatesAutoresizingMaskIntoConstraints = false
+////        $0.text = "This is a test"
+//        $0.textColor = .systemBlue
+//    }
+
+//    private let label = configure(UILabel()) {
+//        $0.translatesAutoresizingMaskIntoConstraints = false
+//		$0.text = "Nickname"
+//        $0.font = .systemFont(ofSize: 10)
+//        $0.textColor = .systemBlue
+//    }
+
+    private let border = configure(CALayer()) {
+		$0.borderColor = UIColor.systemGray.withAlphaComponent(0.4).cgColor
+        $0.borderWidth = 1
+        $0.cornerRadius = 4
+    }
 
 	let textField = UITextField()
-	let iconImageView = UIImageView()
-	let container = UIView()
-	let contextLabel = MiWiFiPlaceholderLabel(textAlignment: .center, fontSize: 11)
+	let label = MiWiFiPlaceholderLabel(textAlignment: .center, fontSize: 10)
 
-	let activeColor = UIColor.miSecondaryAccent.cgColor
-	let inactiveColor = UIColor.secondaryLabel.cgColor
+	let activeColorCG = UIColor.miGlobalTint.cgColor
+	let inactiveColorCG = UIColor.systemGray.withAlphaComponent(0.4).cgColor
+	let activeColor = UIColor.miGlobalTint
+	let inactiveColor = UIColor.systemGray.withAlphaComponent(0.4)
+
+	let padding: CGFloat = 8
+
+	let revealButton = UIButton(type: .system)
+
+	var needsRevealButton: Bool = false {
+		didSet {
+			updateRevealButtonImage()
+			configureRevealButton()
+		}
+	}
+
+	var isRevealed: Bool = false {
+		didSet {
+			updateRevealButtonImage()
+		}
+	}
 
 
 	override init(frame: CGRect) {
@@ -25,7 +74,7 @@ class MiWiFiTextFieldView: UIView {
 		translatesAutoresizingMaskIntoConstraints = false
 		configureCointainer()
 		configureTextField()
-		configurePlaceholderLabel()
+		configureLabel()
 	}
 
 
@@ -34,70 +83,134 @@ class MiWiFiTextFieldView: UIView {
 	}
 
 
-	init(isSecureEntry: Bool, placeholder: String) {
+	init(isSecureEntry: Bool,
+		 placeholder: String,
+		 autocorrectionType: UITextAutocorrectionType,
+		 autocapitalizationType: UITextAutocapitalizationType,
+		 returnType: UIReturnKeyType,
+		 needsRevealButton: Bool = false) {
+
 		super.init(frame: .zero)
 		textField.isSecureTextEntry = isSecureEntry
-		contextLabel.text = placeholder
+		textField.autocorrectionType = autocorrectionType
+		textField.autocapitalizationType = autocapitalizationType
+		textField.returnKeyType = returnType
+		if isSecureEntry {
+			updateRevealButtonImage()
+			configureRevealButton()
+		}
+		label.text = placeholder
+		configureCointainer()
+		configureTextField()
+		configureLabel()
 	}
+
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        border.frame = bounds
+        border.mask(withRect: label.frame.insetBy(dx: -3, dy: 0), inverse: true)
+    }
 
 
 	private func configureCointainer() {
-		addSubview(container)
-		container.translatesAutoresizingMaskIntoConstraints = false
-
-		container.backgroundColor = .clear
-		container.clipsToBounds = true
-		container.layer.cornerRadius = 12
-		container.layer.cornerCurve = .continuous
-
-		container.layer.borderColor = textField.becomeFirstResponder() ? activeColor : inactiveColor
-		container.layer.borderWidth = 1
-
-		let padding: CGFloat = 12
-		NSLayoutConstraint.activate([
-			container.topAnchor.constraint(equalTo: topAnchor, constant: padding),
-			container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-			container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -padding),
-			container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-		])
+		layer.addSublayer(border)
+		translatesAutoresizingMaskIntoConstraints = false
+		backgroundColor = .clear
+		clipsToBounds = false
+		layer.cornerRadius = 6
+		layer.cornerCurve = .continuous
 	}
 
-
+	#warning("Place textField and button in stackview and make sure to set priority and compression resistence on eye button")
 	private func configureTextField() {
-		container.addSubview(textField)
+		addSubview(textField)
 		textField.translatesAutoresizingMaskIntoConstraints = false
+
+		textField.addTarget(self, action: #selector(setActiveColor(_:)), for: .editingDidBegin)
+		textField.addTarget(self, action: #selector(setInactiveColor(_:)), for: .editingDidEnd)
 
 		textField.textColor = .label
 		textField.font = UIFont.preferredFont(forTextStyle: .body)
 		textField.adjustsFontSizeToFitWidth = true
 		textField.keyboardType = .asciiCapable
 		textField.minimumFontSize = 12
-		textField.clearButtonMode = .whileEditing
+
+		if !textField.isSecureTextEntry {
+			textField.clearButtonMode = .whileEditing
+		}
 
 		NSLayoutConstraint.activate([
-			textField.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0),
-			textField.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
-			textField.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
-			textField.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 8),
-			textField.heightAnchor.constraint(equalToConstant: 40)
+			textField.topAnchor.constraint(equalTo: topAnchor, constant: padding),
+			textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+			textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -padding),
+//			textField.trailingAnchor.constraint(equalTo: revealButton.leadingAnchor, constant: -padding),
+		])
+
+		if textField.isSecureTextEntry {
+			textField.trailingAnchor.constraint(equalTo: revealButton.leadingAnchor, constant: -padding).isActive = true
+		} else {
+			textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding).isActive = true
+		}
+	}
+
+
+	private func configureLabel() {
+		addSubview(label)
+		label.translatesAutoresizingMaskIntoConstraints = false
+
+		label.font = .systemFont(ofSize: 12)
+		label.textColor = inactiveColor
+
+		NSLayoutConstraint.activate([
+			label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            label.centerYAnchor.constraint(equalTo: topAnchor),
 		])
 	}
 
 
-	private func configurePlaceholderLabel() {
-		container.addSubview(contextLabel)
-
-		contextLabel.textColor = textField.isFirstResponder ? .miSecondaryAccent : .secondaryLabel
+	private func configureRevealButton() {
+		addSubview(revealButton)
+		revealButton.translatesAutoresizingMaskIntoConstraints = false
+		revealButton.tintColor = inactiveColor
+		revealButton.addTarget(self, action: #selector(toggleSecureEntry(_:)), for: .touchUpInside)
 
 		NSLayoutConstraint.activate([
-			contextLabel.heightAnchor.constraint(equalToConstant: 13),
-			contextLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 12),
-			contextLabel.centerYAnchor.constraint(equalTo: container.topAnchor, constant: 0)
+			revealButton.heightAnchor.constraint(equalToConstant: 30),
+			revealButton.widthAnchor.constraint(equalTo: revealButton.heightAnchor, multiplier: 1),
+			revealButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0),
+			revealButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
 		])
 	}
 
 
-	private func drawBorder() {
+	private func updateRevealButtonImage() {
+		let config = UIImage.SymbolConfiguration(pointSize: 12)
+		let image = textField.isSecureTextEntry ? UIImage(systemName: "eye.slash", withConfiguration: config) : UIImage(systemName: "eye", withConfiguration: config)
+		revealButton.setImage(image, for: .normal)
+	}
 
+
+	@objc private func toggleSecureEntry(_ sender: UIButton) {
+		textField.isSecureTextEntry.toggle()
+		updateRevealButtonImage()
+	}
+
+
+	@objc private func setActiveColor(_ sender: UITextField) {
+		UIView.animate(withDuration: 0.3) {
+			self.label.textColor = self.activeColor
+			self.revealButton.tintColor = self.activeColor
+			self.border.borderColor = self.activeColorCG
+		}
+	}
+
+	@objc private func setInactiveColor(_ sender: UITextField) {
+		UIView.animate(withDuration: 0.3) {
+			self.label.textColor = self.inactiveColor
+			self.revealButton.tintColor = self.inactiveColor
+			self.border.borderColor = self.inactiveColorCG
+		}
 	}
 }

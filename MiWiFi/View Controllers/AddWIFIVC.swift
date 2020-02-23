@@ -48,9 +48,12 @@ class AddWIFIVC: UIViewController {
 	private let configuration = UIImage.SymbolConfiguration(pointSize: 25)
 	private let largeGrayWifiIcon = MiWiFiEmptyStateView(message: "")
 
-	private let nicknameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .yes, autocapitalizationType: .words, returnType: .continue)
-	private let networkTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue)
-	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none, returnType: .done)
+//	private let nicknameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .yes, autocapitalizationType: .words, returnType: .continue)
+//	private let networkTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue)
+//	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none, returnType: .done, needsRevealButton: true)
+	private let nicknameTextField = MiWiFiTextFieldView(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue, needsRevealButton: false)
+	private let networkTextField = MiWiFiTextFieldView(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue, needsRevealButton: false)
+	private let passwordTextField = MiWiFiTextFieldView(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none, returnType: .done, needsRevealButton: true)
 
 	private let saveBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
 
@@ -89,9 +92,9 @@ class AddWIFIVC: UIViewController {
 	private func updateViews() {
 		guard let wifi = wifi else { return }
 		title = wifi.nickname
-		nicknameTextField.text = wifi.nickname
-		networkTextField.text = wifi.networkName
-		passwordTextField.text = KeychainWrapper.standard.string(forKey: wifi.passwordID?.uuidString ?? "No Password")
+		nicknameTextField.textField.text = wifi.nickname
+		networkTextField.textField.text = wifi.networkName
+		passwordTextField.textField.text = KeychainWrapper.standard.string(forKey: wifi.passwordID?.uuidString ?? "No Password")
 
 		if wifi.iconName == IconInfo.homeIconName.rawValue {
 			iconSegControl.selectedSegmentIndex = 0
@@ -166,11 +169,11 @@ class AddWIFIVC: UIViewController {
 			}
 		}
 
-		[nicknameTextField, networkTextField, passwordTextField].forEach { $0.delegate = self }
+		[nicknameTextField.textField, networkTextField.textField, passwordTextField.textField].forEach { $0.delegate = self }
 
-		nicknameTextField.addTarget(self, action: #selector(updateTitleWhileEditing(_:)), for: .editingChanged)
+		nicknameTextField.textField.addTarget(self, action: #selector(updateTitleWhileEditing(_:)), for: .editingChanged)
 		[nicknameTextField, networkTextField, passwordTextField].forEach {
-			$0.addTarget(self, action: #selector(watchChangesOccured(_:)), for: .editingChanged)
+			$0.textField.addTarget(self, action: #selector(watchChangesOccured(_:)), for: .editingChanged)
 		}
 
 		[iconSegControl,
@@ -193,7 +196,7 @@ class AddWIFIVC: UIViewController {
 
 		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .selected)
 		iconSegControl.selectedSegmentTintColor = .miGlobalTint
-		iconSegControl.backgroundColor = .miBackground
+		iconSegControl.backgroundColor = .miGrayColor
 		iconSegControl.tintColor = .miGlobalTint
 
 		iconSegControl.insertSegment(withTitle: IconInfo.home.rawValue, at: 0, animated: true)
@@ -217,8 +220,8 @@ class AddWIFIVC: UIViewController {
 
 
 	private func updateWifi(wifi: Wifi) {
-		if let nickname = nicknameTextField.text,
-			let networkname = networkTextField.text,
+		if let nickname = nicknameTextField.textField.text,
+			let networkname = networkTextField.textField.text,
 			let id = wifi.passwordID,
 			!nickname.isEmpty,
 			!networkname.isEmpty {
@@ -245,8 +248,8 @@ class AddWIFIVC: UIViewController {
 		}
 
 		let id = UUID()
-		guard let nickname = nicknameTextField.text, !nickname.isEmpty,
-			let networkName = networkTextField.text, !networkName.isEmpty else { return }
+		guard let nickname = nicknameTextField.textField.text, !nickname.isEmpty,
+			let networkName = networkTextField.textField.text, !networkName.isEmpty else { return }
 
 		savePasswordToKeychain(id: id)
 
@@ -261,7 +264,7 @@ class AddWIFIVC: UIViewController {
 
 
 	private func savePasswordToKeychain(id: UUID) {
-		if let password = passwordTextField.text,
+		if let password = passwordTextField.textField.text,
 			!password.isEmpty {
 			KeychainWrapper.standard.set(password, forKey: id.uuidString)
 		} else {
@@ -276,7 +279,7 @@ class AddWIFIVC: UIViewController {
 
 
 	@objc private func watchChangesOccured(_ sender: UITextField) {
-		guard nicknameTextField.text != "", networkTextField.text != "" else {
+		guard nicknameTextField.textField.text != "", networkTextField.textField.text != "" else {
 			saveBarButtonItem.isEnabled = false
 			return
 		}
@@ -305,7 +308,7 @@ class AddWIFIVC: UIViewController {
 
 
 	@objc private func updateTitleWhileEditing(_ sender: UITextField) {
-		guard let text = nicknameTextField.text else { return  }
+		guard let text = nicknameTextField.textField.text else { return  }
 
 		if let wifi = wifi {
 			title = text != "" ? text : wifi.nickname
@@ -351,12 +354,13 @@ class AddWIFIVC: UIViewController {
 extension AddWIFIVC: UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		switch textField {
-		case passwordTextField:
+		case passwordTextField.textField:
 			saveWifi()
-		case nicknameTextField:
-			networkTextField.becomeFirstResponder()
-		case networkTextField:
-			passwordTextField.becomeFirstResponder()
+			passwordTextField.textField.resignFirstResponder()
+		case nicknameTextField.textField:
+			networkTextField.textField.becomeFirstResponder()
+		case networkTextField.textField:
+			passwordTextField.textField.becomeFirstResponder()
 		default:
 			textField.resignFirstResponder()
 		}
