@@ -117,6 +117,7 @@ class WiFiInfoView: UIView {
 				self.passwordValueLabel.textColor = .label
 				self.passwordValueLabel.text = KeychainWrapper.standard.string(forKey: id.uuidString)
 				self.passwordValueLabel.alpha = 1
+				self.passwordHeaderLabel.text = "Tap To Hide Password"
 			}
 		} else {
 			UIView.animate(withDuration: 0.5) { self.passwordValueLabel.alpha = 0 }
@@ -124,6 +125,7 @@ class WiFiInfoView: UIView {
 				self.passwordValueLabel.textColor = .miGlobalTint
 				self.passwordValueLabel.text = self.tapToRevealStr
 				self.passwordValueLabel.alpha = 1
+				self.passwordHeaderLabel.text = "Password"
 			}
 		}
 	}
