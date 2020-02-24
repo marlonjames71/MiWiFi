@@ -52,7 +52,7 @@ class AddWIFIVC: UIViewController {
 	private let networkTextField = MiWiFiTextFieldView(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue, needsRevealButton: false)
 	private let passwordTextField = MiWiFiTextFieldView(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none, returnType: .done, needsRevealButton: true)
 
-	private var saveBarButtonItem: UIBarButtonItem?
+	private let saveBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
 
 	var wifi: Wifi? {
 		didSet {
@@ -71,7 +71,6 @@ class AddWIFIVC: UIViewController {
         super.viewDidLoad()
 		view.backgroundColor = .miSecondaryBackground
 		navigationController?.presentationController?.delegate = self
-//		saveBarButtonItem?.isEnabled = false
 		isModalInPresentation = false
 		
 
@@ -138,10 +137,11 @@ class AddWIFIVC: UIViewController {
 		}
 
 		let cancelBarbutton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped(_:)))
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
+		navigationItem.rightBarButtonItem = saveBarButtonItem
+		// ↓ ↓ ↓ Removing this line breaks the save button after resignFirstResponder() ⤸ ⤸ ⤸
+		saveBarButtonItem.target = self
+		saveBarButtonItem.isEnabled = false
 		navigationItem.leftBarButtonItem = cancelBarbutton
-		saveBarButtonItem = navigationItem.rightBarButtonItem
-		saveBarButtonItem?.isEnabled = false
 		iconButton.setImage(IconInfo.home.homeImage, for: .normal)
 		iconButton.tintColor = .miIconTint
 		navigationItem.titleView = iconButton
@@ -280,7 +280,7 @@ class AddWIFIVC: UIViewController {
 	@objc private func watchChangesOccured(_ sender: UITextField) {
 		let saveButtonEnabled = nicknameTextField.textField.text?.isEmpty != true && networkTextField.textField.text?.isEmpty != true
 
-		saveBarButtonItem?.isEnabled = saveButtonEnabled
+		saveBarButtonItem.isEnabled = saveButtonEnabled
 		isModalInPresentation = saveButtonEnabled
 	}
 
@@ -322,10 +322,10 @@ class AddWIFIVC: UIViewController {
 		}
 
 		if wifi != nil {
-			saveBarButtonItem?.isEnabled = wifi?.iconName != icon.rawValue
+			saveBarButtonItem.isEnabled = wifi?.iconName != icon.rawValue
 		}
 
-		isModalInPresentation = saveBarButtonItem?.isEnabled ?? false
+		isModalInPresentation = saveBarButtonItem.isEnabled
 	}
 }
 
