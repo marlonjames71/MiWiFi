@@ -23,19 +23,6 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 
 	var color: UIColor = .secondaryLabel
 
-//    private let textfield = configure(UITextField()) {
-//        $0.translatesAutoresizingMaskIntoConstraints = false
-////        $0.text = "This is a test"
-//        $0.textColor = .systemBlue
-//    }
-
-//    private let label = configure(UILabel()) {
-//        $0.translatesAutoresizingMaskIntoConstraints = false
-//		$0.text = "Nickname"
-//        $0.font = .systemFont(ofSize: 10)
-//        $0.textColor = .systemBlue
-//    }
-
     private let border = configure(CALayer()) {
 		$0.borderColor = UIColor.systemGray.withAlphaComponent(0.4).cgColor
         $0.borderWidth = 1
@@ -48,7 +35,7 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 	let activeColorCG = UIColor.miGlobalTint.cgColor
 	let inactiveColorCG = UIColor.systemGray.withAlphaComponent(0.4).cgColor
 	let activeColor = UIColor.miGlobalTint
-	let inactiveColor = UIColor.systemGray.withAlphaComponent(0.4)
+	let inactiveColor = UIColor.label.withAlphaComponent(0.7)
 
 	let padding: CGFloat = 8
 

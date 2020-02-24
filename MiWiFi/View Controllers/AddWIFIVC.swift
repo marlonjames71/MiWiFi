@@ -48,14 +48,11 @@ class AddWIFIVC: UIViewController {
 	private let configuration = UIImage.SymbolConfiguration(pointSize: 25)
 	private let largeGrayWifiIcon = MiWiFiEmptyStateView(message: "")
 
-//	private let nicknameTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .yes, autocapitalizationType: .words, returnType: .continue)
-//	private let networkTextField = MiWiFiTextField(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue)
-//	private let passwordTextField = MiWiFiTextField(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none, returnType: .done, needsRevealButton: true)
-	private let nicknameTextField = MiWiFiTextFieldView(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue, needsRevealButton: false)
+	private let nicknameTextField = MiWiFiTextFieldView(isSecureEntry: false, placeholder: "Nickname", autocorrectionType: .no, autocapitalizationType: .words, returnType: .continue, needsRevealButton: false)
 	private let networkTextField = MiWiFiTextFieldView(isSecureEntry: false, placeholder: "Network", autocorrectionType: .no, autocapitalizationType: .none, returnType: .continue, needsRevealButton: false)
 	private let passwordTextField = MiWiFiTextFieldView(isSecureEntry: true, placeholder: "Password", autocorrectionType: .no, autocapitalizationType: .none, returnType: .done, needsRevealButton: true)
 
-	private let saveBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
+	private var saveBarButtonItem: UIBarButtonItem?
 
 	var wifi: Wifi? {
 		didSet {
@@ -74,7 +71,7 @@ class AddWIFIVC: UIViewController {
         super.viewDidLoad()
 		view.backgroundColor = .miSecondaryBackground
 		navigationController?.presentationController?.delegate = self
-		saveBarButtonItem.isEnabled = false
+//		saveBarButtonItem?.isEnabled = false
 		isModalInPresentation = false
 		
 
@@ -85,7 +82,7 @@ class AddWIFIVC: UIViewController {
 		updateViews()
 		configureTapGestureForView()
 
-		nicknameTextField.becomeFirstResponder()
+		nicknameTextField.textField.becomeFirstResponder()
     }
 
 
@@ -141,8 +138,10 @@ class AddWIFIVC: UIViewController {
 		}
 
 		let cancelBarbutton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped(_:)))
-		navigationItem.rightBarButtonItem = saveBarButtonItem
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped(_:)))
 		navigationItem.leftBarButtonItem = cancelBarbutton
+		saveBarButtonItem = navigationItem.rightBarButtonItem
+		saveBarButtonItem?.isEnabled = false
 		iconButton.setImage(IconInfo.home.homeImage, for: .normal)
 		iconButton.tintColor = .miIconTint
 		navigationItem.titleView = iconButton
@@ -172,8 +171,8 @@ class AddWIFIVC: UIViewController {
 		[nicknameTextField.textField, networkTextField.textField, passwordTextField.textField].forEach { $0.delegate = self }
 
 		nicknameTextField.textField.addTarget(self, action: #selector(updateTitleWhileEditing(_:)), for: .editingChanged)
-		[nicknameTextField, networkTextField, passwordTextField].forEach {
-			$0.textField.addTarget(self, action: #selector(watchChangesOccured(_:)), for: .editingChanged)
+		[nicknameTextField.textField, networkTextField.textField, passwordTextField.textField].forEach {
+			$0.addTarget(self, action: #selector(watchChangesOccured(_:)), for: .editingChanged)
 		}
 
 		[iconSegControl,
@@ -215,7 +214,7 @@ class AddWIFIVC: UIViewController {
 
 	// MARK: - Actions & Methods
 	@objc private func tapViewToDimissKeyboard(_ sender: UITapGestureRecognizer) {
-		[nicknameTextField, networkTextField, passwordTextField].forEach { $0.resignFirstResponder() }
+		[nicknameTextField.textField, networkTextField.textField, passwordTextField.textField].forEach { $0.resignFirstResponder() }
 	}
 
 
@@ -279,31 +278,10 @@ class AddWIFIVC: UIViewController {
 
 
 	@objc private func watchChangesOccured(_ sender: UITextField) {
-		guard nicknameTextField.textField.text != "", networkTextField.textField.text != "" else {
-			saveBarButtonItem.isEnabled = false
-			return
-		}
+		let saveButtonEnabled = nicknameTextField.textField.text?.isEmpty != true && networkTextField.textField.text?.isEmpty != true
 
-		switch sender {
-		case nicknameTextField:
-			let nicknameCriteria: Bool = sender.text != "" && sender.text != wifi?.nickname
-			saveBarButtonItem.isEnabled = nicknameCriteria
-		case networkTextField:
-			let networkNameCriteria: Bool = sender.text != "" && sender.text != wifi?.networkName
-			saveBarButtonItem.isEnabled = networkNameCriteria
-		case passwordTextField:
-			let wifiPassword = KeychainWrapper.standard.string(forKey: wifi?.passwordID?.uuidString ?? "")
-			if wifiPassword != "" {
-				saveBarButtonItem.isEnabled = sender.text != wifiPassword
-			} else {
-				let passwordCriteria: Bool = sender.text != ""
-				saveBarButtonItem.isEnabled = passwordCriteria
-			}
-		default:
-			break
-		}
-
-		isModalInPresentation = saveBarButtonItem.isEnabled
+		saveBarButtonItem?.isEnabled = saveButtonEnabled
+		isModalInPresentation = saveButtonEnabled
 	}
 
 
@@ -344,10 +322,10 @@ class AddWIFIVC: UIViewController {
 		}
 
 		if wifi != nil {
-			saveBarButtonItem.isEnabled = wifi?.iconName != icon.rawValue
+			saveBarButtonItem?.isEnabled = wifi?.iconName != icon.rawValue
 		}
 
-		isModalInPresentation = saveBarButtonItem.isEnabled
+		isModalInPresentation = saveBarButtonItem?.isEnabled ?? false
 	}
 }
 
