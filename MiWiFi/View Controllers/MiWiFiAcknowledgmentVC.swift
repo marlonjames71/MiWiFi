@@ -68,7 +68,7 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
 		let str = """
 		MiWiFi was created by Marlon Raskin. It uses a third party API to generate the beautiful QR Code that you see when you create a new network.\
-		You can find the API here: QReddyCode.
+		You can find the API here: QRettyCode.
 		"""
 		let attrStr = NSMutableAttributedString(string: str, attributes: [.font : UIFont.systemFont(ofSize: 16), .foregroundColor : UIColor.label])
 		attrStr.addAttribute(.link, value: "https://twitter.com/_MarlonJames", range: NSRange(location: 22, length: 13))

@@ -31,6 +31,12 @@ class WiFiTableVC: UIViewController {
 		}
 	}
 
+	var selectedRowsCount: Int = 0 {
+		didSet {
+			title = selectedRowsCount != 0 ? "\(selectedRowsCount) Selected" : "WiFi List"
+		}
+	}
+
 	// MARK: - Properties & Outlets
 	private let wifiTableView = UITableView(frame: .zero, style: .plain)
 
@@ -94,7 +100,7 @@ class WiFiTableVC: UIViewController {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
-		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
+		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miGlobalTint,
 																   .font : UIFont.roundedFont(ofSize: 20, weight: .bold)]
 
 		let count = fetchedResultsController.fetchedObjects?.count ?? 0
@@ -154,6 +160,7 @@ class WiFiTableVC: UIViewController {
 			mode = .select
 		}else{
 			mode = .view
+			title = "WiFi List"
 		}
 	}
 
@@ -166,13 +173,13 @@ class WiFiTableVC: UIViewController {
 		present(navController, animated: true)
 	}
 
-	#warning("Fix for smoother deletion")
-	@objc private func deleteSelectedWifiObjects(_ sender: UIBarButtonItem) {
-		guard let indexPaths = wifiTableView.indexPathsForSelectedRows else { return }
-		var wifiObjects: [Wifi] = []
-		indexPaths.forEach { wifiObjects.append(fetchedResultsController.object(at: $0)) }
 
-		presentSecondaryDeleteAlertMultiple(count: indexPaths.count, deleteHandler: { _ in
+	@objc private func deleteSelectedWifiObjects(_ sender: UIBarButtonItem) {
+		guard let selectedIndexPaths = wifiTableView.indexPathsForSelectedRows else { return }
+		var wifiObjects: [Wifi] = []
+		selectedIndexPaths.forEach { wifiObjects.append(fetchedResultsController.object(at: $0)) }
+
+		presentSecondaryDeleteAlertMultiple(count: selectedIndexPaths.count, deleteHandler: { _ in
 			for wifi in wifiObjects {
 				guard let id = wifi.passwordID else { return }
 				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -326,6 +333,14 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 			let wifi = fetchedResultsController.object(at: indexPath)
 			let detailVC = WIFIDetailVC(with: wifi)
 			navigationController?.pushViewController(detailVC, animated: true)
+		} else {
+			selectedRowsCount = tableView.indexPathsForSelectedRows?.count ?? 0
+		}
+	}
+
+	func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+		if isEditing {
+			selectedRowsCount = tableView.indexPathsForSelectedRows?.count ?? 0
 		}
 	}
 }
