@@ -92,17 +92,16 @@ class WIFIDetailVC: UIViewController {
 		let viewIcon = UIImage(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
 
 		let shareQR = UIAction(title: "QR Code Only", image: qrIcon, discoverabilityTitle: "Shares Only the QR Code", attributes: []) { _ in
-			let image = self.qrImageView.screenshot()
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-				self.share(image: image)
-			})
+			guard let image = self.qrImageView.image else { return }
+			let source = ImageShareSource(image: image)
+			self.share(image: source)
 		}
 
 		let shareView = UIAction(title: "QR Code & Network Info", image: viewIcon, discoverabilityTitle: "Shares QR Code & Info", attributes: []) { _ in
-			let image = self.view.screenshot()
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-				self.share(image: image)
-			})
+			guard let image = self.qrImageView.image else { return }
+			let password = KeychainWrapper.standard.string(forKey: self.wifi.passwordIDStr)
+			let source = ImageShareSource(image: image, nickname: self.wifi.nickname, network: self.wifi.networkName, password: password)
+			self.share(image: source)
 		}
 
 		let shareMenu = UIMenu(title: "", image: nil, options: .displayInline, children: [shareQR, shareView])
@@ -113,17 +112,17 @@ class WIFIDetailVC: UIViewController {
 
 
 	private func presentShareAndPrintAlert() {
-		let title = "Choose how you want to print or share."
-		let message = "You can print or share just the QR code, or the QR code and network information."
-		presentShareQRActionSheet(title: title,
-								  message: message,
-								  shareQRHandler: { _ in
-									let qrImage = self.qrImageView.screenshot()
-									self.share(image: qrImage)
-		}, shareViewHandler: { _ in
-			let viewImage = self.view.screenshot()
-			self.share(image: viewImage)
-		})
+//		let title = "Choose how you want to print or share."
+//		let message = "You can print or share just the QR code, or the QR code and network information."
+//		presentShareQRActionSheet(title: title,
+//								  message: message,
+//								  shareQRHandler: { _ in
+//									let qrImage = self.qrImageView.screenshot()
+//									self.share(image: qrImage)
+//		}, shareViewHandler: { _ in
+//			let viewImage = self.view.screenshot()
+//			self.share(image: viewImage)
+//		})
 	}
 
 
@@ -144,19 +143,19 @@ class WIFIDetailVC: UIViewController {
 				WifiController.shared.delete(wifi: self.wifi)
 				self.navigationController?.popViewController(animated: true)
 			})
-		}, editHandler: { edit in
+		}, editHandler: { _ in
 			let addWifiVC = AddWIFIVC()
 			let navController = UINavigationController(rootViewController: addWifiVC)
 			addWifiVC.wifi = self.wifi
 			addWifiVC.delegate = self
 			addWifiVC.modalPresentationStyle = .automatic
 			self.present(navController, animated: true)
-		}, favoriteHandler: { favorite in
+		}, favoriteHandler: { _ in
 			WifiController.shared.updateFavorite(wifi: self.wifi, isFavorite: !self.wifi.isFavorite)
 			self.qrImageView.layoutSubviews()
 			self.infoView.configureView()
 			self.configureNavController()
-		}, shareAndPrintHandler: { shareAndPrint in
+		}, shareAndPrintHandler: { _ in
 			self.presentShareAndPrintAlert()
 		})
 	}
