@@ -112,17 +112,20 @@ class WIFIDetailVC: UIViewController {
 
 
 	private func presentShareAndPrintAlert() {
-//		let title = "Choose how you want to print or share."
-//		let message = "You can print or share just the QR code, or the QR code and network information."
-//		presentShareQRActionSheet(title: title,
-//								  message: message,
-//								  shareQRHandler: { _ in
-//									let qrImage = self.qrImageView.screenshot()
-//									self.share(image: qrImage)
-//		}, shareViewHandler: { _ in
-//			let viewImage = self.view.screenshot()
-//			self.share(image: viewImage)
-//		})
+		let title = "Choose how you want to print or share."
+		let message = "You can print or share just the QR code, or the QR code and network information."
+		presentShareQRActionSheet(title: title,
+								  message: message,
+								  shareQRHandler: { _ in
+									guard let qrImage = self.qrImageView.image else { return }
+									let source = ImageShareSource(image: qrImage)
+									self.share(image: source)
+		}, shareViewHandler: { _ in
+			guard let qrImage = self.qrImageView.image else { return }
+			let password = KeychainWrapper.standard.string(forKey: self.wifi.passwordIDStr)
+			let source = ImageShareSource(image: qrImage, nickname: self.wifi.nickname, network: self.wifi.networkName, password: password)
+			self.share(image: source)
+		})
 	}
 
 
