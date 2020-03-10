@@ -17,6 +17,7 @@
 		37162CE523BBEDA200407766 /* AddWIFIVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE423BBEDA200407766 /* AddWIFIVC.swift */; };
 		37162CE723BBF52700407766 /* MiWiFiTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE623BBF52700407766 /* MiWiFiTextFieldView.swift */; };
 		37162CE923BC1A5B00407766 /* MiWiFiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */; };
+		3726D01C2416E48600EF6DD8 /* LocalAuthentication+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3726D01B2416E48600EF6DD8 /* LocalAuthentication+Ext.swift */; };
 		374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86623E530CA004FC394 /* UIAlert+Ext.swift */; };
 		374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */; };
 		374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08323D6B734002701FC /* QRettyCode.framework */; };
@@ -69,6 +70,7 @@
 		37162CE423BBEDA200407766 /* AddWIFIVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWIFIVC.swift; sourceTree = "<group>"; };
 		37162CE623BBF52700407766 /* MiWiFiTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiTextFieldView.swift; sourceTree = "<group>"; };
 		37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiTextField.swift; sourceTree = "<group>"; };
+		3726D01B2416E48600EF6DD8 /* LocalAuthentication+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalAuthentication+Ext.swift"; sourceTree = "<group>"; };
 		374DA86623E530CA004FC394 /* UIAlert+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlert+Ext.swift"; sourceTree = "<group>"; };
 		374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuIdentifiable.swift; sourceTree = "<group>"; };
 		374F59C123F1026B009921E3 /* MiWiFiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiWiFiCell.swift; path = "../../../../../Lambda Dev Project/Sprint Challenges/Movie-List-Sprint-Challenge/Movie List/MiWiFiCell.swift"; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				377750E923FA27DD004BC8EA /* UIImage+Configuration.swift */,
 				37A404E524023FEF0028DB18 /* CALayer+Ext.swift */,
 				37A404E724047B750028DB18 /* UIViewController+Alerts.swift */,
+				3726D01B2416E48600EF6DD8 /* LocalAuthentication+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				37E8B09223D9716D002701FC /* MiWiFiHeaderLabel.swift in Sources */,
 				377750E823FA2011004BC8EA /* Settings.swift in Sources */,
 				37E8B04C23D58B87002701FC /* UIFont+Rounded.swift in Sources */,
+				3726D01C2416E48600EF6DD8 /* LocalAuthentication+Ext.swift in Sources */,
 				37E8B05723D5A519002701FC /* WifiController.swift in Sources */,
 				37E8B05C23D5B068002701FC /* SubtitleTableViewCell.swift in Sources */,
 				37162CE923BC1A5B00407766 /* MiWiFiTextField.swift in Sources */,
