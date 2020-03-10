@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
@@ -17,6 +18,11 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 	private let dismissButton = MiWiFiButton(backgroundColor: .miGlobalTint, tintColor: .white, textColor: .white, title: "Dismiss", image: nil)
 
 	private let padding: CGFloat = 20
+
+	let appURL = "twitter://user?screen_name=_MarlonJames"
+	let webURL = URL(string: "https://twitter.com/_MarlonJames")
+
+	weak var delegate: WiFiSettingsVCDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +69,8 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
 	private func configureCreditTextView() {
 		creditTextView.translatesAutoresizingMaskIntoConstraints = false
+		creditTextView.delegate = self
+		creditTextView.isSelectable = true
 		creditTextView.isEditable = false
 		creditTextView.backgroundColor = .clear
 
@@ -71,8 +79,19 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 		You can find the API here: QRettyCode.
 		"""
 		let attrStr = NSMutableAttributedString(string: str, attributes: [.font : UIFont.systemFont(ofSize: 16), .foregroundColor : UIColor.label])
-		attrStr.addAttribute(.link, value: "https://twitter.com/_MarlonJames", range: NSRange(location: 22, length: 13))
-		attrStr.addAttribute(.link, value: "https://github.com/mredig/QRettyCode", range: NSRange(location: 166, length: 11))
+
+		attrStr.addAttributes([.link: "https://twitter.com/_MarlonJames",
+							   .foregroundColor: UIColor.miAddButtonColor,
+							   .underlineStyle: NSUnderlineStyle.single.rawValue,
+							   .underlineColor: UIColor.miAddButtonColor],
+							  range: NSRange(location: 22, length: 13))
+
+		attrStr.addAttributes([.link: "https://github.com/mredig/QRettyCode",
+							   .foregroundColor: UIColor.miAddButtonColor,
+							   .underlineStyle: NSUnderlineStyle.single.rawValue,
+							   .underlineColor: UIColor.miAddButtonColor],
+							  range: NSRange(location: 167, length: 10))
+
 		creditTextView.attributedText = attrStr
 
 		creditTextView.heightAnchor.constraint(equalToConstant: 130).isActive = true
@@ -100,15 +119,31 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
 
 	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-		if UIApplication.shared.canOpenURL(URL) {
-			UIApplication.shared.open(URL, options: [:], completionHandler: nil)
+		switch interaction {
+		case .invokeDefaultAction:
+			if !URL.absoluteString.lowercased().contains("twitter") {
+				presentSafariVC(with: URL)
+			} else {
+				if UIApplication.shared.canOpenURL(URL) {
+					UIApplication.shared.open(URL, options: [:], completionHandler: nil)
+				} else {
+					presentSafariVC(with: URL)
+				}
+			}
+			return false
+		case .preview:
+			return false
+		case .presentActions:
+			return false
+		@unknown default:
+			return false
 		}
-
-		return false
 	}
 
 
 	@objc private func dismissTapped(_ sender: MiWiFiButton) {
-		dismiss(animated: true)
+		dismiss(animated: true) {
+			self.delegate.deselectRow()
+		}
 	}
 }

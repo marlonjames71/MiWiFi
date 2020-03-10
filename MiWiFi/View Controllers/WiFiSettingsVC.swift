@@ -9,26 +9,36 @@
 import UIKit
 import MessageUI
 
-class WiFiSettingsVC: UIViewController {
+protocol WiFiSettingsVCDelegate: class {
+	func deselectRow()
+}
+
+class WiFiSettingsVC: UIViewController, WiFiSettingsVCDelegate {
 
 	private let miSettingsTableView = UITableView(frame: .zero, style: .grouped)
 	private let reuseIdentifier = "SettingsCell"
 
 	private let contactArr: [Settings] = [
+		Settings(title: "Share MiWiFi", iconName: "heart.fill",
+				 color: .systemPink, renderingMode: .alwaysOriginal,
+				 config: .standardConfiguration),
+		Settings(title: "Rate MiWiFi", iconName: "star.fill",
+				 color: .systemOrange, renderingMode: .alwaysOriginal,
+				 config: .standardConfiguration),
 		Settings(title: "Contact Us", iconName: "paperplane.fill",
 				 color: .miGlobalTint, renderingMode: .alwaysOriginal,
 				 config: .standardConfiguration),
 		Settings(title: "Report a Bug", iconName: "ant.fill",
 				 color: .miSecondaryAccent, renderingMode: .alwaysOriginal,
-				 config: .standardConfiguration),
-		Settings(title: "Share MiWiFi", iconName: "heart.fill",
-				 color: .systemPink, renderingMode: .alwaysOriginal,
 				 config: .standardConfiguration)
+
 	]
 
 	private let creditArr: [Settings] = [Settings(title: "Acknowledgements", iconName: "qrcode",
 												  color: .miAddButtonColor, renderingMode: .alwaysOriginal,
 												  config: .standardConfiguration)]
+
+	private var indexPath: IndexPath?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +58,19 @@ class WiFiSettingsVC: UIViewController {
 		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 		configureSettingsTableView()
+	}
+
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		guard let indexPath = indexPath else { return }
+		miSettingsTableView.deselectRow(at: indexPath, animated: true)
+	}
+
+
+	func deselectRow() {
+		guard let indexPath = indexPath else { return }
+		miSettingsTableView.deselectRow(at: indexPath, animated: true)
 	}
 
 
@@ -172,26 +195,37 @@ extension WiFiSettingsVC: UITableViewDelegate, UITableViewDataSource {
 		case 0:
 			switch indexPath.row {
 			case 0:
+				shareApp()
+				tableView.deselectRow(at: indexPath, animated: true)
+			case 1:
+				navigateToComposeAppStoreRating()
+				tableView.deselectRow(at: indexPath, animated: true)
+			case 2:
 				if MFMailComposeViewController.canSendMail() {
 					let generalComposeVC = setupComposeVC(subject: "General")
-					present(generalComposeVC, animated: true)
+					present(generalComposeVC, animated: true) {
+						self.deselectRow()
+					}
 				} else {
 					presentBasicAlert(controllerTitle: "Mail services are not available", controllerMessage: "Your mail app appears to not be configured", actionTitle: "OK")
+					deselectRow()
 				}
-			case 1:
+			case 3:
 				if MFMailComposeViewController.canSendMail() {
 					let bugComposeVC = setupComposeVC(subject: "Bug Report")
-					present(bugComposeVC, animated: true)
+					present(bugComposeVC, animated: true) {
+						self.deselectRow()
+					}
 				} else {
 					presentBasicAlert(controllerTitle: "Mail services are not available", controllerMessage: "Your mail app appears to not be configured", actionTitle: "OK")
+					tableView.deselectRow(at: indexPath, animated: true)
 				}
-			case 2:
-				print("Share")
 			default:
 				break
 			}
 		case 1:
 			let acknowledgementVC = MiWiFiAcknowledgmentVC()
+			acknowledgementVC.delegate = self
 			acknowledgementVC.modalPresentationStyle = .overFullScreen
 			acknowledgementVC.modalTransitionStyle = .crossDissolve
 			present(acknowledgementVC, animated: true)
@@ -199,6 +233,7 @@ extension WiFiSettingsVC: UITableViewDelegate, UITableViewDataSource {
 			break
 		}
 
-		tableView.deselectRow(at: indexPath, animated: true)
+		self.indexPath = indexPath
+//		tableView.deselectRow(at: indexPath, animated: true)
 	}
 }
