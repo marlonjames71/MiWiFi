@@ -199,7 +199,11 @@ class WIFIDetailVC: UIViewController {
 				self.navigationController?.popViewController(animated: true)
 			})
 		}, editHandler: { _ in
-			self.requestAuth()
+			if self.infoView.isRevealed {
+				self.showAddWiFiScreen()
+			} else {
+				self.requestAuth()
+			}
 		}, favoriteHandler: { _ in
 			WifiController.shared.updateFavorite(wifi: self.wifi, isFavorite: !self.wifi.isFavorite)
 			self.qrImageView.layoutSubviews()
