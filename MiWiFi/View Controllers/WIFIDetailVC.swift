@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class WIFIDetailVC: UIViewController {
 
@@ -65,6 +66,8 @@ class WIFIDetailVC: UIViewController {
 
 	private func layoutAndConfigureImageView(imageView: UIImageView) {
 		view.addSubview(imageView)
+		imageView.isUserInteractionEnabled = true
+		
 		NSLayoutConstraint.activate([
 			imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
 			imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
@@ -74,7 +77,6 @@ class WIFIDetailVC: UIViewController {
 
 		let interaction = UIContextMenuInteraction(delegate: self)
 		imageView.addInteraction(interaction)
-		imageView.isUserInteractionEnabled = true
 	}
 
 
@@ -86,6 +88,17 @@ class WIFIDetailVC: UIViewController {
 			infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 		])
 	}
+
+
+	private func showAddWiFiScreen() {
+		let addWifiVC = AddWIFIVC()
+		let navController = UINavigationController(rootViewController: addWifiVC)
+		addWifiVC.wifi = self.wifi
+		addWifiVC.delegate = self
+		addWifiVC.modalPresentationStyle = .automatic
+		self.present(navController, animated: true)
+	}
+
 
 	private func makeContextMenu() -> UIMenu {
 		let qrIcon = UIImage(systemName: "qrcode")?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
@@ -99,8 +112,7 @@ class WIFIDetailVC: UIViewController {
 
 		let shareView = UIAction(title: "QR Code & Network Info", image: viewIcon, discoverabilityTitle: "Shares QR Code & Info", attributes: []) { _ in
 			guard let image = self.qrImageView.image else { return }
-			let password = KeychainWrapper.standard.string(forKey: self.wifi.passwordIDStr)
-			let source = ImageShareSource(image: image, nickname: self.wifi.nickname, network: self.wifi.networkName, password: password)
+			let source = ImageShareSource(image: image, nickname: self.wifi.nickname, network: self.wifi.networkName, password: self.includePasswordIfIsRevealed())
 			self.share(image: source)
 		}
 
@@ -122,10 +134,48 @@ class WIFIDetailVC: UIViewController {
 									self.share(image: source)
 		}, shareViewHandler: { _ in
 			guard let qrImage = self.qrImageView.image else { return }
-			let password = KeychainWrapper.standard.string(forKey: self.wifi.passwordIDStr)
-			let source = ImageShareSource(image: qrImage, nickname: self.wifi.nickname, network: self.wifi.networkName, password: password)
+			let source = ImageShareSource(image: qrImage, nickname: self.wifi.nickname, network: self.wifi.networkName, password: self.includePasswordIfIsRevealed())
 			self.share(image: source)
 		})
+	}
+
+
+	private func includePasswordIfIsRevealed() -> String? {
+		let password = KeychainWrapper.standard.string(forKey: self.wifi.passwordIDStr)
+		if infoView.isRevealed {
+			return password
+		} else {
+			return ""
+		}
+	}
+
+
+	private func requestAuth() {
+		let context = LAContext()
+		context.localizedFallbackTitle = "Please use your passcode"
+		var error: NSError?
+
+		if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+			let reason = "Authentication is required for you to continue"
+
+			let biometricType = context.biometryType == .faceID ? "Face ID" : "Touch ID"
+			print("Supported Biometric type is: \( biometricType )")
+
+			context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] success, authenticationError in
+				guard let self = self else { return }
+				DispatchQueue.main.async {
+					if success {
+						self.showAddWiFiScreen()
+					} else {
+						guard let error = error as? LAError else { return }
+						NSLog(error.code.getErrorDescription())
+						self.presentFailedVerificationWithFaceIDAlert()
+					}
+				}
+			}
+		} else {
+			self.presentBiometryNotAvailableAlert()
+		}
 	}
 
 
@@ -147,12 +197,7 @@ class WIFIDetailVC: UIViewController {
 				self.navigationController?.popViewController(animated: true)
 			})
 		}, editHandler: { _ in
-			let addWifiVC = AddWIFIVC()
-			let navController = UINavigationController(rootViewController: addWifiVC)
-			addWifiVC.wifi = self.wifi
-			addWifiVC.delegate = self
-			addWifiVC.modalPresentationStyle = .automatic
-			self.present(navController, animated: true)
+			self.requestAuth()
 		}, favoriteHandler: { _ in
 			WifiController.shared.updateFavorite(wifi: self.wifi, isFavorite: !self.wifi.isFavorite)
 			self.qrImageView.layoutSubviews()
@@ -167,12 +212,12 @@ class WIFIDetailVC: UIViewController {
 
 extension WIFIDetailVC: WiFiInfoViewDelegate {
 	func showPasswordRequestedFailed() {
-		Alerts.presentFailedVerificationWithFaceIDAlert(on: self)
+		self.presentFailedVerificationWithFaceIDAlert()
 		print("Request Failed")
 	}
 
 	func biometricAuthenticationNotAvailable() {
-		Alerts.presentBiometryNotAvailableAlert(on: self)
+		self.presentBiometryNotAvailableAlert()
 	}
 }
 

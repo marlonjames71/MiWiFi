@@ -157,9 +157,10 @@ class WiFiInfoView: UIView {
 		}
 	}
 
-	#warning("Refactor tap gesture to be on WiFiInfoView to get alerts presenting on DetailVC")
+	
 	@objc private func revealPassword(_ sender: UITapGestureRecognizer) {
 		let context = LAContext()
+		context.localizedFallbackTitle = "Please use your passcode"
 		var error: NSError?
 
 		guard passwordValueLabel.text == tapToRevealStr else {
@@ -167,15 +168,21 @@ class WiFiInfoView: UIView {
 			return
 		}
 
-		if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-			let reason = "We need to make sure you're authorized to view the password"
 
-			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
+		if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+			let reason = "Authentication is required for you to continue"
+
+			let biometricType = context.biometryType == .faceID ? "Face ID" : "Touch ID"
+			print("Supported Biometric type is: \( biometricType )")
+
+			context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] success, authenticationError in
 				guard let self = self else { return }
 				DispatchQueue.main.async {
 					if success {
 						self.isRevealed = true
 					} else {
+						guard let error = error as? LAError else { return }
+						NSLog(error.code.getErrorDescription())
 						self.delegate?.showPasswordRequestedFailed()
 					}
 				}
