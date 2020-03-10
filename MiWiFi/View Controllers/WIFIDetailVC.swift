@@ -102,7 +102,7 @@ class WIFIDetailVC: UIViewController {
 
 	private func makeContextMenu() -> UIMenu {
 		let qrIcon = UIImage(systemName: "qrcode")?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
-		let viewIcon = UIImage(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
+		let viewIcon = UIImage(systemName: "doc.richtext")?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
 
 		let shareQR = UIAction(title: "QR Code Only", image: qrIcon, discoverabilityTitle: "Shares Only the QR Code", attributes: []) { _ in
 			guard let image = self.qrImageView.image else { return }
@@ -116,8 +116,10 @@ class WIFIDetailVC: UIViewController {
 			self.share(image: source)
 		}
 
+		let title = "*NOTE*\nPassword must be revealed first if you would like to include it in the snapshot."
+
 		let shareMenu = UIMenu(title: "", image: nil, options: .displayInline, children: [shareQR, shareView])
-		let menu = UIMenu(title: "Share or Print", image: nil, children: [shareMenu])
+		let menu = UIMenu(title: title, image: nil, children: [shareMenu])
 
 		return menu
 	}
@@ -125,7 +127,7 @@ class WIFIDetailVC: UIViewController {
 
 	private func presentShareAndPrintAlert() {
 		let title = "Choose how you want to print or share."
-		let message = "You can print or share just the QR code, or the QR code and network information."
+		let message = #"*NOTE*\#nIf you select "QR Code & Network Info" and want the password included in the snapshot, for security reasons, reveal the password first."#
 		presentShareQRActionSheet(title: title,
 								  message: message,
 								  shareQRHandler: { _ in
