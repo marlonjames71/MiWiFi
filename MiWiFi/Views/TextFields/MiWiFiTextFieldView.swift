@@ -174,7 +174,7 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 
 	private func updateRevealButtonImage() {
 		let config = UIImage.SymbolConfiguration(pointSize: 12)
-		let image = textField.isSecureTextEntry ? UIImage(systemName: "eye.slash", withConfiguration: config) : UIImage(systemName: "eye", withConfiguration: config)
+		let image = textField.isSecureTextEntry ? UIImage(systemName: "eye", withConfiguration: config) : UIImage(systemName: "eye.slash", withConfiguration: config)
 		revealButton.setImage(image, for: .normal)
 	}
 
