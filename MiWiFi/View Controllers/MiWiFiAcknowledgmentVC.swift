@@ -19,6 +19,8 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
 	private let padding: CGFloat = 20
 
+	var isCreditViewOffCentered: Bool?
+
 	let appURL = "twitter://user?screen_name=_MarlonJames"
 	let webURL = URL(string: "https://twitter.com/_MarlonJames")
 
@@ -27,17 +29,65 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 		view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+//		view.backgroundColor = .clear
+		isCreditViewOffCentered = true
 		configureCreditView()
 		configureIconImageView()
 		configureTitleLabel()
 		configureCreditTextView()
 		configureDismissButton()
 		configureStackView()
+		setupCreditViewForAnimation()
+
     }
+
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		animate()
+	}
+
+
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		animate()
+	}
+
+
+	private func setupCreditViewForAnimation() {
+		let destination = CGPoint(x: view.frame.midX, y: view.frame.midY + (creditView.frame.height / 2))
+		let offset = view.convert(destination, to: creditView)
+		creditView.transform = CGAffineTransform(translationX: 0, y: offset.y)
+		creditView.alpha = 0
+	}
+
+
+	private func animate() {
+		if isCreditViewOffCentered! {
+			isCreditViewOffCentered = false
+			UIView.animate(withDuration: 0.8,
+						   delay: 0,
+						   usingSpringWithDamping: 0.7,
+						   initialSpringVelocity: 0.6,
+						   options: [.curveEaseOut],
+						   animations: {
+				self.creditView.transform = .identity
+				self.creditView.alpha = 1
+			})
+		} else {
+			isCreditViewOffCentered = true
+			UIView.animate(withDuration: 0.6) {
+				self.creditView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.midY + self.creditView.frame.height)
+				self.creditView.alpha = 0
+			}
+		}
+	}
 
 
 	private func configureCreditView() {
 		view.addSubview(creditView)
+
+		creditView.alpha = 0
 
 		NSLayoutConstraint.activate([
 			creditView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
