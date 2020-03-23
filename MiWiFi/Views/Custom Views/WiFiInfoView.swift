@@ -16,11 +16,17 @@ protocol WiFiInfoViewDelegate: AnyObject {
 
 class WiFiInfoView: UIView {
 
+	enum RevealState {
+		case revealed
+		case hidden
+		case noPassword
+	}
+
 	var wifi: Wifi
 
 	let tapToRevealStr = "Tap to Reveal"
 
-	var isRevealed: Bool = false {
+	var isRevealed: RevealState = .hidden {
 		didSet {
 			updatePasswordText()
 		}
@@ -52,6 +58,7 @@ class WiFiInfoView: UIView {
 		configureLayout()
 		loadContent()
 		configureTapGesture()
+		configureIntialPasswordRevealState(wifi: wifi)
 	}
 
 
@@ -62,6 +69,16 @@ class WiFiInfoView: UIView {
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+
+	private func configureIntialPasswordRevealState(wifi: Wifi) {
+		let password = fetchPasswordFromKeychain(wifi: wifi)
+		if password == "" {
+			isRevealed = .noPassword
+		} else {
+			isRevealed = .hidden
+		}
 	}
 
 
@@ -110,7 +127,7 @@ class WiFiInfoView: UIView {
 
 	private func updatePasswordText() {
 		guard passwordValueLabel.text != "No Password" else { return }
-		if isRevealed {
+		if isRevealed == .revealed {
 			UIView.animate(withDuration: 0.5) { self.passwordValueLabel.alpha = 0 }
 			UIView.animate(withDuration: 0.5) {
 				guard let id = self.wifi.passwordID else { return }
@@ -130,7 +147,7 @@ class WiFiInfoView: UIView {
 		}
 	}
 
-	private func fetchPasswordFromKeychain() -> String? {
+	private func fetchPasswordFromKeychain(wifi: Wifi) -> String? {
 		guard let id = wifi.passwordID else { return nil }
 		let password = KeychainWrapper.standard.string(forKey: id.uuidString)
 		return password
@@ -146,7 +163,7 @@ class WiFiInfoView: UIView {
 
 		networkValueLabel.text = wifi.networkName
 
-		if let password = fetchPasswordFromKeychain() {
+		if let password = fetchPasswordFromKeychain(wifi: wifi) {
 			if password == "" {
 				passwordValueLabel.text = "No Password"
 				passwordValueLabel.textColor = .secondaryLabel
@@ -164,7 +181,7 @@ class WiFiInfoView: UIView {
 		var error: NSError?
 
 		guard passwordValueLabel.text == tapToRevealStr else {
-			isRevealed = false
+			isRevealed = .hidden
 			return
 		}
 
@@ -179,7 +196,7 @@ class WiFiInfoView: UIView {
 				guard let self = self else { return }
 				DispatchQueue.main.async {
 					if success {
-						self.isRevealed = true
+						self.isRevealed = .revealed
 					} else {
 						guard let error = error as? LAError else { return }
 						NSLog(error.code.getErrorDescription())

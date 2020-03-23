@@ -28,8 +28,7 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
-//		view.backgroundColor = .clear
+		view.backgroundColor = UIColor.miBackground.withAlphaComponent(0.65)
 		isCreditViewOffCentered = true
 		configureCreditView()
 		configureIconImageView()

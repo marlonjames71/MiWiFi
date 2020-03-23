@@ -144,7 +144,7 @@ class WIFIDetailVC: UIViewController {
 
 	private func includePasswordIfIsRevealed() -> String? {
 		let password = KeychainWrapper.standard.string(forKey: self.wifi.passwordIDStr)
-		if infoView.isRevealed {
+		if infoView.isRevealed == .revealed {
 			return password
 		} else {
 			return ""
@@ -161,7 +161,7 @@ class WIFIDetailVC: UIViewController {
 			let reason = "Authentication is required for you to continue"
 
 			let biometricType = context.biometryType == .faceID ? "Face ID" : "Touch ID"
-			print("Supported Biometric type is: \( biometricType )")
+			print("Supported Biometric type is: \(biometricType)")
 
 			context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] success, authenticationError in
 				guard let self = self else { return }
@@ -199,10 +199,13 @@ class WIFIDetailVC: UIViewController {
 				self.navigationController?.popViewController(animated: true)
 			})
 		}, editHandler: { _ in
-			if self.infoView.isRevealed {
+			switch self.infoView.isRevealed {
+			case .revealed:
 				self.showAddWiFiScreen()
-			} else {
+			case .hidden:
 				self.requestAuth()
+			case .noPassword:
+				self.showAddWiFiScreen()
 			}
 		}, favoriteHandler: { _ in
 			WifiController.shared.updateFavorite(wifi: self.wifi, isFavorite: !self.wifi.isFavorite)

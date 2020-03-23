@@ -37,6 +37,7 @@ class WiFiTableVC: UIViewController {
 		}
 	}
 
+
 	// MARK: - Properties & Outlets
 	private let wifiTableView = UITableView(frame: .zero, style: .plain)
 
@@ -204,11 +205,13 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 		fetchedResultsController.sections?[section].numberOfObjects ?? 0
 	}
 
-	func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+	func tableView(_ tableView: UITableView,
+				   shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
 		return true
 	}
 
-	func tableView(_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView,
+				   didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
 		mode = .select
 		super.setEditing(true, animated: true)
 	}
@@ -218,7 +221,8 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	}
 
 
-	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+	func tableView(_ tableView: UITableView,
+				   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let wifi = fetchedResultsController.object(at: indexPath)
 		let cell = wifiTableView.cellForRow(at: indexPath) as? MiWiFiCell
 
@@ -240,7 +244,8 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	}
 
 
-	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+	func tableView(_ tableView: UITableView,
+				   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let action = UIContextualAction(style: .normal, title: "Delete") { (action, view, completion) in
 			let wifi = self.fetchedResultsController.object(at: indexPath)
 			self.presentSecondaryDeleteAlertSingle(wifi: wifi, deleteHandler: { _ in
@@ -276,14 +281,18 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 	}
 
 
-	func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+	func tableView(_ tableView: UITableView,
+				   contextMenuConfigurationForRowAt indexPath: IndexPath,
+				   point: CGPoint) -> UIContextMenuConfiguration? {
 		let wifi = self.fetchedResultsController.object(at: indexPath)
 
 		return UIContextMenuConfiguration.newWiFitableViewConfiguration(wifi: wifi, delegate: self, indexPath: indexPath)
 	}
 
 
-	func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+	func tableView(_ tableView: UITableView,
+				   willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration,
+				   animator: UIContextMenuInteractionCommitAnimating) {
 
 		guard let wifi = fetchedResultsController.fetchedObjects?.item(for: configuration) else { return }
 
@@ -362,14 +371,12 @@ extension WiFiTableVC: NSFetchedResultsControllerDelegate {
 			guard let newIndexPath = newIndexPath else { return }
 			wifiTableView.insertRows(at: [newIndexPath], with: .automatic)
 		case .move:
-			print("Move")
 			guard let indexPath = indexPath,
 				let newIndexPath = newIndexPath else { return }
 			let cell = wifiTableView.cellForRow(at: indexPath) as? MiWiFiCell
 			cell?.updateViews()
 			wifiTableView.moveRow(at: indexPath, to: newIndexPath)
 		case .update:
-			print("Update")
 			guard let indexPath = indexPath else { return }
 			wifiTableView.reloadRows(at: [indexPath], with: .automatic)
 		case .delete:
@@ -394,7 +401,9 @@ protocol WiFiTableViewConfigurationDelegate: class {
 }
 
 extension UIContextMenuConfiguration {
-	class func newWiFitableViewConfiguration(wifi: Wifi, delegate: WiFiTableViewConfigurationDelegate, indexPath: IndexPath) -> UIContextMenuConfiguration {
+	class func newWiFitableViewConfiguration(wifi: Wifi,
+											 delegate: WiFiTableViewConfigurationDelegate,
+											 indexPath: IndexPath) -> UIContextMenuConfiguration {
 
 		return UIContextMenuConfiguration(identifier: wifi.menuID, previewProvider: { () -> UIViewController? in
 			return WIFIDetailVC(with: wifi)
