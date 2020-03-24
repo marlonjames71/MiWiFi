@@ -36,9 +36,19 @@ class WIFIDetailVC: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let notificationCenter = NotificationCenter.default
+		notificationCenter.addObserver(self, selector: #selector(appMovedToBackground),
+									   name: UIApplication.willResignActiveNotification,
+									   object: nil)
 		configureNavController()
 		configureView()
 		configureWifiInfoView()
+	}
+
+
+	@objc
+	private func appMovedToBackground() {
+		infoView.isRevealed = .hidden
 	}
 
 

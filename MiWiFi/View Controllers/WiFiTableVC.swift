@@ -86,6 +86,14 @@ class WiFiTableVC: UIViewController {
 	}
 
 
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		if wifiTableView.isEditing {
+			wifiTableView.isEditing = false
+		}
+	}
+
+
 	private func configureTabBar() {
 		if let appearance = tabBarController?.tabBar.standardAppearance.copy() {
 			appearance.backgroundImage = UIImage()
