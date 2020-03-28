@@ -145,7 +145,6 @@ class WiFiTableVC: UIViewController {
 		if editing {
 			morphAddButton(basedOn: editing)
 		} else {
-			navigationItem.leftBarButtonItem = nil
 			title = "WiFi List"
 			morphAddButton(basedOn: editing)
 		}
