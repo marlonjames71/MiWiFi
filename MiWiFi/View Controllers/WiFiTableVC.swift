@@ -61,10 +61,8 @@ class WiFiTableVC: UIViewController {
     }
 
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		wifiTableView.reloadData()
-		configureNavController()
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
 		self.setEditing(false, animated: false)
 	}
 
