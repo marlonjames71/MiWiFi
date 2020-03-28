@@ -11,19 +11,20 @@ import CoreData
 
 class WiFiTableVC: UIViewController {
 
-	var selectedRowsCount: Int = 0 {
-		didSet {
-			title = selectedRowsCount != 0 ? "\(selectedRowsCount) Selected" : "WiFi List"
-		}
-	}
-
-
 	// MARK: - Properties & Outlets
 	private let wifiTableView = UITableView(frame: .zero, style: .plain)
 
 	private let addButton = UIButton(type: .system)
 
+	private let trashButton = UIButton(type: .system)
+
 	private let emptyStateView = MiWiFiEmptyStateView(message: #"It's so empty in here. Try adding a network by tapping the "+" button below!"#)
+
+	var selectedRowsCount: Int = 0 {
+		didSet {
+			title = selectedRowsCount != 0 ? "\(selectedRowsCount) Selected" : "WiFi List"
+		}
+	}
 
 	lazy var fetchedResultsController: NSFetchedResultsController<Wifi> = {
 		let fetchRequest: NSFetchRequest<Wifi> = Wifi.fetchRequest()
@@ -56,6 +57,7 @@ class WiFiTableVC: UIViewController {
 		configureListTableView()
 		configureEmptyStateView()
 		configureAddButton()
+		configureTrashButton()
     }
 
 
@@ -88,6 +90,7 @@ class WiFiTableVC: UIViewController {
 		let count = fetchedResultsController.fetchedObjects?.count ?? 0
 		navigationItem.rightBarButtonItem = count > 0 ? editButtonItem : nil
 	}
+
 
 	private func configureEmptyStateView() {
 		view.addSubview(emptyStateView)
@@ -135,17 +138,51 @@ class WiFiTableVC: UIViewController {
 	}
 
 
+	private func configureTrashButton() {
+		view.addSubview(trashButton)
+		trashButton.translatesAutoresizingMaskIntoConstraints = false
+		trashButton.addTarget(self, action: #selector(deleteSelectedWifiObjects(_:)), for: .touchUpInside)
+
+		trashButton.tintColor = .systemPink
+		let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
+		trashButton.setImage(UIImage(systemName: "trash.circle.fill", withConfiguration: configuration), for: .normal)
+
+		NSLayoutConstraint.activate([
+			trashButton.heightAnchor.constraint(equalToConstant: 60),
+			trashButton.widthAnchor.constraint(equalTo: addButton.heightAnchor),
+			trashButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+			trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+		])
+
+		trashButton.isHidden = true
+	}
+
+
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		wifiTableView.setEditing(editing, animated: animated)
 
-		if (editing) {
+		if editing {
 			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash,
 															   target: self,
 															   action: #selector(deleteSelectedWifiObjects(_:)))
+			morphAddButton(basedOn: editing)
 		} else {
 			navigationItem.leftBarButtonItem = nil
 			title = "WiFi List"
+			morphAddButton(basedOn: editing)
+		}
+	}
+
+
+	private func morphAddButton(basedOn isEditing: Bool) {
+		switch isEditing {
+		case true:
+			trashButton.isHidden = false
+			addButton.isHidden = true
+		case false:
+			trashButton.isHidden = true
+			addButton.isHidden = false
 		}
 	}
 

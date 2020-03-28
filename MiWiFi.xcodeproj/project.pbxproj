@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,9 +20,9 @@
 		3726D01C2416E48600EF6DD8 /* LocalAuthentication+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3726D01B2416E48600EF6DD8 /* LocalAuthentication+Ext.swift */; };
 		374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86623E530CA004FC394 /* UIAlert+Ext.swift */; };
 		374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */; };
-		374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08323D6B734002701FC /* QRettyCode.framework */; };
 		374F59C223F1026B009921E3 /* MiWiFiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F59C123F1026B009921E3 /* MiWiFiCell.swift */; };
 		375F15C423E38D7C00293079 /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F15C323E38D7C00293079 /* UIView+Screenshot.swift */; };
+		376D5BA4242F3C0100F4054A /* QRettyCode in Frameworks */ = {isa = PBXBuildFile; productRef = 376D5BA3242F3C0100F4054A /* QRettyCode */; };
 		37737C6A23FA7775000E3D4C /* MiWiFiAcknowledgmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37737C6923FA7775000E3D4C /* MiWiFiAcknowledgmentVC.swift */; };
 		37737C6C23FA8679000E3D4C /* MiWiFiContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37737C6B23FA8679000E3D4C /* MiWiFiContainerView.swift */; };
 		377750DE23F4E6B9004BC8EA /* MiToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377750DD23F4E6B9004BC8EA /* MiToolBar.swift */; };
@@ -91,7 +91,6 @@
 		37E8B05B23D5B068002701FC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		37E8B05D23D643DC002701FC /* MiWiFiImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiImageView.swift; sourceTree = "<group>"; };
 		37E8B08123D6B599002701FC /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
-		37E8B08323D6B734002701FC /* QRettyCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QRettyCode.framework; path = Carthage/Build/iOS/QRettyCode.framework; sourceTree = "<group>"; };
 		37E8B08823D6B7B9002701FC /* output.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = output.xcfilelist; sourceTree = "<group>"; };
 		37E8B08923D6B7B9002701FC /* input.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = input.xcfilelist; sourceTree = "<group>"; };
 		37E8B08C23D8454D002701FC /* WiFiInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiInfoView.swift; sourceTree = "<group>"; };
@@ -112,7 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */,
+				376D5BA4242F3C0100F4054A /* QRettyCode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +277,6 @@
 		37E8B07E23D6B51D002701FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				37E8B08323D6B734002701FC /* QRettyCode.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -326,6 +324,9 @@
 			dependencies = (
 			);
 			name = MiWiFi;
+			packageProductDependencies = (
+				376D5BA3242F3C0100F4054A /* QRettyCode */,
+			);
 			productName = MiWiFi;
 			productReference = 37162CC723BB4A0D00407766 /* MiWiFi.app */;
 			productType = "com.apple.product-type.application";
@@ -354,6 +355,9 @@
 				Base,
 			);
 			mainGroup = 37162CBE23BB4A0D00407766;
+			packageReferences = (
+				376D5BA2242F3C0100F4054A /* XCRemoteSwiftPackageReference "QRettyCode" */,
+			);
 			productRefGroup = 37162CC823BB4A0D00407766 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -397,7 +401,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n/usr/local/bin/carthage outdated --xcode-warnings\n";
+			shellScript = "#/usr/local/bin/carthage copy-frameworks\n#/usr/local/bin/carthage outdated --xcode-warnings\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -649,6 +653,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		376D5BA2242F3C0100F4054A /* XCRemoteSwiftPackageReference "QRettyCode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mredig/QRettyCode.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		376D5BA3242F3C0100F4054A /* QRettyCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 376D5BA2242F3C0100F4054A /* XCRemoteSwiftPackageReference "QRettyCode" */;
+			productName = QRettyCode;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		37E8B05023D5A3E5002701FC /* wifi.xcdatamodeld */ = {
