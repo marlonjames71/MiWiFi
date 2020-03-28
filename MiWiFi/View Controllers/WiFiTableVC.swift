@@ -11,26 +11,6 @@ import CoreData
 
 class WiFiTableVC: UIViewController {
 
-	enum Mode {
-		case view
-		case select
-	}
-
-	var mode: Mode = .view {
-		didSet {
-			switch mode {
-			case .view:
-				navigationItem.leftBarButtonItem = nil
-				wifiTableView.setEditing(false, animated: true)
-			case .select:
-				navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash,
-																   target: self,
-																   action: #selector(deleteSelectedWifiObjects(_:)))
-				wifiTableView.setEditing(true, animated: true)
-			}
-		}
-	}
-
 	var selectedRowsCount: Int = 0 {
 		didSet {
 			title = selectedRowsCount != 0 ? "\(selectedRowsCount) Selected" : "WiFi List"
@@ -83,14 +63,7 @@ class WiFiTableVC: UIViewController {
 		super.viewWillAppear(animated)
 		wifiTableView.reloadData()
 		configureNavController()
-	}
-
-
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		if wifiTableView.isEditing {
-			wifiTableView.isEditing = false
-		}
+		self.setEditing(false, animated: false)
 	}
 
 
@@ -164,11 +137,14 @@ class WiFiTableVC: UIViewController {
 
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
+		wifiTableView.setEditing(editing, animated: animated)
 
-		if(editing && !wifiTableView.isEditing){
-			mode = .select
-		}else{
-			mode = .view
+		if (editing) {
+			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash,
+															   target: self,
+															   action: #selector(deleteSelectedWifiObjects(_:)))
+		} else {
+			navigationItem.leftBarButtonItem = nil
 			title = "WiFi List"
 		}
 	}
@@ -196,8 +172,7 @@ class WiFiTableVC: UIViewController {
 					WifiController.shared.delete(wifi: wifi)
 				}
 			}
-			self.isEditing = false
-			self.mode = .view
+			self.setEditing(false, animated: true)
 		})
 	}
 }
@@ -220,8 +195,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView,
 				   didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
-		mode = .select
-		super.setEditing(true, animated: true)
+		self.setEditing(true, animated: true)
 	}
 
 	func tableViewDidEndMultipleSelectionInteraction(_ tableView: UITableView) {

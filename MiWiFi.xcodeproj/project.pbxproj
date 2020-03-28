@@ -21,7 +21,6 @@
 		374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86623E530CA004FC394 /* UIAlert+Ext.swift */; };
 		374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */; };
 		374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08323D6B734002701FC /* QRettyCode.framework */; };
-		374F59BF23F0040A009921E3 /* SwiftyBinaryFormatter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E8B08423D6B734002701FC /* SwiftyBinaryFormatter.framework */; };
 		374F59C223F1026B009921E3 /* MiWiFiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F59C123F1026B009921E3 /* MiWiFiCell.swift */; };
 		375F15C423E38D7C00293079 /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F15C323E38D7C00293079 /* UIView+Screenshot.swift */; };
 		37737C6A23FA7775000E3D4C /* MiWiFiAcknowledgmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37737C6923FA7775000E3D4C /* MiWiFiAcknowledgmentVC.swift */; };
@@ -35,7 +34,6 @@
 		37DA410023C8F4CC00777231 /* WIFIDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA40FF23C8F4CC00777231 /* WIFIDetailVC.swift */; };
 		37E8B04A23D56B55002701FC /* WiFiSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */; };
 		37E8B04C23D58B87002701FC /* UIFont+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B04B23D58B87002701FC /* UIFont+Rounded.swift */; };
-		37E8B04E23D5931D002701FC /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B04D23D5931D002701FC /* Alerts.swift */; };
 		37E8B05223D5A3E5002701FC /* wifi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05023D5A3E5002701FC /* wifi.xcdatamodeld */; };
 		37E8B05423D5A48E002701FC /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05323D5A48E002701FC /* CoreDataStack.swift */; };
 		37E8B05723D5A519002701FC /* WifiController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05623D5A519002701FC /* WifiController.swift */; };
@@ -86,7 +84,6 @@
 		37DA40FF23C8F4CC00777231 /* WIFIDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WIFIDetailVC.swift; sourceTree = "<group>"; };
 		37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiSettingsVC.swift; sourceTree = "<group>"; };
 		37E8B04B23D58B87002701FC /* UIFont+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Rounded.swift"; sourceTree = "<group>"; };
-		37E8B04D23D5931D002701FC /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		37E8B05123D5A3E5002701FC /* wifi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = wifi.xcdatamodel; sourceTree = "<group>"; };
 		37E8B05323D5A48E002701FC /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		37E8B05623D5A519002701FC /* WifiController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiController.swift; sourceTree = "<group>"; };
@@ -95,7 +92,6 @@
 		37E8B05D23D643DC002701FC /* MiWiFiImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiImageView.swift; sourceTree = "<group>"; };
 		37E8B08123D6B599002701FC /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		37E8B08323D6B734002701FC /* QRettyCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QRettyCode.framework; path = Carthage/Build/iOS/QRettyCode.framework; sourceTree = "<group>"; };
-		37E8B08423D6B734002701FC /* SwiftyBinaryFormatter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyBinaryFormatter.framework; path = Carthage/Build/iOS/SwiftyBinaryFormatter.framework; sourceTree = "<group>"; };
 		37E8B08823D6B7B9002701FC /* output.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = output.xcfilelist; sourceTree = "<group>"; };
 		37E8B08923D6B7B9002701FC /* input.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = input.xcfilelist; sourceTree = "<group>"; };
 		37E8B08C23D8454D002701FC /* WiFiInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiInfoView.swift; sourceTree = "<group>"; };
@@ -116,7 +112,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				374F59BF23F0040A009921E3 /* SwiftyBinaryFormatter.framework in Frameworks */,
 				374F59BD23F0040A009921E3 /* QRettyCode.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,7 +216,6 @@
 			isa = PBXGroup;
 			children = (
 				37162CE223BB797900407766 /* Colors.swift */,
-				37E8B04D23D5931D002701FC /* Alerts.swift */,
 				37E8B09923DDA8E6002701FC /* KeychainItemAccessibility.swift */,
 				37E8B09823DDA8E6002701FC /* KeychainWrapper.swift */,
 				37A404E924047C550028DB18 /* ImageShareSource.swift */,
@@ -285,7 +279,6 @@
 			isa = PBXGroup;
 			children = (
 				37E8B08323D6B734002701FC /* QRettyCode.framework */,
-				37E8B08423D6B734002701FC /* SwiftyBinaryFormatter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -443,7 +436,6 @@
 				37E8B05C23D5B068002701FC /* SubtitleTableViewCell.swift in Sources */,
 				37162CE923BC1A5B00407766 /* MiWiFiTextField.swift in Sources */,
 				37E8B09023D970B5002701FC /* MiWiFiBodyLabel.swift in Sources */,
-				37E8B04E23D5931D002701FC /* Alerts.swift in Sources */,
 				377750DE23F4E6B9004BC8EA /* MiToolBar.swift in Sources */,
 				37737C6A23FA7775000E3D4C /* MiWiFiAcknowledgmentVC.swift in Sources */,
 				37E8B09A23DDA8E6002701FC /* KeychainWrapper.swift in Sources */,
