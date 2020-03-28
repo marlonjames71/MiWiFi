@@ -22,6 +22,7 @@ class WiFiTableVC: UIViewController {
 
 	var selectedRowsCount: Int = 0 {
 		didSet {
+			plusButtonColor(selectedRowsCount)
 			title = selectedRowsCount != 0 ? "\(selectedRowsCount) Selected" : "WiFi List"
 		}
 	}
@@ -57,7 +58,6 @@ class WiFiTableVC: UIViewController {
 		configureListTableView()
 		configureEmptyStateView()
 		configureAddButton()
-		configureTrashButton()
     }
 
 
@@ -123,7 +123,7 @@ class WiFiTableVC: UIViewController {
 	private func configureAddButton() {
 		view.addSubview(addButton)
 		addButton.translatesAutoresizingMaskIntoConstraints = false
-		addButton.addTarget(self, action: #selector(addWifiButtonTapped(_:)), for: .touchUpInside)
+		addButton.addTarget(self, action: #selector(plusButtonTapped(_:)), for: .touchUpInside)
 
 		addButton.tintColor = .miAddButtonColor
 		let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
@@ -138,34 +138,11 @@ class WiFiTableVC: UIViewController {
 	}
 
 
-	private func configureTrashButton() {
-		view.addSubview(trashButton)
-		trashButton.translatesAutoresizingMaskIntoConstraints = false
-		trashButton.addTarget(self, action: #selector(deleteSelectedWifiObjects(_:)), for: .touchUpInside)
-
-		trashButton.tintColor = .systemPink
-		let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
-		trashButton.setImage(UIImage(systemName: "trash.circle.fill", withConfiguration: configuration), for: .normal)
-
-		NSLayoutConstraint.activate([
-			trashButton.heightAnchor.constraint(equalToConstant: 60),
-			trashButton.widthAnchor.constraint(equalTo: addButton.heightAnchor),
-			trashButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-			trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-		])
-
-		trashButton.isHidden = true
-	}
-
-
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		wifiTableView.setEditing(editing, animated: animated)
 
 		if editing {
-			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash,
-															   target: self,
-															   action: #selector(deleteSelectedWifiObjects(_:)))
 			morphAddButton(basedOn: editing)
 		} else {
 			navigationItem.leftBarButtonItem = nil
@@ -178,25 +155,57 @@ class WiFiTableVC: UIViewController {
 	private func morphAddButton(basedOn isEditing: Bool) {
 		switch isEditing {
 		case true:
-			trashButton.isHidden = false
-			addButton.isHidden = true
+			morphPlusButton(basedOn: isEditing)
 		case false:
-			trashButton.isHidden = true
-			addButton.isHidden = false
+			morphPlusButton(basedOn: isEditing)
 		}
 	}
 
 
 	// MARK: - Actions
-	@objc private func addWifiButtonTapped(_ sender: UIButton) {
-		let addWifiVC = AddWIFIVC()
-		let navController = UINavigationController(rootViewController: addWifiVC)
-		navController.modalPresentationStyle = .automatic
-		present(navController, animated: true)
+	@objc private func plusButtonTapped(_ sender: UIButton) {
+		if self.isEditing {
+			deleteSelectedWiFiNetworks()
+		} else {
+			let addWifiVC = AddWIFIVC()
+			let navController = UINavigationController(rootViewController: addWifiVC)
+			navController.modalPresentationStyle = .automatic
+			present(navController, animated: true)
+		}
 	}
 
 
-	@objc private func deleteSelectedWifiObjects(_ sender: UIBarButtonItem) {
+	private func morphPlusButton(basedOn editing: Bool) {
+		if editing {
+			UIView.animate(withDuration: 0.3) {
+				self.addButton.tintColor = UIColor.secondaryLabel.withAlphaComponent(0.1)
+				let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
+				self.addButton.setImage(UIImage(systemName: "trash.circle.fill", withConfiguration: configuration), for: .normal)
+			}
+		} else {
+			UIView.animate(withDuration: 0.3) {
+				self.addButton.tintColor = .miAddButtonColor
+				let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light)
+				self.addButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: configuration), for: .normal)
+			}
+		}
+	}
+
+
+	private func plusButtonColor(_ selectedRows: Int) {
+		if selectedRows > 0 {
+			UIView.animate(withDuration: 0.1) {
+				self.addButton.tintColor = .systemPink
+			}
+		} else {
+			UIView.animate(withDuration: 0.1) {
+				self.addButton.tintColor = UIColor.secondaryLabel.withAlphaComponent(0.1)
+			}
+		}
+	}
+
+
+	private func deleteSelectedWiFiNetworks() {
 		guard let selectedIndexPaths = wifiTableView.indexPathsForSelectedRows else { return }
 		var wifiObjects: [Wifi] = []
 		selectedIndexPaths.forEach { wifiObjects.append(fetchedResultsController.object(at: $0)) }

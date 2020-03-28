@@ -40,9 +40,6 @@
 		37E8B05923D5A533002701FC /* Wifi+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05823D5A533002701FC /* Wifi+Convenience.swift */; };
 		37E8B05C23D5B068002701FC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05B23D5B068002701FC /* SubtitleTableViewCell.swift */; };
 		37E8B05E23D643DC002701FC /* MiWiFiImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B05D23D643DC002701FC /* MiWiFiImageView.swift */; };
-		37E8B08223D6B599002701FC /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 37E8B08123D6B599002701FC /* Cartfile */; };
-		37E8B08A23D6B7B9002701FC /* output.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = 37E8B08823D6B7B9002701FC /* output.xcfilelist */; };
-		37E8B08B23D6B7B9002701FC /* input.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = 37E8B08923D6B7B9002701FC /* input.xcfilelist */; };
 		37E8B08D23D8454D002701FC /* WiFiInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B08C23D8454D002701FC /* WiFiInfoView.swift */; };
 		37E8B09023D970B5002701FC /* MiWiFiBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B08F23D970B5002701FC /* MiWiFiBodyLabel.swift */; };
 		37E8B09223D9716D002701FC /* MiWiFiHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09123D9716D002701FC /* MiWiFiHeaderLabel.swift */; };
@@ -90,9 +87,6 @@
 		37E8B05823D5A533002701FC /* Wifi+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wifi+Convenience.swift"; sourceTree = "<group>"; };
 		37E8B05B23D5B068002701FC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		37E8B05D23D643DC002701FC /* MiWiFiImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiImageView.swift; sourceTree = "<group>"; };
-		37E8B08123D6B599002701FC /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
-		37E8B08823D6B7B9002701FC /* output.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = output.xcfilelist; sourceTree = "<group>"; };
-		37E8B08923D6B7B9002701FC /* input.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = input.xcfilelist; sourceTree = "<group>"; };
 		37E8B08C23D8454D002701FC /* WiFiInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiInfoView.swift; sourceTree = "<group>"; };
 		37E8B08F23D970B5002701FC /* MiWiFiBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiBodyLabel.swift; sourceTree = "<group>"; };
 		37E8B09123D9716D002701FC /* MiWiFiHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiHeaderLabel.swift; sourceTree = "<group>"; };
@@ -121,12 +115,8 @@
 		37162CBE23BB4A0D00407766 = {
 			isa = PBXGroup;
 			children = (
-				37E8B08123D6B599002701FC /* Cartfile */,
-				37E8B08923D6B7B9002701FC /* input.xcfilelist */,
-				37E8B08823D6B7B9002701FC /* output.xcfilelist */,
 				37162CC923BB4A0D00407766 /* MiWiFi */,
 				37162CC823BB4A0D00407766 /* Products */,
-				37E8B07E23D6B51D002701FC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -274,13 +264,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		37E8B07E23D6B51D002701FC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		37E8B08E23D9708B002701FC /* Labels */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,11 +355,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37E8B08223D6B599002701FC /* Cartfile in Resources */,
-				37E8B08B23D6B7B9002701FC /* input.xcfilelist in Resources */,
 				37162CD723BB4A0F00407766 /* LaunchScreen.storyboard in Resources */,
 				37162CD423BB4A0F00407766 /* Assets.xcassets in Resources */,
-				37E8B08A23D6B7B9002701FC /* output.xcfilelist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
