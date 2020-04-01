@@ -180,6 +180,8 @@ class AddWIFIVC: UIViewController {
 		 networkTextField,
 		 passwordTextField].forEach { elementStackView.addArrangedSubview($0) }
 
+		nicknameTextField.textField.placeholder = "e.g., Home, Office..."
+
 		NSLayoutConstraint.activate([
 			elementStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
 			elementStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
