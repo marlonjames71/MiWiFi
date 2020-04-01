@@ -1,12 +1,16 @@
 # MiWiFi
 ---
-MiWiFi is an app that let's you add any WiFi network and it's credentials and will generate a QR code for you using the [QRettyCode](https://github.com/mredig/QRettyCode) framework. This makes it much easier to allow people to join your wifi network without revealing your password. All passwords are stored securely in Keychain.
+MiWiFi is an app that lets you add any WiFi network and its credentials and will generate a QR code for you using the [QRettyCode](https://github.com/mredig/QRettyCode) framework. This makes it much easier to allow people to join your wifi network without revealing your password. All passwords are stored securely in Keychain.
 ---
 
-### Why?
-This app is a side project while I am still attending Lambda. I made it 100% programmatically. I wanted the experience of building an iOS app without using a single storyboard to gain more knowledge about UIKit.
+### Why & Why?
+First off, it's not the best experience having guests over and when they ask to connect to your WiFi network you have to look around for your password and network name to read off to them. It also isn't very smart to give anyone your password to pretty much anything. MiWIFi is great because it works with your friends who have Android phones as well, assuming their phones have the smarts to connect to WiFi networks with a QR code.
 
-### FF (Future Features)
+Secondly, this app is a side project while I am still attending Lambda. I made it 100% programmatically. I wanted the experience of building an iOS app without using a single storyboard to gain more knowledge about UIKit.
+
+I hope you enjoy MiWiFi!
+
+### Future Features
 - CloudKit Support
 - CoreLocation - Brings the most relevant (based on your location) WiFi network to the top of the list
 - Custom QR Code theme selection for user
