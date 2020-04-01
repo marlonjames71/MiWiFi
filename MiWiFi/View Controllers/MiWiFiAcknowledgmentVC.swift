@@ -124,24 +124,24 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 		creditTextView.backgroundColor = .clear
 
 		let str = """
-		MiWiFi was created by Marlon Raskin. It uses a third party API to generate the beautiful QR Code that you see when you create a new network.\
-		You can find the API here: QRettyCode.
+		MiWiFi was created by Marlon Raskin in an effort to let guests connect to your WiFi network easier and without giving them your password.\
+		 It uses an API called QRettyCode to generate the beautiful QR Code that you see when you create a new network.\
+		 Go check it out! 😉
 		"""
 		let attrStr = NSMutableAttributedString(string: str, attributes: [.font : UIFont.systemFont(ofSize: 16), .foregroundColor : UIColor.label])
+		let nameLinkRange = (attrStr.string as NSString).range(of: "Marlon Raskin")
+		let frameworkRange = (attrStr.string as NSString).range(of: "QRettyCode")
+		attrStr.addAttribute(.link, value: "https://twitter.com/_MarlonJames", range: nameLinkRange)
+		attrStr.addAttribute(.link, value: "https://github.com/mredig/QRettyCode", range: frameworkRange)
+		let linkAttributes: [NSAttributedString.Key : Any] = [
+			.foregroundColor: UIColor.miGlobalTint,
+			.underlineStyle: NSUnderlineStyle.single.rawValue,
+			.underlineColor: UIColor.miAddButtonColor
+		]
 
-		attrStr.addAttributes([.link: "https://twitter.com/_MarlonJames",
-							   .foregroundColor: UIColor.miAddButtonColor,
-							   .underlineStyle: NSUnderlineStyle.single.rawValue,
-							   .underlineColor: UIColor.miAddButtonColor],
-							  range: NSRange(location: 22, length: 13))
-
-		attrStr.addAttributes([.link: "https://github.com/mredig/QRettyCode",
-							   .foregroundColor: UIColor.miAddButtonColor,
-							   .underlineStyle: NSUnderlineStyle.single.rawValue,
-							   .underlineColor: UIColor.miAddButtonColor],
-							  range: NSRange(location: 167, length: 10))
-
+		creditTextView.linkTextAttributes = linkAttributes
 		creditTextView.attributedText = attrStr
+
 
 		creditTextView.heightAnchor.constraint(equalToConstant: 130).isActive = true
 	}
