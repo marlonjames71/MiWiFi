@@ -24,4 +24,7 @@ extension UIColor {
 	static let miSecondaryAccent = UIColor(named: "miSecondaryAccent")!
 	static let miTitleColor = UIColor(named: "miTitleColor")!
 	static let miNeonYellowGreen = UIColor(named: "miNeonYellowGreen")!
+
+	// Text
+	static let segSelectedTextColor = UIColor(named: "SegSelectedTextColor")!
 }

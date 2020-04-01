@@ -14,6 +14,7 @@ extension UIViewController {
 	/// Use this actionsheet when user is editing or creating a new WiFi network
 	func presentAttemptTodismissActionSheet(saveHandler: ((UIAlertAction) -> Void)?, discardHandler: ((UIAlertAction) -> Void)?, completionHandler: (() -> Void)? = nil) {
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		alertController.view.tintColor = .miGlobalTint
 
 		let saveAction = UIAlertAction(title: "Save WiFi", style: .default, handler: saveHandler)
 		let discardAction = UIAlertAction(title: "Discard", style: .default, handler: discardHandler)
@@ -27,6 +28,7 @@ extension UIViewController {
 	/// Use when user long presses on QR code imageView in DetailVC or when the user selects either print or share from options action sheet in Detail VC
 	func presentShareQRActionSheet(title: String?, message: String?, shareQRHandler: ((UIAlertAction) -> Void)? = nil, shareViewHandler: ((UIAlertAction) -> Void)? = nil, completionHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+		alertController.view.tintColor = .miGlobalTint
 
         let shareQRAction = UIAlertAction(title: "QR Code Only", style: .default, handler: shareQRHandler)
 		let shareViewAction = UIAlertAction(title: "QR Code & Network Info", style: .default, handler: shareViewHandler)
@@ -44,6 +46,7 @@ extension UIViewController {
 		Network: \(wifi.networkName ?? "")
 		"""
 		let alertController = UIAlertController(title: "Print or Share", message: messageStr, preferredStyle: .actionSheet)
+		alertController.view.tintColor = .miGlobalTint
 
 		let printOrShareAction = UIAlertAction(title: "Print or Share", style: .default, handler: printOrShareHandler)
 		let shareConfig = UIImage.SymbolConfiguration(pointSize: 25)
@@ -67,6 +70,7 @@ extension UIViewController {
 											 completion: (() -> Void)? = nil) {
 
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		alertController.view.tintColor = .miGlobalTint
 
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
 		let editAction = UIAlertAction(title: "Edit", style: .default, handler: editHandler)
@@ -89,6 +93,7 @@ extension UIViewController {
 	func presentSecondaryDeleteAlertSingle(wifi: Wifi, deleteHandler: ((UIAlertAction) -> Void)? = nil, completionHandler: (() -> Void)? = nil) {
 		let deleteStr = "Are you sure you want to delete \(wifi.nickname ?? "this WiFi")?"
 		let alertController = UIAlertController(title: deleteStr, message: nil, preferredStyle: .actionSheet)
+		alertController.view.tintColor = .miGlobalTint
 
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -105,6 +110,7 @@ extension UIViewController {
 		let deleteStr = count == 1 ? singleDeleteStr : multiDeleteStr
 
 		let alertController = UIAlertController(title: deleteStr, message: "This cannot be undone.", preferredStyle: .actionSheet)
+		alertController.view.tintColor = .miGlobalTint
 
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: deleteHandler)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -116,6 +122,7 @@ extension UIViewController {
 
 	func presentBasicAlert(controllerTitle: String, controllerMessage: String, actionTitle: String) {
 		let ac = UIAlertController(title: controllerTitle, message: controllerMessage, preferredStyle: .alert)
+		ac.view.tintColor = .miGlobalTint
 		let okAction = UIAlertAction(title: actionTitle, style: .default)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 		[cancelAction, okAction].forEach(ac.addAction)
@@ -125,6 +132,7 @@ extension UIViewController {
 	// MARK: - FaceID Alerts
 	func presentFailedVerificationWithFaceIDAlert() {
 		let alertController = UIAlertController(title: "Verification Failed", message: "You could not be verified. Please try again.", preferredStyle: .alert)
+		alertController.view.tintColor = .miGlobalTint
 		alertController.addAction(UIAlertAction(title: "OK", style: .default))
 		present(alertController, animated: true)
 	}
@@ -132,6 +140,7 @@ extension UIViewController {
 
 	func presentBiometryNotAvailableAlert() {
 		let alertController = UIAlertController(title: "Biometry Failed", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
+		alertController.view.tintColor = .miGlobalTint
 		alertController.addAction(UIAlertAction(title: "OK", style: .default))
 		present(alertController, animated: true)
 	}

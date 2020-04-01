@@ -193,7 +193,7 @@ class AddWIFIVC: UIViewController {
 		iconSegControl.translatesAutoresizingMaskIntoConstraints = false
 		iconSegControl.sizeToFit()
 
-		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .selected)
+		iconSegControl.setTitleTextAttributes([.foregroundColor : UIColor.segSelectedTextColor], for: .selected)
 		iconSegControl.selectedSegmentTintColor = .miGlobalTint
 		iconSegControl.backgroundColor = .miGrayColor
 		iconSegControl.tintColor = .miGlobalTint

@@ -15,7 +15,7 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 	private let iconImageView = MiWiFiIconImageView()
 	private let titleLabel = MiWiFiBodyLabel(textAlignment: .center, fontSize: 27)
 	private let creditTextView = UITextView()
-	private let dismissButton = MiWiFiButton(backgroundColor: .miGlobalTint, tintColor: .white, textColor: .white, title: "Dismiss", image: nil)
+	private let dismissButton = MiWiFiButton(backgroundColor: .miIconTint, tintColor: .white, textColor: .white, title: "Dismiss", image: nil)
 
 	private let padding: CGFloat = 20
 
@@ -28,7 +28,7 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = UIColor.miBackground.withAlphaComponent(0.65)
+		view.backgroundColor = UIColor.miSecondaryBackground.withAlphaComponent(0.65)
 		isCreditViewOffCentered = true
 		configureCreditView()
 		configureIconImageView()

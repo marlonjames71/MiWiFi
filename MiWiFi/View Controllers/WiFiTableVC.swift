@@ -112,6 +112,7 @@ class WiFiTableVC: UIViewController {
 		wifiTableView.delegate = self
 		wifiTableView.separatorStyle = .none
 		wifiTableView.backgroundColor = .miBackground
+		wifiTableView.tintColor = .miGlobalTint
 		wifiTableView.allowsMultipleSelection = false
 		wifiTableView.allowsSelectionDuringEditing = true
 		wifiTableView.allowsMultipleSelectionDuringEditing = true
