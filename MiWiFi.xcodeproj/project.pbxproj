@@ -137,7 +137,7 @@
 				37DA40FE23C8F47100777231 /* Views */,
 				37E8B05523D5A4F8002701FC /* Model Controller */,
 				37E8B04F23D5A2DA002701FC /* Model */,
-				37DA40FC23C8F42A00777231 /* Helpers */,
+				37DA40FC23C8F42A00777231 /* Utils */,
 				37DA40FD23C8F44000777231 /* Resources */,
 				37162CD823BB4A0F00407766 /* Info.plist */,
 			);
@@ -201,7 +201,7 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
-		37DA40FC23C8F42A00777231 /* Helpers */ = {
+		37DA40FC23C8F42A00777231 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				37162CE223BB797900407766 /* Colors.swift */,
@@ -209,7 +209,7 @@
 				37E8B09823DDA8E6002701FC /* KeychainWrapper.swift */,
 				37A404E924047C550028DB18 /* ImageShareSource.swift */,
 			);
-			path = Helpers;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		37DA40FD23C8F44000777231 /* Resources */ = {
