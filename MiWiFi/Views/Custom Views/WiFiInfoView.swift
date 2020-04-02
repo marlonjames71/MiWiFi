@@ -19,8 +19,6 @@ class WiFiInfoView: UIView {
 
 	var wifi: Wifi
 
-	weak var delegate: FaceIDManagerDelegate?
-
 	let tapToRevealStr = "Tap to Reveal"
 
 	var isRevealed: RevealState = .hidden {
@@ -185,7 +183,6 @@ class WiFiInfoView: UIView {
 					} else {
 						guard let error = authError as? LAError else { return }
 						NSLog(error.code.getErrorDescription())
-						self.delegate?.showPasswordRequestedFailed()
 					}
 				}
 			}

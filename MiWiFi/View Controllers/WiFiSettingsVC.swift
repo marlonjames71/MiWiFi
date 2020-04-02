@@ -195,7 +195,6 @@ extension WiFiSettingsVC: UITableViewDelegate, UITableViewDataSource {
 			cell.imageView?.image = settingsArr[indexPath.row].iconImage
 			cell.accessoryType = .none
 			cell.shouldHideSwitch = false
-			cell.delegate = self
 		case 1:
 			cell.textLabel?.text = contactArr[indexPath.row].title
 			cell.imageView?.image = contactArr[indexPath.row].iconImage
