@@ -92,7 +92,6 @@ class WIFIDetailVC: UIViewController {
 
 	private func configureWifiInfoView() {
 		view.addSubview(infoView)
-		infoView.delegate = self
 
 		NSLayoutConstraint.activate([
 			infoView.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: 30),
@@ -194,7 +193,6 @@ class WIFIDetailVC: UIViewController {
 							} else {
 								guard let error = authError as? LAError else { return }
 								NSLog(error.code.getErrorDescription())
-								self.presentFailedVerificationWithFaceIDAlert()
 							}
 						}
 					}

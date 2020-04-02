@@ -19,8 +19,7 @@ class SettingsCell: UITableViewCell {
 
 	private var faceIDSwitch = UISwitch()
 
-	weak var delegate: FaceIDManagerDelegate?
-
+	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 		configureSwitch()
@@ -62,7 +61,6 @@ class SettingsCell: UITableViewCell {
 						DefaultsManager.faceIDEnabled = self.faceIDSwitch.isOn
 						guard let error = authError as? LAError else { return }
 						NSLog(error.code.getErrorDescription())
-						self.delegate?.showPasswordRequestedFailed()
 					}
 				}
 			}
