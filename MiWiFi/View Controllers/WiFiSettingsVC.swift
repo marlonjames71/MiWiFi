@@ -195,6 +195,7 @@ extension WiFiSettingsVC: UITableViewDelegate, UITableViewDataSource {
 			cell.imageView?.image = settingsArr[indexPath.row].iconImage
 			cell.accessoryType = .none
 			cell.shouldHideSwitch = false
+			cell.delegate = self
 		case 1:
 			cell.textLabel?.text = contactArr[indexPath.row].title
 			cell.imageView?.image = contactArr[indexPath.row].iconImage
@@ -256,12 +257,11 @@ extension WiFiSettingsVC: UITableViewDelegate, UITableViewDataSource {
 		}
 
 		self.indexPath = indexPath
-//		tableView.deselectRow(at: indexPath, animated: true)
 	}
 }
 
 
-extension WiFiSettingsVC: FaceIDAlertDelegate {
+extension WiFiSettingsVC: FaceIDManagerDelegate {
 	func showPasswordRequestedFailed() {
 		self.presentFailedVerificationWithFaceIDAlert()
 	}

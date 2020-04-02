@@ -92,6 +92,8 @@ class WIFIDetailVC: UIViewController {
 
 	private func configureWifiInfoView() {
 		view.addSubview(infoView)
+		infoView.delegate = self
+
 		NSLayoutConstraint.activate([
 			infoView.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: 30),
 			infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -162,35 +164,6 @@ class WIFIDetailVC: UIViewController {
 	}
 
 
-	private func requestAuth() {
-		let context = LAContext()
-		context.localizedFallbackTitle = "Please use your passcode"
-		var error: NSError?
-
-		if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
-			let reason = "Authentication is required for you to continue"
-
-			let biometricType = context.biometryType == .faceID ? "Face ID" : "Touch ID"
-			print("Supported Biometric type is: \(biometricType)")
-
-			context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] success, authenticationError in
-				guard let self = self else { return }
-				DispatchQueue.main.async {
-					if success {
-						self.showAddWiFiScreen()
-					} else {
-						guard let error = error as? LAError else { return }
-						NSLog(error.code.getErrorDescription())
-						self.presentFailedVerificationWithFaceIDAlert()
-					}
-				}
-			}
-		} else {
-			self.presentBiometryNotAvailableAlert()
-		}
-	}
-
-
 	@objc private func optionsButtonTapped(_ sender: UIBarButtonItem) {
 		let favoriteImage = UIImage(systemName: "star")!
 		let unfavoriteImage = UIImage(systemName: "star.fill")!
@@ -213,7 +186,21 @@ class WIFIDetailVC: UIViewController {
 			case .revealed:
 				self.showAddWiFiScreen()
 			case .hidden:
-				self.requestAuth()
+				if DefaultsManager.faceIDEnabled {
+					FaceIDManager.requestAuth { (success, authError) in
+						DispatchQueue.main.async {
+							if success {
+								self.showAddWiFiScreen()
+							} else {
+								guard let error = authError as? LAError else { return }
+								NSLog(error.code.getErrorDescription())
+								self.presentFailedVerificationWithFaceIDAlert()
+							}
+						}
+					}
+				} else {
+					self.showAddWiFiScreen()
+				}
 			case .noPassword:
 				self.showAddWiFiScreen()
 			}
@@ -229,7 +216,7 @@ class WIFIDetailVC: UIViewController {
 }
 
 
-extension WIFIDetailVC: FaceIDAlertDelegate {
+extension WIFIDetailVC: FaceIDManagerDelegate {
 	func showPasswordRequestedFailed() {
 		self.presentFailedVerificationWithFaceIDAlert()
 		print("Request Failed")

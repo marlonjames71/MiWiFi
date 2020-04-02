@@ -19,6 +19,8 @@ class WiFiInfoView: UIView {
 
 	var wifi: Wifi
 
+	weak var delegate: FaceIDManagerDelegate?
+
 	let tapToRevealStr = "Tap to Reveal"
 
 	var isRevealed: RevealState = .hidden {
@@ -40,8 +42,6 @@ class WiFiInfoView: UIView {
 	var mainStackView = UIStackView()
 
 	let tapGestureRecognizer = UITapGestureRecognizer()
-
-	weak var delegate: FaceIDAlertDelegate?
 
 	lazy var color: UIColor = wifi.isFavorite ? .miSecondaryAccent : .miGlobalTint
 
@@ -177,30 +177,20 @@ class WiFiInfoView: UIView {
 			return
 		}
 
-		let context = LAContext()
-		context.localizedFallbackTitle = "Please use your passcode"
-		var error: NSError?
-
-		if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
-			let reason = "Authentication is required for you to continue"
-
-			let biometricType = context.biometryType == .faceID ? "Face ID" : "Touch ID"
-			print("Supported Biometric type is: \( biometricType )")
-
-			context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] success, authenticationError in
-				guard let self = self else { return }
+		if DefaultsManager.faceIDEnabled {
+			FaceIDManager.requestAuth { success, authError in
 				DispatchQueue.main.async {
 					if success {
 						self.isRevealed = .revealed
 					} else {
-						guard let error = error as? LAError else { return }
+						guard let error = authError as? LAError else { return }
 						NSLog(error.code.getErrorDescription())
 						self.delegate?.showPasswordRequestedFailed()
 					}
 				}
 			}
 		} else {
-			self.delegate?.biometricAuthenticationNotAvailable()
+			self.isRevealed = .revealed
 		}
 	}
 }

@@ -9,16 +9,14 @@
 import UIKit
 import LocalAuthentication
 
-protocol FaceIDAlertDelegate: AnyObject {
+protocol FaceIDManagerDelegate: AnyObject {
 	func showPasswordRequestedFailed()
 	func biometricAuthenticationNotAvailable()
 }
 
-extension FaceIDAlertDelegate {
+enum FaceIDManager {
 
-	typealias Reply = (Bool, Error?) -> Void
-
-	func requestAuth(reply: @escaping Reply) {
+	static func requestAuth(reply: @escaping (Bool, Error?) -> Void) {
 		let context = LAContext()
 		context.localizedFallbackTitle = "Please use your passcode"
 		var error: NSError?

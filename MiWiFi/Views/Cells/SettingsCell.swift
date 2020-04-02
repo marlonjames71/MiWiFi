@@ -19,7 +19,7 @@ class SettingsCell: UITableViewCell {
 
 	private var faceIDSwitch = UISwitch()
 
-	weak var delegate: FaceIDAlertDelegate?
+	weak var delegate: FaceIDManagerDelegate?
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -35,7 +35,7 @@ class SettingsCell: UITableViewCell {
 		contentView.addSubview(faceIDSwitch)
 		faceIDSwitch.translatesAutoresizingMaskIntoConstraints = false
 
-		faceIDSwitch.addTarget(self, action: #selector(sliderChangedValue(_:)), for: .valueChanged)
+		faceIDSwitch.addTarget(self, action: #selector(switchChangedValue(_:)), for: .valueChanged)
 		faceIDSwitch.onTintColor = .miFavoriteTint
 		faceIDSwitch.thumbTintColor = UIColor.miSecondaryBackground
 
@@ -50,36 +50,9 @@ class SettingsCell: UITableViewCell {
 	}
 
 
-	@objc private func sliderChangedValue(_ sender: UISwitch) {
-//		if slider is on then request authorization to turn off
-//		- slider gets triggered
-//		- sends request to check auth to VC
-//		- VC checks auth and returns a bool or success/failure
-//		- Slider waits for return value
-
-//		if slider is off then turn it on and save newValue to disk using UserDefaults
+	@objc private func switchChangedValue(_ sender: UISwitch) {
 		if sender.isOn == false {
-			requestAuth()
-		} else {
-			sender.isOn = true
-			DefaultsManager.faceIDEnabled = sender.isOn
-		}
-	}
-
-
-	private func requestAuth() {
-		let context = LAContext()
-		context.localizedFallbackTitle = "Please use your passcode"
-		var error: NSError?
-
-		if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
-			let reason = "Authentication is required for you to continue"
-
-			let biometricType = context.biometryType == .faceID ? "Face ID" : "Touch ID"
-			print("Supported Biometric type is: \(biometricType)")
-
-			context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { [weak self] success, authenticationError in
-				guard let self = self else { return }
+			FaceIDManager.requestAuth { success, authError in
 				DispatchQueue.main.async {
 					if success {
 						self.faceIDSwitch.isOn = false
@@ -87,15 +60,15 @@ class SettingsCell: UITableViewCell {
 					} else {
 						self.faceIDSwitch.isOn = true
 						DefaultsManager.faceIDEnabled = self.faceIDSwitch.isOn
-						guard let error = error as? LAError else { return }
+						guard let error = authError as? LAError else { return }
 						NSLog(error.code.getErrorDescription())
 						self.delegate?.showPasswordRequestedFailed()
 					}
 				}
 			}
 		} else {
-			NSLog("Biometric security not available.")
-			self.delegate?.biometricAuthenticationNotAvailable()
+			sender.isOn = true
+			DefaultsManager.faceIDEnabled = sender.isOn
 		}
 	}
 }

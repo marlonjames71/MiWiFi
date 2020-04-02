@@ -152,7 +152,6 @@
 			isa = PBXGroup;
 			children = (
 				374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */,
-				376D5C2D243568C700F4054A /* FaceIDUtility.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -209,6 +208,7 @@
 		37DA40FC23C8F42A00777231 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				376D5C2D243568C700F4054A /* FaceIDUtility.swift */,
 				37162CE223BB797900407766 /* Colors.swift */,
 				37E8B09923DDA8E6002701FC /* KeychainItemAccessibility.swift */,
 				37E8B09823DDA8E6002701FC /* KeychainWrapper.swift */,
@@ -306,7 +306,6 @@
 				37162CC323BB4A0D00407766 /* Sources */,
 				37162CC423BB4A0D00407766 /* Frameworks */,
 				37162CC523BB4A0D00407766 /* Resources */,
-				37E8B08723D6B74C002701FC /* Run Script - Carthage */,
 			);
 			buildRules = (
 			);
@@ -367,29 +366,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		37E8B08723D6B74C002701FC /* Run Script - Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/input.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Run Script - Carthage";
-			outputFileListPaths = (
-				"$(SRCROOT)/output.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#/usr/local/bin/carthage copy-frameworks\n#/usr/local/bin/carthage outdated --xcode-warnings\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		37162CC323BB4A0D00407766 /* Sources */ = {
@@ -576,10 +552,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = D6VB3396MT;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MiWiFi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -601,10 +574,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = D6VB3396MT;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MiWiFi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
