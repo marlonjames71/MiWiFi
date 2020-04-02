@@ -229,7 +229,7 @@ class WIFIDetailVC: UIViewController {
 }
 
 
-extension WIFIDetailVC: WiFiInfoViewDelegate {
+extension WIFIDetailVC: FaceIDAlertDelegate {
 	func showPasswordRequestedFailed() {
 		self.presentFailedVerificationWithFaceIDAlert()
 		print("Request Failed")

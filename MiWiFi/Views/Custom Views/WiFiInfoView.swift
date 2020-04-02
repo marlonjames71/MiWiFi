@@ -9,11 +9,6 @@
 import LocalAuthentication
 import UIKit
 
-protocol WiFiInfoViewDelegate: AnyObject {
-	func showPasswordRequestedFailed()
-	func biometricAuthenticationNotAvailable()
-}
-
 class WiFiInfoView: UIView {
 
 	enum RevealState {
@@ -46,7 +41,7 @@ class WiFiInfoView: UIView {
 
 	let tapGestureRecognizer = UITapGestureRecognizer()
 
-	var delegate: WiFiInfoViewDelegate?
+	weak var delegate: FaceIDAlertDelegate?
 
 	lazy var color: UIColor = wifi.isFavorite ? .miSecondaryAccent : .miGlobalTint
 
@@ -176,15 +171,15 @@ class WiFiInfoView: UIView {
 
 	
 	@objc private func revealPassword(_ sender: UITapGestureRecognizer) {
-		let context = LAContext()
-		context.localizedFallbackTitle = "Please use your passcode"
-		var error: NSError?
 
 		guard passwordValueLabel.text == tapToRevealStr else {
 			isRevealed = .hidden
 			return
 		}
 
+		let context = LAContext()
+		context.localizedFallbackTitle = "Please use your passcode"
+		var error: NSError?
 
 		if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
 			let reason = "Authentication is required for you to continue"
