@@ -17,7 +17,7 @@ extension UIViewController {
 		alertController.view.tintColor = .miGlobalTint
 
 		let saveAction = UIAlertAction(title: "Save WiFi", style: .default, handler: saveHandler)
-		let discardAction = UIAlertAction(title: "Discard", style: .default, handler: discardHandler)
+		let discardAction = UIAlertAction(title: "Discard Changes", style: .default, handler: discardHandler)
 		let resumeAction = UIAlertAction(title: "Resume Editing", style: .cancel)
 
 		[saveAction, discardAction, resumeAction].forEach(alertController.addAction)
