@@ -24,40 +24,42 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 	var color: UIColor = .secondaryLabel
 
     private let border = configure(CALayer()) {
-		$0.borderColor = UIColor.systemGray.withAlphaComponent(0.4).cgColor
-        $0.borderWidth = 1
+		$0.borderColor = UIColor.miBorderColor.cgColor
+		$0.borderWidth = 1
         $0.cornerRadius = 4
     }
 
 	let textField = UITextField()
 	let label = MiWiFiPlaceholderLabel(textAlignment: .center, fontSize: 10)
 
-	let activeColorCG = UIColor.miGlobalTint.cgColor
-	let inactiveColorCG = UIColor.systemGray.withAlphaComponent(0.4).cgColor
-	let activeColor = UIColor.miGlobalTint
+	let activeColorCG = UIColor.miActiveBorderColor.cgColor
+	let inactiveColorCG = UIColor.miBorderColor.cgColor
+	let activeColor = UIColor.miActiveBorderColor
 	let inactiveColor = UIColor.label.withAlphaComponent(0.7)
 
 	let padding: CGFloat = 8
 
 	let revealButton = UIButton(type: .system)
 
-	var needsRevealButton: Bool = false {
+	var needsRevealButton = false {
 		didSet {
 			updateRevealButtonImage()
 			configureRevealButton()
 		}
 	}
 
-	var isRevealed: Bool = false {
+	var isRevealed = false {
 		didSet {
 			updateRevealButtonImage()
 		}
 	}
 
+	var isActive = false
+
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		backgroundColor = .black
+//		backgroundColor = .black
 		translatesAutoresizingMaskIntoConstraints = false
 		configureCointainer()
 		configureTextField()
@@ -95,7 +97,8 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
+		// Calling setActive here to update changes if user toggles dark mode
+		setActiveColor(isActive)
         border.frame = bounds
         border.mask(withRect: label.frame.insetBy(dx: -3, dy: 0), inverse: true)
     }
@@ -115,8 +118,8 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 		addSubview(textField)
 		textField.translatesAutoresizingMaskIntoConstraints = false
 
-		textField.addTarget(self, action: #selector(setActiveColor(_:)), for: .editingDidBegin)
-		textField.addTarget(self, action: #selector(setInactiveColor(_:)), for: .editingDidEnd)
+		textField.addTarget(self, action: #selector(editingBegan(_:)), for: .editingDidBegin)
+		textField.addTarget(self, action: #selector(editingFinished(_:)), for: .editingDidEnd)
 
 		textField.textColor = .label
 		textField.font = UIFont.preferredFont(forTextStyle: .body)
@@ -148,7 +151,7 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 		label.translatesAutoresizingMaskIntoConstraints = false
 
 		label.font = .systemFont(ofSize: 12)
-		label.textColor = inactiveColor
+		label.textColor = UIColor.label.withAlphaComponent(0.7)
 
 		NSLayoutConstraint.activate([
 			label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
@@ -160,7 +163,7 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 	private func configureRevealButton() {
 		addSubview(revealButton)
 		revealButton.translatesAutoresizingMaskIntoConstraints = false
-		revealButton.tintColor = inactiveColor
+		revealButton.tintColor = .miBorderColor
 		revealButton.addTarget(self, action: #selector(toggleSecureEntry(_:)), for: .touchUpInside)
 
 		NSLayoutConstraint.activate([
@@ -185,19 +188,32 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 	}
 
 
-	@objc private func setActiveColor(_ sender: UITextField) {
-		UIView.animate(withDuration: 0.3) {
-			self.label.textColor = self.activeColor
-			self.revealButton.tintColor = self.activeColor
-			self.border.borderColor = self.activeColorCG
-		}
+	@objc private func editingBegan(_ sender: UITextField) {
+		setActiveColor()
 	}
 
-	@objc private func setInactiveColor(_ sender: UITextField) {
-		UIView.animate(withDuration: 0.3) {
-			self.label.textColor = self.inactiveColor
-			self.revealButton.tintColor = self.inactiveColor
-			self.border.borderColor = self.inactiveColorCG
+	@objc private func editingFinished(_ sender: UITextField) {
+		setActiveColor(false)
+	}
+
+
+	private func setActiveColor(_ isActive: Bool = true, animated: Bool = true) {
+		self.isActive = isActive
+		let logic = {
+			if isActive {
+				self.label.textColor = .miActiveBorderColor
+				self.revealButton.tintColor = .miActiveBorderColor
+				self.border.borderColor = UIColor.miActiveBorderColor.cgColor
+			} else {
+				self.label.textColor = UIColor.label.withAlphaComponent(0.7)
+				self.revealButton.tintColor = .miBorderColor
+				self.border.borderColor = UIColor.miBorderColor.cgColor
+			}
+		}
+		if animated {
+			UIView.animate(withDuration: 0.3, animations: logic)
+		} else {
+			logic()
 		}
 	}
 }
