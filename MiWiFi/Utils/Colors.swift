@@ -16,6 +16,7 @@ extension UIColor {
 	// Grays
 	static let miGrayColor = UIColor(named: "miGrayColor")!
 	static let miSecondaryGray = UIColor(named: "miSecondaryGrayColor")!
+	static let miBorderColor = UIColor(named: "miBorderColor")!
 	// Tints
 	static let miAddButtonColor = UIColor(named: "miAddButtonColor")!
 	static let miFavoriteTint = UIColor(named: "miFavoriteTint")!
@@ -24,7 +25,7 @@ extension UIColor {
 	static let miSecondaryAccent = UIColor(named: "miSecondaryAccent")!
 	static let miTitleColor = UIColor(named: "miTitleColor")!
 	static let miNeonYellowGreen = UIColor(named: "miNeonYellowGreen")!
-
+	static let miActiveBorderColor = UIColor(named: "miActiveBorderColor")!
 	// Text
 	static let segSelectedTextColor = UIColor(named: "SegSelectedTextColor")!
 }
