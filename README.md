@@ -11,7 +11,8 @@ Secondly, this app is a side project while I am still attending Lambda. I made i
 I hope you enjoy MiWiFi!
 
 ### Future Features
-- CloudKit Support
+- Ability to add your ISP information for quick access
+- CloudKit (iPad and Apple Watch support)
 - CoreLocation - Brings the most relevant (based on your location) WiFi network to the top of the list
 - Custom QR Code theme selection for user
 - iPad AutoLayout support. Currently it adapts to all iPhone sizes.
