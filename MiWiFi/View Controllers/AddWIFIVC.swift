@@ -352,7 +352,7 @@ extension AddWIFIVC: UITextFieldDelegate {
 
 extension AddWIFIVC: UIAdaptivePresentationControllerDelegate {
 	func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-		presentAttemptTodismissActionSheet(saveHandler: { _ in
+		presentAttemptToDismissActionSheet(saveHandler: { _ in
 			self.saveWifi()
 			self.dismiss(animated: true)
 		}, discardHandler: { _ in

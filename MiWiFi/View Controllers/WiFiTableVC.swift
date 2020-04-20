@@ -312,7 +312,7 @@ extension WiFiTableVC: UITableViewDelegate, UITableViewDataSource {
 				   point: CGPoint) -> UIContextMenuConfiguration? {
 		let wifi = self.fetchedResultsController.object(at: indexPath)
 
-		return UIContextMenuConfiguration.newWiFitableViewConfiguration(wifi: wifi, delegate: self, indexPath: indexPath)
+		return UIContextMenuConfiguration.newWiFiTableViewConfiguration(wifi: wifi, delegate: self, indexPath: indexPath)
 	}
 
 
@@ -427,7 +427,7 @@ protocol WiFiTableViewConfigurationDelegate: class {
 }
 
 extension UIContextMenuConfiguration {
-	class func newWiFitableViewConfiguration(wifi: Wifi,
+	class func newWiFiTableViewConfiguration(wifi: Wifi,
 											 delegate: WiFiTableViewConfigurationDelegate,
 											 indexPath: IndexPath) -> UIContextMenuConfiguration {
 

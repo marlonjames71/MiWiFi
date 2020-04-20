@@ -11,8 +11,8 @@ import UIKit
 extension UIViewController {
 	
 	// MARK: - Alerts
-	/// Use this actionsheet when user is editing or creating a new WiFi network
-	func presentAttemptTodismissActionSheet(saveHandler: ((UIAlertAction) -> Void)?, discardHandler: ((UIAlertAction) -> Void)?, completionHandler: (() -> Void)? = nil) {
+	/// Use this action sheet when user is editing or creating a new WiFi network
+	func presentAttemptToDismissActionSheet(saveHandler: ((UIAlertAction) -> Void)?, discardHandler: ((UIAlertAction) -> Void)?, completionHandler: (() -> Void)? = nil) {
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		alertController.view.tintColor = .miGlobalTint
 
@@ -89,7 +89,7 @@ extension UIViewController {
 	}
 
 
-	/// Use this action sheet if user selects delete when promted by action sheet from ellipsis on DetailVC -> Used for single deletion
+	/// Use this action sheet if user selects delete when prompted by action sheet from ellipsis on DetailVC -> Used for single deletion
 	func presentSecondaryDeleteAlertSingle(wifi: Wifi, deleteHandler: ((UIAlertAction) -> Void)? = nil, completionHandler: (() -> Void)? = nil) {
 		let deleteStr = "Are you sure you want to delete \(wifi.nickname ?? "this WiFi")?"
 		let alertController = UIAlertController(title: deleteStr, message: nil, preferredStyle: .actionSheet)

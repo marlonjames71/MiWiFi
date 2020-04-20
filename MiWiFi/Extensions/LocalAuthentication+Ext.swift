@@ -13,7 +13,6 @@ extension LAError.Code {
 	func getErrorDescription() -> String {
 
 	   switch self {
-
 	   case .authenticationFailed:
 		   return "Authentication was not successful, because user failed to provide valid credentials."
 
@@ -41,6 +40,5 @@ extension LAError.Code {
 	   default:
 		return "Error code \(self) not found"
 	   }
-
 	}
 }
