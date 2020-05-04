@@ -17,6 +17,9 @@
 		37162CE523BBEDA200407766 /* AddWIFIVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE423BBEDA200407766 /* AddWIFIVC.swift */; };
 		37162CE723BBF52700407766 /* MiWiFiTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE623BBF52700407766 /* MiWiFiTextFieldView.swift */; };
 		37162CE923BC1A5B00407766 /* MiWiFiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */; };
+		371E94ED245F210000B21E43 /* ISP+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371E94EC245F210000B21E43 /* ISP+Convenience.swift */; };
+		371E94EF245F225800B21E43 /* ISPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371E94EE245F225800B21E43 /* ISPController.swift */; };
+		371E94F1245FD2B300B21E43 /* MiWiFiBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371E94F0245FD2B300B21E43 /* MiWiFiBarButton.swift */; };
 		3726D01C2416E48600EF6DD8 /* LocalAuthentication+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3726D01B2416E48600EF6DD8 /* LocalAuthentication+Ext.swift */; };
 		374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86623E530CA004FC394 /* UIAlert+Ext.swift */; };
 		374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */; };
@@ -52,6 +55,7 @@
 		37E8B09E23E100BC002701FC /* MiWiFiEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B09D23E100BC002701FC /* MiWiFiEmptyStateView.swift */; };
 		37E8B0A123E10407002701FC /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B0A023E10407002701FC /* UIViewController+Ext.swift */; };
 		37E8B0A423E15B1F002701FC /* MiWiFiPlaceholderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E8B0A323E15B1F002701FC /* MiWiFiPlaceholderLabel.swift */; };
+		37EBCBA12454A1CF00BB2B53 /* ISPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EBCBA02454A1CF00BB2B53 /* ISPVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +71,10 @@
 		37162CE423BBEDA200407766 /* AddWIFIVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWIFIVC.swift; sourceTree = "<group>"; };
 		37162CE623BBF52700407766 /* MiWiFiTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiTextFieldView.swift; sourceTree = "<group>"; };
 		37162CE823BC1A5B00407766 /* MiWiFiTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiTextField.swift; sourceTree = "<group>"; };
+		371E94EB245F1D4700B21E43 /* wifi 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "wifi 3.xcdatamodel"; sourceTree = "<group>"; };
+		371E94EC245F210000B21E43 /* ISP+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ISP+Convenience.swift"; sourceTree = "<group>"; };
+		371E94EE245F225800B21E43 /* ISPController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPController.swift; sourceTree = "<group>"; };
+		371E94F0245FD2B300B21E43 /* MiWiFiBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiBarButton.swift; sourceTree = "<group>"; };
 		3726D01B2416E48600EF6DD8 /* LocalAuthentication+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalAuthentication+Ext.swift"; sourceTree = "<group>"; };
 		374DA86623E530CA004FC394 /* UIAlert+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlert+Ext.swift"; sourceTree = "<group>"; };
 		374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuIdentifiable.swift; sourceTree = "<group>"; };
@@ -102,6 +110,7 @@
 		37E8B09D23E100BC002701FC /* MiWiFiEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiEmptyStateView.swift; sourceTree = "<group>"; };
 		37E8B0A023E10407002701FC /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		37E8B0A323E15B1F002701FC /* MiWiFiPlaceholderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiPlaceholderLabel.swift; sourceTree = "<group>"; };
+		37EBCBA02454A1CF00BB2B53 /* ISPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				37162CE023BB6BD800407766 /* MiWiFiButton.swift */,
+				371E94F0245FD2B300B21E43 /* MiWiFiBarButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -201,6 +211,7 @@
 				37162CE423BBEDA200407766 /* AddWIFIVC.swift */,
 				37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */,
 				37737C6923FA7775000E3D4C /* MiWiFiAcknowledgmentVC.swift */,
+				37EBCBA02454A1CF00BB2B53 /* ISPVC.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -248,6 +259,7 @@
 				37E8B05023D5A3E5002701FC /* wifi.xcdatamodeld */,
 				37E8B05323D5A48E002701FC /* CoreDataStack.swift */,
 				37E8B05823D5A533002701FC /* Wifi+Convenience.swift */,
+				371E94EC245F210000B21E43 /* ISP+Convenience.swift */,
 				377750E723FA2011004BC8EA /* Settings.swift */,
 			);
 			path = Model;
@@ -257,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				37E8B05623D5A519002701FC /* WifiController.swift */,
+				371E94EE245F225800B21E43 /* ISPController.swift */,
 			);
 			path = "Model Controller";
 			sourceTree = "<group>";
@@ -382,8 +395,10 @@
 				37E8B09E23E100BC002701FC /* MiWiFiEmptyStateView.swift in Sources */,
 				37162CE523BBEDA200407766 /* AddWIFIVC.swift in Sources */,
 				37E8B0A423E15B1F002701FC /* MiWiFiPlaceholderLabel.swift in Sources */,
+				371E94F1245FD2B300B21E43 /* MiWiFiBarButton.swift in Sources */,
 				37A404E624023FEF0028DB18 /* CALayer+Ext.swift in Sources */,
 				37A404E824047B750028DB18 /* UIViewController+Alerts.swift in Sources */,
+				371E94ED245F210000B21E43 /* ISP+Convenience.swift in Sources */,
 				374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */,
 				37E8B08D23D8454D002701FC /* WiFiInfoView.swift in Sources */,
 				37DA410023C8F4CC00777231 /* WIFIDetailVC.swift in Sources */,
@@ -392,6 +407,7 @@
 				37E8B05E23D643DC002701FC /* MiWiFiImageView.swift in Sources */,
 				37E8B05423D5A48E002701FC /* CoreDataStack.swift in Sources */,
 				37E8B05923D5A533002701FC /* Wifi+Convenience.swift in Sources */,
+				37EBCBA12454A1CF00BB2B53 /* ISPVC.swift in Sources */,
 				37E8B04A23D56B55002701FC /* WiFiSettingsVC.swift in Sources */,
 				375F15C423E38D7C00293079 /* UIView+Screenshot.swift in Sources */,
 				37162CCD23BB4A0D00407766 /* SceneDelegate.swift in Sources */,
@@ -411,6 +427,7 @@
 				37737C6C23FA8679000E3D4C /* MiWiFiContainerView.swift in Sources */,
 				37E8B09B23DDA8E6002701FC /* KeychainItemAccessibility.swift in Sources */,
 				37162CE123BB6BD800407766 /* MiWiFiButton.swift in Sources */,
+				371E94EF245F225800B21E43 /* ISPController.swift in Sources */,
 				374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */,
 				377750EA23FA27DD004BC8EA /* UIImage+Configuration.swift in Sources */,
 				37E8B0A123E10407002701FC /* UIViewController+Ext.swift in Sources */,
@@ -635,10 +652,11 @@
 		37E8B05023D5A3E5002701FC /* wifi.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				371E94EB245F1D4700B21E43 /* wifi 3.xcdatamodel */,
 				37E8B09C23DE6C27002701FC /* wifi 2.xcdatamodel */,
 				37E8B05123D5A3E5002701FC /* wifi.xcdatamodel */,
 			);
-			currentVersion = 37E8B09C23DE6C27002701FC /* wifi 2.xcdatamodel */;
+			currentVersion = 371E94EB245F1D4700B21E43 /* wifi 3.xcdatamodel */;
 			path = wifi.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ISP" representedClassName="ISP" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="phone" optional="YES" attributeType="String"/>
+        <attribute name="urlString" optional="YES" attributeType="String"/>
+        <relationship name="wifiNetworks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Wifi" inverseName="isp" inverseEntity="Wifi"/>
+    </entity>
+    <entity name="Wifi" representedClassName="Wifi" syncable="YES" codeGenerationType="class">
+        <attribute name="iconName" optional="YES" attributeType="String"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="locationDesc" optional="YES" attributeType="String"/>
+        <attribute name="networkName" attributeType="String"/>
+        <attribute name="nickname" attributeType="String"/>
+        <attribute name="passwordID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="isp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ISP" inverseName="wifiNetworks" inverseEntity="ISP"/>
+    </entity>
+    <elements>
+        <element name="Wifi" positionX="-282.8203125" positionY="-49.6328125" width="128" height="148"/>
+        <element name="ISP" positionX="-93.14453125" positionY="37.06640625" width="128" height="103"/>
+    </elements>
+</model>

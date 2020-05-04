@@ -27,6 +27,13 @@ class WifiController {
 		saveToPersistentStore()
 	}
 
+	func addISP(wifi: Wifi, isp: ISP) {
+		print(isp.wifiNetworks ?? [])
+		wifi.isp = isp
+		print(isp.wifiNetworks ?? [])
+		saveToPersistentStore()
+	}
+
 	func updateFavorite(wifi: Wifi, isFavorite: Bool) {
 		wifi.isFavorite = isFavorite
 		saveToPersistentStore()

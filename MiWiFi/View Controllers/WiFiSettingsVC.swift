@@ -100,7 +100,7 @@ extension WiFiSettingsVC: MFMailComposeViewControllerDelegate {
 	func setupComposeVC(subject: String) -> MFMailComposeViewController {
 		let composeVC = MFMailComposeViewController()
 		composeVC.navigationBar.tintColor = .miGlobalTint
-		composeVC.modalPresentationStyle = .overFullScreen
+//		composeVC.modalPresentationStyle = .overFullScreen
 		composeVC.mailComposeDelegate = self
 		composeVC.setToRecipients(["support@august-light.com"])
 		composeVC.setSubject(subject)

@@ -69,8 +69,12 @@ class WIFIDetailVC: UIViewController {
 			navigationItem.titleView = nil
 		}
 
+		let ispButton2 = MiWiFiBarButton(backgroundColor: .miIconTint, tintColor: .miGlobalTint, textColor: .miGlobalTint, title: " View ISP", imageStr: "antenna.radiowaves.left.and.right")
+		ispButton2.addTarget(self, action: #selector(ispButtonTapped(_:)), for: .touchUpInside)
+		let ispBarButton = UIBarButtonItem(customView: ispButton2)
+
 		let optionsButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(optionsButtonTapped(_:)))
-		navigationItem.rightBarButtonItem = optionsButton
+		navigationItem.rightBarButtonItems = [optionsButton, ispBarButton]
 	}
 
 
@@ -210,6 +214,17 @@ class WIFIDetailVC: UIViewController {
 		}, shareAndPrintHandler: { _ in
 			self.presentShareAndPrintAlert()
 		})
+	}
+
+
+	@objc private func ispButtonTapped(_ sender: UIBarButtonItem) {
+		let ispVC = ISPVC()
+		let navController = UINavigationController(rootViewController: ispVC)
+		self.present(navController, animated: true)
+//		let isp = ISP(name: "Armstrong", urlString: "https://google.com", phone: "3303303303", context: .mainContext)
+//		WifiController.shared.addISP(wifi: wifi, isp: isp)
+//			presentISPAlert(createHandler: { _ in
+//		})
 	}
 }
 
