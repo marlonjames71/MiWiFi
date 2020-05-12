@@ -42,6 +42,6 @@ class MiWiFiBarButton: UIButton {
 	private func configureButton() {
 		translatesAutoresizingMaskIntoConstraints = false
 		titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
-		self.contentEdgeInsets = UIEdgeInsets(top: 1, left: 7, bottom: 1, right: 7)
+		self.contentEdgeInsets = UIEdgeInsets(top: 3, left: 7, bottom: 3, right: 7)
 	}
 }

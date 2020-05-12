@@ -218,7 +218,7 @@ class WIFIDetailVC: UIViewController {
 
 
 	@objc private func ispButtonTapped(_ sender: UIBarButtonItem) {
-		let ispVC = ISPVC()
+		let ispVC = ISPVC(wifi: wifi)
 		let navController = UINavigationController(rootViewController: ispVC)
 		self.present(navController, animated: true)
 //		let isp = ISP(name: "Armstrong", urlString: "https://google.com", phone: "3303303303", context: .mainContext)
