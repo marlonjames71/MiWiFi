@@ -22,10 +22,8 @@ final class ISPVC: UIViewController {
 		configureNavBar()
 		configureScrollView()
 		configureStackView()
+		configureAddButton()
 
-
-		addISPButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-		stackView.addArrangedSubview(addISPButton)
 		for _ in 0..<3 {
 			let testView = UIView()
 			testView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +78,9 @@ final class ISPVC: UIViewController {
 
 
 	private func configureAddButton() {
-		
+		addISPButton.addTarget(self, action: #selector(showAddISPVC), for: .touchUpInside)
+		addISPButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+		stackView.addArrangedSubview(addISPButton)
 	}
 
 
@@ -112,5 +112,13 @@ final class ISPVC: UIViewController {
 	// MARK: - Actions
 	@objc private func dismissVC() {
 		dismiss(animated: true)
+	}
+
+
+	@objc private func showAddISPVC() {
+		let addISPVC = AddISPVC()
+		addISPVC.modalPresentationStyle = .overFullScreen
+		addISPVC.modalTransitionStyle = .crossDissolve
+		present(addISPVC, animated: true)
 	}
 }

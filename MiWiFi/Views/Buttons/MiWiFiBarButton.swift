@@ -10,6 +10,12 @@ import UIKit
 
 class MiWiFiBarButton: UIButton {
 
+	override var isHighlighted: Bool {
+		didSet {
+			backgroundColor = isHighlighted ? UIColor.miGlobalTint.withAlphaComponent(0.4) : UIColor.miGlobalTint.withAlphaComponent(0.2)
+		}
+	}
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		configureButton()
@@ -29,8 +35,9 @@ class MiWiFiBarButton: UIButton {
 	init(backgroundColor: UIColor, tintColor: UIColor, textColor: UIColor, title: String, imageStr: String?) {
 		super.init(frame: .zero)
 		configureButton()
+		adjustsImageWhenHighlighted = false
 		setTitleColor(textColor, for: .normal)
-		setTitleColor(textColor.withAlphaComponent(0.2), for: .highlighted)
+		setTitleColor(textColor.withAlphaComponent(0.8), for: .highlighted)
 		self.tintColor = tintColor
 		self.backgroundColor = backgroundColor.withAlphaComponent(0.2)
 		self.setTitle(title, for: .normal)

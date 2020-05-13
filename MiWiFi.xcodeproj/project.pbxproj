@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		37055805246A548100C2ED1C /* MiWiFiISPContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37055804246A548100C2ED1C /* MiWiFiISPContainerView.swift */; };
 		37055807246A5B8700C2ED1C /* NewISPButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37055806246A5B8700C2ED1C /* NewISPButton.swift */; };
+		37072563246B9C4D00383760 /* AddISPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37072562246B9C4D00383760 /* AddISPVC.swift */; };
 		37162CCB23BB4A0D00407766 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CCA23BB4A0D00407766 /* AppDelegate.swift */; };
 		37162CCD23BB4A0D00407766 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37162CCC23BB4A0D00407766 /* SceneDelegate.swift */; };
 		37162CD423BB4A0F00407766 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37162CD323BB4A0F00407766 /* Assets.xcassets */; };
@@ -63,6 +64,7 @@
 /* Begin PBXFileReference section */
 		37055804246A548100C2ED1C /* MiWiFiISPContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiWiFiISPContainerView.swift; sourceTree = "<group>"; };
 		37055806246A5B8700C2ED1C /* NewISPButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewISPButton.swift; sourceTree = "<group>"; };
+		37072562246B9C4D00383760 /* AddISPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddISPVC.swift; sourceTree = "<group>"; };
 		37162CC723BB4A0D00407766 /* MiWiFi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiWiFi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37162CCA23BB4A0D00407766 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37162CCC23BB4A0D00407766 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				37E8B04923D56B55002701FC /* WiFiSettingsVC.swift */,
 				37737C6923FA7775000E3D4C /* MiWiFiAcknowledgmentVC.swift */,
 				37EBCBA02454A1CF00BB2B53 /* ISPVC.swift */,
+				37072562246B9C4D00383760 /* AddISPVC.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 				37E8B09A23DDA8E6002701FC /* KeychainWrapper.swift in Sources */,
 				376D5C2E243568C700F4054A /* FaceIDUtility.swift in Sources */,
 				37E8B09623DD0DC9002701FC /* UIStackView+StackViewTemplate.swift in Sources */,
+				37072563246B9C4D00383760 /* AddISPVC.swift in Sources */,
 				37737C6C23FA8679000E3D4C /* MiWiFiContainerView.swift in Sources */,
 				37E8B09B23DDA8E6002701FC /* KeychainItemAccessibility.swift in Sources */,
 				37162CE123BB6BD800407766 /* MiWiFiButton.swift in Sources */,
