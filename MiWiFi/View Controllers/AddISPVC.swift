@@ -44,7 +44,7 @@ final class AddISPVC: UIViewController {
 		let button = UIButton()
 		button.tintColor = .miGlobalTint
 		button.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: config), for: .normal)
-		button.addTarget(self, action: #selector(animateOut), for: .touchUpInside)
+		button.addTarget(self, action: #selector(containerAnimateOut), for: .touchUpInside)
 		button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 		button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
 		return button
@@ -55,21 +55,14 @@ final class AddISPVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		configureView()
-//		configureSaveButton()
 		configureContainerView()
 		configureStackView()
     }
 
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		UIView.animate(withDuration: 0.5,
-					   delay: 0.0,
-					   usingSpringWithDamping: 1.0,
-					   initialSpringVelocity: 1.2,
-					   options: .curveEaseOut,
-					   animations: {
-			self.container.transform = .identity
-		})
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		containerAnimateIn()
 	}
 
 
@@ -109,15 +102,23 @@ final class AddISPVC: UIViewController {
 	}
 
 
+	private func configureTextFields() {
+		urlTextField.textField.placeholder = "e.g. https://wesite.com"
+		phoneTextField.textField.placeholder = "e.g. 8005557171"
+		phoneTextField.textField.keyboardType = .numbersAndPunctuation
+//		[urlTextField, phoneTextField].forEach {
+////			$0.textField.delegate = self
+//		}
+	}
+
+
 	private func configureStackView() {
 		let horizStackView = UIStackView(arrangedSubviews: [titleLabel, dismissButton])
 		horizStackView.axis = .horizontal
 		horizStackView.distribution = .fill
 		horizStackView.spacing = 8
 
-		urlTextField.textField.placeholder = "e.g. https://wesite.com"
-		phoneTextField.textField.placeholder = "e.g. 8005557171"
-		phoneTextField.textField.keyboardType = .numbersAndPunctuation
+
 		let views: [UIView] = [horizStackView, urlTextField, phoneTextField]
 		saveButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
@@ -140,30 +141,20 @@ final class AddISPVC: UIViewController {
 	}
 
 
-	private func configureSaveButton() {
-		view.addSubview(saveButton)
-		saveButton.translatesAutoresizingMaskIntoConstraints = false
-
-		NSLayoutConstraint.activate([
-			saveButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-			saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			saveButton.heightAnchor.constraint(equalToConstant: 45),
-			saveButton.widthAnchor.constraint(equalToConstant: 100)
-		])
+	@objc private func containerAnimateIn() {
+		guard container.transform != .identity else { return }
+		UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+			self.container.transform = .identity
+		})
 	}
 
 
-	@objc private func animateOut() {
-		UIView.animate(withDuration: 0.5,
-					   delay: 0.0,
-					   usingSpringWithDamping: 1.0,
-					   initialSpringVelocity: 0.3,
-					   options: [],
-					   animations: {
-						self.container.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+	@objc private func containerAnimateOut() {
+		UIView.animate(withDuration: 0.2, animations: {
+			self.container.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
 		})
 
-		dismissVC()
+		self.dismissVC()
 	}
 
 
