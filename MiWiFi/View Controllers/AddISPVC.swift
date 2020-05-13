@@ -10,41 +10,66 @@ import UIKit
 
 final class AddISPVC: UIViewController {
 
-	let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint.withAlphaComponent(0.1),
+	private let container = UIView()
+
+	private let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint.withAlphaComponent(0.1),
 									 tintColor: .miGlobalTint,
 									 textColor: .miGlobalTint,
 									 title: "Save",
 									 imageStr: nil)
 
-	let urlTextField = MiWiFiTextField(isSecureEntry: false,
-									   placeholder: "e.g. https://wesite.com",
-									   autocorrectionType: .no,
-									   autocapitalizationType: .none,
-									   returnType: .continue)
+	private let urlTextField = MiWiFiTextFieldView(isSecureEntry: false,
+											placeholder: "Website URL",
+											autocorrectionType: .no,
+											autocapitalizationType: .none,
+											returnType: .continue)
 
-	let phoneTextField = MiWiFiTextField(isSecureEntry: false,
-										 placeholder: "e.g. 8005557171",
-										 autocorrectionType: .no,
-										 autocapitalizationType: .none,
-										 returnType: .done)
+	private let phoneTextField = MiWiFiTextFieldView(isSecureEntry: false,
+											  placeholder: "Phone",
+											  autocorrectionType: .no,
+											  autocapitalizationType: .none,
+											  returnType: .done)
 
-	let dismissLabel = UILabel()
+	private lazy var titleLabel: UILabel = {
+		let label = UILabel()
+		label.font = UIFont.preferredFont(forTextStyle: .title3)
+		label.text = "Add Your ISP Info"
+		label.textColor = .miTitleColor
+		label.textAlignment = .left
+		return label
+	}()
+
+	private lazy var dismissButton: UIButton = {
+		let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+		let button = UIButton()
+		button.tintColor = .miGlobalTint
+		button.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: config), for: .normal)
+		button.addTarget(self, action: #selector(animateOut), for: .touchUpInside)
+		button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+		button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+		return button
+	}()
 
 
 	// MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 		configureView()
-		configureDismissLabel()
-		configureSaveButton()
+//		configureSaveButton()
+		configureContainerView()
+		configureStackView()
     }
 
-
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		UIView.animate(withDuration: 0.4) {
-			self.dismissLabel.alpha = 1
-		}
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		UIView.animate(withDuration: 0.5,
+					   delay: 0.0,
+					   usingSpringWithDamping: 1.0,
+					   initialSpringVelocity: 1.2,
+					   options: .curveEaseOut,
+					   animations: {
+			self.container.transform = .identity
+		})
 	}
 
 
@@ -57,23 +82,61 @@ final class AddISPVC: UIViewController {
 		effectView.translatesAutoresizingMaskIntoConstraints = false
 		effectView.frame = view.bounds
 
-		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
-		view.addGestureRecognizer(tapGesture)
+//		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
+//		view.addGestureRecognizer(tapGesture)
 	}
 
 
-	private func configureDismissLabel() {
-		view.addSubview(dismissLabel)
-		dismissLabel.translatesAutoresizingMaskIntoConstraints = false
-		dismissLabel.text = "Tap to Dismiss"
-		dismissLabel.textColor = .secondaryLabel
+	private func configureContainerView() {
+		view.addSubview(container)
+		container.translatesAutoresizingMaskIntoConstraints = false
+
+		container.backgroundColor = .miBackground
+		container.layer.cornerRadius = 16
+		container.layer.cornerCurve = .continuous
+
+		let top = container.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+		top.priority = .defaultLow
+		top.isActive = true
 
 		NSLayoutConstraint.activate([
-			dismissLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			dismissLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+			container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+			container.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 30),
+			container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
 		])
 
-		dismissLabel.alpha = 0
+		container.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+	}
+
+
+	private func configureStackView() {
+		let horizStackView = UIStackView(arrangedSubviews: [titleLabel, dismissButton])
+		horizStackView.axis = .horizontal
+		horizStackView.distribution = .fill
+		horizStackView.spacing = 8
+
+		urlTextField.textField.placeholder = "e.g. https://wesite.com"
+		phoneTextField.textField.placeholder = "e.g. 8005557171"
+		phoneTextField.textField.keyboardType = .numbersAndPunctuation
+		let views: [UIView] = [horizStackView, urlTextField, phoneTextField]
+		saveButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+
+		views.forEach {
+			$0.translatesAutoresizingMaskIntoConstraints = false
+			$0.heightAnchor.constraint(equalToConstant: 45).isActive = true
+		}
+
+		let vertStackView = UIStackView.fillStackView(axis: .vertical, spacing: 30, with: views)
+		vertStackView.addArrangedSubview(saveButton)
+		container.addSubview(vertStackView)
+		vertStackView.translatesAutoresizingMaskIntoConstraints = false
+
+		NSLayoutConstraint.activate([
+			vertStackView.topAnchor.constraint(equalTo: container.topAnchor, constant: 8),
+			vertStackView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+			vertStackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
+			vertStackView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -20)
+		])
 	}
 
 
@@ -87,6 +150,20 @@ final class AddISPVC: UIViewController {
 			saveButton.heightAnchor.constraint(equalToConstant: 45),
 			saveButton.widthAnchor.constraint(equalToConstant: 100)
 		])
+	}
+
+
+	@objc private func animateOut() {
+		UIView.animate(withDuration: 0.5,
+					   delay: 0.0,
+					   usingSpringWithDamping: 1.0,
+					   initialSpringVelocity: 0.3,
+					   options: [],
+					   animations: {
+						self.container.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+		})
+
+		dismissVC()
 	}
 
 
