@@ -11,12 +11,19 @@ import UIKit
 final class AddISPVC: UIViewController {
 
 	private let container = UIView()
+	private let haptic = UIImpactFeedbackGenerator(style: .medium)
 
 	private let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint.withAlphaComponent(0.1),
 									 tintColor: .miGlobalTint,
 									 textColor: .miGlobalTint,
 									 title: "Save",
 									 imageStr: nil)
+
+	private let nameTextField = MiWiFiTextFieldView(isSecureEntry: false,
+													placeholder: "Name of ISP",
+													autocorrectionType: .no,
+													autocapitalizationType: .words,
+													returnType: .continue)
 
 	private let urlTextField = MiWiFiTextFieldView(isSecureEntry: false,
 											placeholder: "Website URL",
@@ -56,7 +63,9 @@ final class AddISPVC: UIViewController {
         super.viewDidLoad()
 		configureView()
 		configureContainerView()
+		configureTextFields()
 		configureStackView()
+		haptic.prepare()
     }
 
 
@@ -69,7 +78,7 @@ final class AddISPVC: UIViewController {
 	private func configureView() {
 		view.backgroundColor = .clear
 
-		let blur = UIBlurEffect(style: .prominent)
+		let blur = UIBlurEffect(style: .regular)
 		let effectView = UIVisualEffectView(effect: blur)
 		view.addSubview(effectView)
 		effectView.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +103,7 @@ final class AddISPVC: UIViewController {
 
 		NSLayoutConstraint.activate([
 			container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-			container.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 30),
+			container.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 80),
 			container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
 		])
 
@@ -103,12 +112,15 @@ final class AddISPVC: UIViewController {
 
 
 	private func configureTextFields() {
+		nameTextField.textField.becomeFirstResponder()
+		nameTextField.textField.placeholder = "e.g. CenturyLink"
 		urlTextField.textField.placeholder = "e.g. https://wesite.com"
+		urlTextField.textField.keyboardType = .URL
 		phoneTextField.textField.placeholder = "e.g. 8005557171"
 		phoneTextField.textField.keyboardType = .numbersAndPunctuation
-//		[urlTextField, phoneTextField].forEach {
-////			$0.textField.delegate = self
-//		}
+		[nameTextField, urlTextField, phoneTextField].forEach {
+			$0.textField.delegate = self
+		}
 	}
 
 
@@ -119,7 +131,7 @@ final class AddISPVC: UIViewController {
 		horizStackView.spacing = 8
 
 
-		let views: [UIView] = [horizStackView, urlTextField, phoneTextField]
+		let views: [UIView] = [horizStackView, nameTextField, urlTextField, phoneTextField]
 		saveButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
 		views.forEach {
@@ -145,13 +157,15 @@ final class AddISPVC: UIViewController {
 		guard container.transform != .identity else { return }
 		UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
 			self.container.transform = .identity
+		}, completion: { _ in
+			self.haptic.impactOccurred()
 		})
 	}
 
 
 	@objc private func containerAnimateOut() {
 		UIView.animate(withDuration: 0.2, animations: {
-			self.container.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+			self.container.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
 		})
 
 		self.dismissVC()
@@ -161,5 +175,22 @@ final class AddISPVC: UIViewController {
 	@objc private func dismissVC() {
 		dismiss(animated: true)
 	}
+}
 
+
+extension AddISPVC: UITextFieldDelegate {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		switch textField {
+		case nameTextField.textField:
+			urlTextField.textField.becomeFirstResponder()
+		case urlTextField.textField:
+			phoneTextField.textField.becomeFirstResponder()
+		case phoneTextField.textField:
+			phoneTextField.textField.resignFirstResponder()
+		default:
+			textField.resignFirstResponder()
+
+		}
+		return false
+	}
 }

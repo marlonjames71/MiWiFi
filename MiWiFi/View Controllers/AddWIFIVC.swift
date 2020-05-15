@@ -65,6 +65,8 @@ class AddWIFIVC: UIViewController {
 
 	weak var delegate: AddWiFiVCDelegate?
 
+	private let haptic = UIImpactFeedbackGenerator(style: .medium)
+
 
 // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -81,8 +83,15 @@ class AddWIFIVC: UIViewController {
 		updateViews()
 		configureTapGestureForView()
 
+		haptic.prepare()
 		nicknameTextField.textField.becomeFirstResponder()
     }
+
+
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		haptic.impactOccurred()
+	}
 
 
 	private func updateViews() {

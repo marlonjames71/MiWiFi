@@ -43,6 +43,7 @@ class WIFIDetailVC: UIViewController {
 		configureNavController()
 		configureView()
 		configureWifiInfoView()
+
 	}
 
 

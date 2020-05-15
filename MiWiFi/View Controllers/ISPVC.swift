@@ -10,10 +10,11 @@ import UIKit
 
 final class ISPVC: UIViewController {
 
-	let wifi: Wifi
-	let scrollView = UIScrollView()
-	let stackView = UIStackView()
-	let addISPButton = NewISPButton()
+	private let wifi: Wifi
+	private let scrollView = UIScrollView()
+	private let stackView = UIStackView()
+	private let addISPButton = NewISPButton()
+	private let haptic = UIImpactFeedbackGenerator(style: .medium)
 
 // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -23,6 +24,7 @@ final class ISPVC: UIViewController {
 		configureScrollView()
 		configureStackView()
 		configureAddButton()
+		haptic.prepare()
 
 		for _ in 0..<3 {
 			let testView = UIView()
@@ -116,6 +118,7 @@ final class ISPVC: UIViewController {
 
 
 	@objc private func showAddISPVC() {
+		haptic.impactOccurred()
 		let addISPVC = AddISPVC()
 		addISPVC.modalPresentationStyle = .overFullScreen
 		addISPVC.modalTransitionStyle = .crossDissolve
