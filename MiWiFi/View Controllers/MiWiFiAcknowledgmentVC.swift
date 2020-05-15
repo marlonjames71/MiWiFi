@@ -11,7 +11,7 @@ import SafariServices
 
 class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 
-	private let creditView = MiWiFiContainerView()
+	private let creditView = ISPContainerView()
 	private let iconImageView = MiWiFiIconImageView()
 	private let titleLabel = MiWiFiBodyLabel(textAlignment: .center, fontSize: 27)
 	private let creditTextView = UITextView()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MiWiFiContainerView: UIView {
+class ISPContainerView: UIView {
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
