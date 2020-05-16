@@ -1,20 +1,17 @@
 //
-//  NewISPButton.swift
+//  MiWiFiSaveButton.swift
 //  MiWiFi
 //
-//  Created by Marlon Raskin on 5/12/20.
+//  Created by Marlon Raskin on 5/16/20.
 //  Copyright © 2020 Marlon Raskin. All rights reserved.
 //
 
 import UIKit
 
-class NewISPButton: UIButton {
+class MiWiFiSaveButton: UIButton {
 
-	override var isHighlighted: Bool {
-		didSet {
-			self.backgroundColor = self.isHighlighted ? .miHighlightBGColor : .miButtonBGColor
-			self.layer.borderColor = self.isHighlighted ? UIColor.miHighlightBGColor.cgColor : UIColor.miButtonBorderColor.cgColor
-		}
+    override var isHighlighted: Bool {
+		didSet { self.backgroundColor = self.isHighlighted ? UIColor.miGlobalTint.withAlphaComponent(0.7) : .miGlobalTint }
 	}
 
 
@@ -35,14 +32,12 @@ class NewISPButton: UIButton {
 		layer.cornerRadius = 10
 		layer.cornerCurve = .continuous
 
-		self.setTitle("+ Add New", for: .normal)
+		self.setTitle("Save", for: .normal)
 		titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
 
-		self.backgroundColor = .miButtonBGColor
+		self.backgroundColor = .miGlobalTint
 		self.tintColor = .miGlobalTint
-		setTitleColor(.miGlobalTint, for: .normal)
-		layer.borderWidth = 1
-		layer.borderColor = UIColor.miButtonBorderColor.cgColor
+		setTitleColor(.miBackground, for: .normal)
 		//self.setTitleColor(.white, for: .highlighted)
 
 		layer.cornerRadius = 8
@@ -51,4 +46,5 @@ class NewISPButton: UIButton {
 		contentEdgeInsets.bottom = 7
 		translatesAutoresizingMaskIntoConstraints = false
 	}
+
 }

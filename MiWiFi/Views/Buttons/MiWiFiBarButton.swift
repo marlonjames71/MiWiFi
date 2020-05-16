@@ -12,7 +12,7 @@ class MiWiFiBarButton: UIButton {
 
 	override var isHighlighted: Bool {
 		didSet {
-			backgroundColor = isHighlighted ? UIColor.miGlobalTint.withAlphaComponent(0.4) : UIColor.miGlobalTint.withAlphaComponent(0.2)
+			backgroundColor = isHighlighted ? .miHighlightBGColor : .miButtonBGColor
 		}
 	}
 
@@ -39,7 +39,7 @@ class MiWiFiBarButton: UIButton {
 		setTitleColor(textColor, for: .normal)
 		setTitleColor(textColor.withAlphaComponent(0.8), for: .highlighted)
 		self.tintColor = tintColor
-		self.backgroundColor = backgroundColor.withAlphaComponent(0.2)
+		self.backgroundColor = backgroundColor.withAlphaComponent(0.15)
 		self.setTitle(title, for: .normal)
 		if let imageStr = imageStr {
 			self.setImage(UIImage(systemName: imageStr), for: .normal)

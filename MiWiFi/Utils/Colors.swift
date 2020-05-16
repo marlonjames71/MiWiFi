@@ -13,6 +13,7 @@ extension UIColor {
 	// Background
 	static let miBackground = UIColor(named: "miBackground")!
 	static let miSecondaryBackground = UIColor(named: "miSecondaryBackground")!
+	static let miContainerBackground = UIColor(named: "miContainerBackground")!
 	// Grays
 	static let miGrayColor = UIColor(named: "miGrayColor")!
 	static let miSecondaryGray = UIColor(named: "miSecondaryGrayColor")!
@@ -28,4 +29,11 @@ extension UIColor {
 	static let miActiveBorderColor = UIColor(named: "miActiveBorderColor")!
 	// Text
 	static let segSelectedTextColor = UIColor(named: "SegSelectedTextColor")!
+
+//	buttonBGColor
+	static let miButtonBGColor = UIColor(named: "buttonBGColor")!
+	static let miHighlightBGColor = UIColor(named: "highlightButtonBGColor")!
+	static let miButtonBorderColor = UIColor(named: "miButtonBorderColor")!
+
+	static let miBorderColor2 = UIColor(named: "miBorderColor2")!
 }

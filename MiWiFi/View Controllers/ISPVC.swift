@@ -30,7 +30,7 @@ final class ISPVC: UIViewController {
 			let testView = UIView()
 			testView.translatesAutoresizingMaskIntoConstraints = false
 			testView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-			testView.backgroundColor = UIColor.miGlobalTint.withAlphaComponent(0.2)
+			testView.backgroundColor = .miSecondaryBackground
 			testView.layer.cornerRadius = 12
 			testView.layer.cornerCurve = .continuous
 			stackView.addArrangedSubview(testView)
@@ -61,6 +61,7 @@ final class ISPVC: UIViewController {
 		title = wifi.nickname
 
 		navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(showISPTableVC))
 	}
 
 
@@ -123,5 +124,13 @@ final class ISPVC: UIViewController {
 		addISPVC.modalPresentationStyle = .overFullScreen
 		addISPVC.modalTransitionStyle = .crossDissolve
 		present(addISPVC, animated: true)
+	}
+
+
+	@objc private func showISPTableVC() {
+//		haptic.impactOccurred()
+		let ispTableVC = ISPTableVC()
+		let navController = UINavigationController(rootViewController: ispTableVC)
+		present(navController, animated: true)
 	}
 }

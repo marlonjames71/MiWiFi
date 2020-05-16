@@ -70,9 +70,9 @@ class WIFIDetailVC: UIViewController {
 			navigationItem.titleView = nil
 		}
 
-		let ispButton2 = MiWiFiBarButton(backgroundColor: .miIconTint, tintColor: .miGlobalTint, textColor: .miGlobalTint, title: " View ISP", imageStr: "antenna.radiowaves.left.and.right")
-		ispButton2.addTarget(self, action: #selector(ispButtonTapped(_:)), for: .touchUpInside)
-		let ispBarButton = UIBarButtonItem(customView: ispButton2)
+		let ispButton = MiWiFiBarButton(backgroundColor: .miIconTint, tintColor: .miGlobalTint, textColor: .miGlobalTint, title: " View ISP", imageStr: "antenna.radiowaves.left.and.right")
+		ispButton.addTarget(self, action: #selector(ispButtonTapped(_:)), for: .touchUpInside)
+		let ispBarButton = UIBarButtonItem(customView: ispButton)
 
 		let optionsButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(optionsButtonTapped(_:)))
 		navigationItem.rightBarButtonItems = [optionsButton, ispBarButton]

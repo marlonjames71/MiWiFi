@@ -53,11 +53,13 @@ class ISPInputView: UIView {
 		return button
 	}()
 
-	private let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint.withAlphaComponent(0.1),
+	private let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint,
 									 tintColor: .miGlobalTint,
 									 textColor: .miGlobalTint,
 									 title: "Save",
 									 imageStr: nil)
+
+	private let saveButton2 = MiWiFiSaveButton()
 
 	weak var delegate: ISPInputViewDelegate!
 
@@ -86,7 +88,7 @@ class ISPInputView: UIView {
 	// MARK: - Configure Methods
 	private func configure() {
 		translatesAutoresizingMaskIntoConstraints = false
-		backgroundColor = .miBackground
+		backgroundColor = .miContainerBackground
 		layer.cornerRadius = 16
 		layer.cornerCurve = .continuous
 	}
@@ -119,7 +121,7 @@ class ISPInputView: UIView {
 		}
 
 		let vertStackView = UIStackView.fillStackView(axis: .vertical, spacing: 30, with: views)
-		vertStackView.addArrangedSubview(saveButton)
+		vertStackView.addArrangedSubview(saveButton2)
 		self.addSubview(vertStackView)
 		vertStackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -139,7 +141,7 @@ class ISPInputView: UIView {
 
 
 	@objc private func saveButtonTapped() {
-		
+
 	}
 }
 

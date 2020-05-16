@@ -20,6 +20,7 @@ final class AddISPVC: UIViewController {
         super.viewDidLoad()
 		configureView()
 		configureInputView()
+		setupInputViewShadow()
 		haptic.prepare()
     }
 
@@ -29,14 +30,20 @@ final class AddISPVC: UIViewController {
 		inputViewAnimateIn()
 	}
 
+
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		setupInputViewShadow()
+	}
+
 // MARK: - Configure Methods
 	private func configureView() {
-		view.backgroundColor = .clear
+		view.backgroundColor = nil
 
-		let blur = UIBlurEffect(style: .regular)
-		let effectView = UIVisualEffectView(effect: blur)
+		let blurEffect = UIBlurEffect(style: .regular)
+//		let effectView = UIVisualEffectView(effect: blurEffect)
+		let effectView = CustomIntensityVisualEffectView(effect: blurEffect, intensity: 0.4)
 		view.addSubview(effectView)
-		effectView.translatesAutoresizingMaskIntoConstraints = false
 		effectView.frame = view.bounds
 
 //		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
@@ -61,6 +68,14 @@ final class AddISPVC: UIViewController {
 	}
 
 
+	private func setupInputViewShadow() {
+		ispInputView.layer.shadowPath = UIBezierPath(rect: ispInputView.bounds).cgPath
+		ispInputView.layer.shadowRadius = 14
+		ispInputView.layer.shadowOffset = .zero
+		ispInputView.layer.shadowOpacity = 0.2
+	}
+
+
 	// MARK: - Helper Methods
 	@objc private func inputViewAnimateIn() {
 		guard ispInputView.transform != .identity else { return }
@@ -74,7 +89,8 @@ final class AddISPVC: UIViewController {
 
 	@objc private func inputViewAnimateOut() {
 		UIView.animate(withDuration: 0.2, animations: {
-			self.ispInputView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+			self.ispInputView.alpha = 0
+			self.ispInputView.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
 		})
 
 		self.dismissVC()
