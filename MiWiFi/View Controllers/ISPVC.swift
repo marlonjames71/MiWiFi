@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-final class ISPVC: UIViewController, NSFetchedResultsControllerDelegate {
+final class ISPVC: UIViewController {
 
 	private let wifi: Wifi
 	private let scrollView = UIScrollView()
@@ -17,24 +17,6 @@ final class ISPVC: UIViewController, NSFetchedResultsControllerDelegate {
 	private let addISPButton = NewISPButton()
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
 
-	lazy var fetchedResultsController: NSFetchedResultsController<ISP> = {
-		let fetchRequest: NSFetchRequest<ISP> = ISP.fetchRequest()
-		let nameDescriptor = NSSortDescriptor(keyPath: \ISP.name, ascending: false)
-		fetchRequest.sortDescriptors = [nameDescriptor]
-
-		let moc = CoreDataStack.shared.mainContext
-		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-																	managedObjectContext: moc,
-																	sectionNameKeyPath: nil,
-																	cacheName: nil)
-		fetchedResultsController.delegate = self
-		do {
-			try fetchedResultsController.performFetch()
-		} catch {
-			print("error performing initial fetch for frc: \(error)")
-		}
-		return fetchedResultsController
-	}()
 
 // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -59,14 +41,9 @@ final class ISPVC: UIViewController, NSFetchedResultsControllerDelegate {
 
 
 	private func loadISP() {
-		guard let fetchedISPs = fetchedResultsController.fetchedObjects else { return }
-		for isp in fetchedISPs {
-			guard let networks = isp.wifiNetworks else { return }
-			if networks.contains(wifi) {
-				let ispView = ISPContainerView(frame: .zero, isp: isp)
-				stackView.addArrangedSubview(ispView)
-			}
-		}
+		guard let isp = wifi.isp else { return }
+		let ispView = ISPContainerView(frame: .zero, isp: isp)
+		stackView.addArrangedSubview(ispView)
 	}
 
 
@@ -151,7 +128,6 @@ final class ISPVC: UIViewController, NSFetchedResultsControllerDelegate {
 
 
 	@objc private func showISPTableVC() {
-//		haptic.impactOccurred()
 		let ispTableVC = ISPTableVC()
 		let navController = UINavigationController(rootViewController: ispTableVC)
 		present(navController, animated: true)
