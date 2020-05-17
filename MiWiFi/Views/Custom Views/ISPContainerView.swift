@@ -7,16 +7,20 @@
 //
 
 import UIKit
+import CoreData
+import LinkPresentation
 
 class ISPContainerView: UIView {
 
 	let isp: ISP
-	lazy var phoneButton = CallButton(frame: .zero, name: "\(isp.name ?? "")")
+	lazy var callButton = CallButton(frame: .zero, isp: isp)
+	lazy var copyButton = CopyButton()
 
 	init(frame: CGRect = .zero, isp: ISP) {
 		self.isp = isp
 		super.init(frame: frame)
 		configureMainView()
+		configureButtons()
 	}
 
 	override init(frame: CGRect) {
@@ -31,15 +35,42 @@ class ISPContainerView: UIView {
 
 	private func configureMainView() {
 		// Configure View
-		backgroundColor = .miBackground
+		backgroundColor = .miSecondaryBackground
 		layer.cornerRadius = 16
 		layer.cornerCurve = .continuous
-		layer.borderWidth = 1
-		layer.borderColor = UIColor.miGlobalTint.cgColor
 		translatesAutoresizingMaskIntoConstraints = false
 
 		// Configure Phone Button
-		phoneButton.addTarget(self, action: #selector(makeCall(_:)), for: .touchUpInside)
+	}
+
+
+	private func configureButtons() {
+		addSubview(callButton)
+		addSubview(copyButton)
+		callButton.addTarget(self, action: #selector(makeCall(_:)), for: .touchUpInside)
+
+//		let stackView = UIStackView.fillStackView(axis: .horizontal, spacing: 8, with: [callButton, copyButton])
+//		self.addSubview(stackView)
+
+		NSLayoutConstraint.activate([
+			callButton.heightAnchor.constraint(equalToConstant: 50),
+			copyButton.heightAnchor.constraint(equalToConstant: 50),
+			copyButton.widthAnchor.constraint(equalToConstant: 50),
+
+			callButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+			callButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+			callButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
+			callButton.trailingAnchor.constraint(equalTo: copyButton.leadingAnchor, constant: -8),
+
+			copyButton.topAnchor.constraint(equalTo: callButton.topAnchor),
+			copyButton.bottomAnchor.constraint(equalTo: callButton.bottomAnchor),
+			copyButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+
+//			stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+//			stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+//			stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
+//			stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
+		])
 	}
 
 

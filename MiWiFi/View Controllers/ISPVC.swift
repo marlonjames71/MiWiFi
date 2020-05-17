@@ -7,14 +7,34 @@
 //
 
 import UIKit
+import CoreData
 
-final class ISPVC: UIViewController {
+final class ISPVC: UIViewController, NSFetchedResultsControllerDelegate {
 
 	private let wifi: Wifi
 	private let scrollView = UIScrollView()
 	private let stackView = UIStackView()
 	private let addISPButton = NewISPButton()
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
+
+	lazy var fetchedResultsController: NSFetchedResultsController<ISP> = {
+		let fetchRequest: NSFetchRequest<ISP> = ISP.fetchRequest()
+		let nameDescriptor = NSSortDescriptor(keyPath: \ISP.name, ascending: false)
+		fetchRequest.sortDescriptors = [nameDescriptor]
+
+		let moc = CoreDataStack.shared.mainContext
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+																	managedObjectContext: moc,
+																	sectionNameKeyPath: nil,
+																	cacheName: nil)
+		fetchedResultsController.delegate = self
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			print("error performing initial fetch for frc: \(error)")
+		}
+		return fetchedResultsController
+	}()
 
 // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -26,15 +46,19 @@ final class ISPVC: UIViewController {
 		configureAddButton()
 		haptic.prepare()
 
-		for _ in 0..<3 {
-			let testView = UIView()
-			testView.translatesAutoresizingMaskIntoConstraints = false
-			testView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-			testView.backgroundColor = .miSecondaryBackground
-			testView.layer.cornerRadius = 12
-			testView.layer.cornerCurve = .continuous
-			stackView.addArrangedSubview(testView)
-		}
+//		guard let isp = wifi.isp else { return }
+		guard let fetchedISP = fetchedResultsController.fetchedObjects?.first else { return }
+		let ispView = ISPContainerView(frame: .zero, isp: fetchedISP)
+		stackView.addArrangedSubview(ispView)
+
+//		for _ in 0..<3 {
+//			let testView = UIView()
+//			testView.translatesAutoresizingMaskIntoConstraints = false
+//			testView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+//			testView.backgroundColor = .miSecondaryBackground
+//			testView.layer.cornerRadius = 12
+//			testView.layer.cornerCurve = .continuous
+//		}
     }
 
 	init(wifi: Wifi) {
@@ -120,7 +144,7 @@ final class ISPVC: UIViewController {
 
 	@objc private func showAddISPVC() {
 		haptic.impactOccurred()
-		let addISPVC = AddISPVC()
+		let addISPVC = AddISPVC(with: wifi)
 		addISPVC.modalPresentationStyle = .overFullScreen
 		addISPVC.modalTransitionStyle = .crossDissolve
 		present(addISPVC, animated: true)

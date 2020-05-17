@@ -41,6 +41,7 @@
 		377E3A21247051C300B4AB57 /* ISPTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A20247051C300B4AB57 /* ISPTableVC.swift */; };
 		377E3A232470616C00B4AB57 /* CustomIntensityVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A222470616C00B4AB57 /* CustomIntensityVisualEffectView.swift */; };
 		377E3A2524708EF100B4AB57 /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A2424708EF100B4AB57 /* CallButton.swift */; };
+		377E3A2724709E6900B4AB57 /* CopyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A2624709E6900B4AB57 /* CopyButton.swift */; };
 		37A404E624023FEF0028DB18 /* CALayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E524023FEF0028DB18 /* CALayer+Ext.swift */; };
 		37A404E824047B750028DB18 /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E724047B750028DB18 /* UIViewController+Alerts.swift */; };
 		37A404EA24047C550028DB18 /* ImageShareSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E924047C550028DB18 /* ImageShareSource.swift */; };
@@ -103,6 +104,7 @@
 		377E3A20247051C300B4AB57 /* ISPTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPTableVC.swift; sourceTree = "<group>"; };
 		377E3A222470616C00B4AB57 /* CustomIntensityVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIntensityVisualEffectView.swift; sourceTree = "<group>"; };
 		377E3A2424708EF100B4AB57 /* CallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
+		377E3A2624709E6900B4AB57 /* CopyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyButton.swift; sourceTree = "<group>"; };
 		37A404E524023FEF0028DB18 /* CALayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Ext.swift"; sourceTree = "<group>"; };
 		37A404E724047B750028DB18 /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		37A404E924047C550028DB18 /* ImageShareSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageShareSource.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				37055806246A5B8700C2ED1C /* NewISPButton.swift */,
 				377E3A1E246FA65400B4AB57 /* MiWiFiSaveButton.swift */,
 				377E3A2424708EF100B4AB57 /* CallButton.swift */,
+				377E3A2624709E6900B4AB57 /* CopyButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				377750E823FA2011004BC8EA /* Settings.swift in Sources */,
 				37E8B04C23D58B87002701FC /* UIFont+Rounded.swift in Sources */,
 				3726D01C2416E48600EF6DD8 /* LocalAuthentication+Ext.swift in Sources */,
+				377E3A2724709E6900B4AB57 /* CopyButton.swift in Sources */,
 				37E8B05723D5A519002701FC /* WifiController.swift in Sources */,
 				37E8B05C23D5B068002701FC /* SettingsCell.swift in Sources */,
 				37162CE923BC1A5B00407766 /* MiWiFiTextField.swift in Sources */,

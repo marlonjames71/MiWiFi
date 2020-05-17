@@ -11,13 +11,31 @@ import UIKit
 final class AddISPVC: UIViewController {
 
 	// MARK: - Properties
-	private lazy var ispInputView = ISPInputView(with: self)
+	private let wifi: Wifi
+	private let ispInputView: ISPInputView
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
+
+	init(with wifi: Wifi) {
+		self.wifi = wifi
+		ispInputView = ISPInputView(with: wifi)
+		super.init(nibName: nil, bundle: nil)
+	}
+
+
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		fatalError("Use init(with wifi: Wifi)")
+	}
+
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 
 
 	// MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+		ispInputView.delegate = self
 		configureView()
 		configureInputView()
 		setupInputViewShadow()

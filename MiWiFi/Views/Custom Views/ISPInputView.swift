@@ -15,6 +15,8 @@ protocol ISPInputViewDelegate: class {
 class ISPInputView: UIView {
 
 	// MARK: - Properties
+	private let wifi: Wifi
+
 	private let nameTextField = MiWiFiTextFieldView(isSecureEntry: false,
 													placeholder: "Name of ISP",
 													autocorrectionType: .no,
@@ -53,20 +55,20 @@ class ISPInputView: UIView {
 		return button
 	}()
 
-	private let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint,
-									 tintColor: .miGlobalTint,
-									 textColor: .miGlobalTint,
-									 title: "Save",
-									 imageStr: nil)
+//	private let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint,
+//									 tintColor: .miGlobalTint,
+//									 textColor: .miGlobalTint,
+//									 title: "Save",
+//									 imageStr: nil)
 
-	private let saveButton2 = MiWiFiSaveButton()
+	private let saveButton = MiWiFiSaveButton()
 
-	weak var delegate: ISPInputViewDelegate!
+	weak var delegate: ISPInputViewDelegate?
 
 
 	// MARK: - Init
-	init(frame: CGRect = .zero, with delegate: ISPInputViewDelegate) {
-		self.delegate = delegate
+	init(frame: CGRect = .zero, with wifi: Wifi) {
+		self.wifi = wifi
 		super.init(frame: frame)
 		nameTextField.textField.becomeFirstResponder()
 		configure()
@@ -75,8 +77,7 @@ class ISPInputView: UIView {
 	}
 
 	override init(frame: CGRect) {
-		super.init(frame: frame)
-		fatalError("Use init(frame with delegate")
+		fatalError("Use init(frame with wifi")
 	}
 
 
@@ -114,6 +115,7 @@ class ISPInputView: UIView {
 
 		let views: [UIView] = [horizStackView, nameTextField, urlTextField, phoneTextField]
 		saveButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+		saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
 
 		views.forEach {
 			$0.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +123,7 @@ class ISPInputView: UIView {
 		}
 
 		let vertStackView = UIStackView.fillStackView(axis: .vertical, spacing: 30, with: views)
-		vertStackView.addArrangedSubview(saveButton2)
+		vertStackView.addArrangedSubview(saveButton)
 		self.addSubview(vertStackView)
 		vertStackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -136,12 +138,15 @@ class ISPInputView: UIView {
 
 	// MARK: - Actions
 	@objc private func dismissButtonTapped() {
-		delegate.dismissView()
+		delegate?.dismissView()
 	}
 
 
 	@objc private func saveButtonTapped() {
-
+		guard let name = nameTextField.textField.text else { return }
+		let isp = ISPController.shared.createISP(name: name, urlString: urlTextField.textField.text, phone: phoneTextField.textField.text)
+		WifiController.shared.addISP(wifi: wifi, isp: isp)
+		delegate?.dismissView()
 	}
 }
 
