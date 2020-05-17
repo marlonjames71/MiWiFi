@@ -44,21 +44,8 @@ final class ISPVC: UIViewController, NSFetchedResultsControllerDelegate {
 		configureScrollView()
 		configureStackView()
 		configureAddButton()
+		loadISP()
 		haptic.prepare()
-
-//		guard let isp = wifi.isp else { return }
-		guard let fetchedISP = fetchedResultsController.fetchedObjects?.first else { return }
-		let ispView = ISPContainerView(frame: .zero, isp: fetchedISP)
-		stackView.addArrangedSubview(ispView)
-
-//		for _ in 0..<3 {
-//			let testView = UIView()
-//			testView.translatesAutoresizingMaskIntoConstraints = false
-//			testView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-//			testView.backgroundColor = .miSecondaryBackground
-//			testView.layer.cornerRadius = 12
-//			testView.layer.cornerCurve = .continuous
-//		}
     }
 
 	init(wifi: Wifi) {
@@ -68,6 +55,18 @@ final class ISPVC: UIViewController, NSFetchedResultsControllerDelegate {
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+
+	private func loadISP() {
+		guard let fetchedISPs = fetchedResultsController.fetchedObjects else { return }
+		for isp in fetchedISPs {
+			guard let networks = isp.wifiNetworks else { return }
+			if networks.contains(wifi) {
+				let ispView = ISPContainerView(frame: .zero, isp: isp)
+				stackView.addArrangedSubview(ispView)
+			}
+		}
 	}
 
 
