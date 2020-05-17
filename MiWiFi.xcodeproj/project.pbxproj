@@ -42,6 +42,7 @@
 		377E3A232470616C00B4AB57 /* CustomIntensityVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A222470616C00B4AB57 /* CustomIntensityVisualEffectView.swift */; };
 		377E3A2524708EF100B4AB57 /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A2424708EF100B4AB57 /* CallButton.swift */; };
 		377E3A2724709E6900B4AB57 /* CopyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A2624709E6900B4AB57 /* CopyButton.swift */; };
+		377E3A292470FD5B00B4AB57 /* UIView+Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */; };
 		37A404E624023FEF0028DB18 /* CALayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E524023FEF0028DB18 /* CALayer+Ext.swift */; };
 		37A404E824047B750028DB18 /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E724047B750028DB18 /* UIViewController+Alerts.swift */; };
 		37A404EA24047C550028DB18 /* ImageShareSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E924047C550028DB18 /* ImageShareSource.swift */; };
@@ -105,6 +106,7 @@
 		377E3A222470616C00B4AB57 /* CustomIntensityVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIntensityVisualEffectView.swift; sourceTree = "<group>"; };
 		377E3A2424708EF100B4AB57 /* CallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
 		377E3A2624709E6900B4AB57 /* CopyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyButton.swift; sourceTree = "<group>"; };
+		377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraint.swift"; sourceTree = "<group>"; };
 		37A404E524023FEF0028DB18 /* CALayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Ext.swift"; sourceTree = "<group>"; };
 		37A404E724047B750028DB18 /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		37A404E924047C550028DB18 /* ImageShareSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageShareSource.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				37A404E524023FEF0028DB18 /* CALayer+Ext.swift */,
 				37A404E724047B750028DB18 /* UIViewController+Alerts.swift */,
 				3726D01B2416E48600EF6DD8 /* LocalAuthentication+Ext.swift */,
+				377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 				37E8B09A23DDA8E6002701FC /* KeychainWrapper.swift in Sources */,
 				377E3A1C246F3D2300B4AB57 /* ISPInputView.swift in Sources */,
 				376D5C2E243568C700F4054A /* FaceIDUtility.swift in Sources */,
+				377E3A292470FD5B00B4AB57 /* UIView+Constraint.swift in Sources */,
 				37E8B09623DD0DC9002701FC /* UIStackView+StackViewTemplate.swift in Sources */,
 				377E3A232470616C00B4AB57 /* CustomIntensityVisualEffectView.swift in Sources */,
 				377E3A1F246FA65400B4AB57 /* MiWiFiSaveButton.swift in Sources */,

@@ -101,12 +101,9 @@ class WiFiTableVC: UIViewController {
 		view.addSubview(wifiTableView)
 		wifiTableView.translatesAutoresizingMaskIntoConstraints = false
 		wifiTableView.register(MiWiFiCell.self, forCellReuseIdentifier: "WifiCell")
-		NSLayoutConstraint.activate([
-			wifiTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-			wifiTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-			wifiTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-			wifiTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
-		])
+
+		view.constrain(subview: wifiTableView)
+
 		wifiTableView.tableFooterView = UIView()
 		wifiTableView.dataSource = self
 		wifiTableView.delegate = self

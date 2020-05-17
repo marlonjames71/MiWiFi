@@ -22,7 +22,6 @@ class ISPTableVC: UIViewController {
 
 	private func configureView() {
 //		view.backgroundColor = .miSecondaryBackground
-		view.addSubview(ispTableView)
 		title = "ISP List"
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
@@ -34,11 +33,12 @@ class ISPTableVC: UIViewController {
 	}
 
 	private func configureTableView() {
+		view.addSubview(ispTableView)
 		ispTableView.register(UITableViewCell.self, forCellReuseIdentifier: identifier)
 		ispTableView.rowHeight = 60
 
 		ispTableView.backgroundColor = .miSecondaryBackground
-		ispTableView.frame = view.bounds
+		view.constrain(subview: ispTableView)
 
 		ispTableView.delegate = self
 		ispTableView.dataSource = self
