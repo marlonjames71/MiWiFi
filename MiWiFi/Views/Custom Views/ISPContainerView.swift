@@ -39,8 +39,6 @@ class ISPContainerView: UIView {
 		layer.cornerRadius = 16
 		layer.cornerCurve = .continuous
 		translatesAutoresizingMaskIntoConstraints = false
-
-		// Configure Phone Button
 	}
 
 
@@ -76,10 +74,10 @@ class ISPContainerView: UIView {
 
 	@objc private func makeCall(_ sender: CallButton) {
 		guard let number = isp.phone,
-			let numberURL = URL(string: "tel://" + number) else { return }
+			let numberURL = URL(string: "tel:\(number)") else { return }
 		let app = UIApplication.shared
 		if app.canOpenURL(numberURL) {
-			app.canOpenURL(numberURL)
+			app.open(numberURL, options: [:])
 		}
 	}
 }
