@@ -10,11 +10,17 @@ import UIKit
 import CoreData
 import LinkPresentation
 
+protocol ISPContainerViewDelegate: class {
+	func showCopyAlert()
+}
+
 class ISPContainerView: UIView {
 
 	let isp: ISP
 	lazy var callButton = CallButton(frame: .zero, isp: isp)
 	lazy var copyButton = CopyButton()
+
+	weak var delegate: ISPContainerViewDelegate?
 
 	init(frame: CGRect = .zero, isp: ISP) {
 		self.isp = isp
@@ -46,6 +52,7 @@ class ISPContainerView: UIView {
 		addSubview(callButton)
 		addSubview(copyButton)
 		callButton.addTarget(self, action: #selector(makeCall(_:)), for: .touchUpInside)
+		copyButton.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
 
 //		let stackView = UIStackView.fillStackView(axis: .horizontal, spacing: 8, with: [callButton, copyButton])
 //		self.addSubview(stackView)
@@ -72,12 +79,25 @@ class ISPContainerView: UIView {
 	}
 
 
+	private func open(_ url: URL) {
+		let app = UIApplication.shared
+		if app.canOpenURL(url) {
+			app.open(url, options: [:])
+		}
+	}
+
+
 	@objc private func makeCall(_ sender: CallButton) {
 		guard let number = isp.phone,
 			let numberURL = URL(string: "tel:\(number)") else { return }
-		let app = UIApplication.shared
-		if app.canOpenURL(numberURL) {
-			app.open(numberURL, options: [:])
-		}
+		open(numberURL)
+	}
+
+
+	@objc private func copyButtonTapped() {
+		guard let number = isp.phone else { return }
+		delegate?.showCopyAlert()
+		let pasteboard = UIPasteboard.general
+		pasteboard.string = number
 	}
 }

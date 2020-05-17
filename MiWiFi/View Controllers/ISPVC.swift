@@ -16,6 +16,7 @@ final class ISPVC: UIViewController {
 	private let stackView = UIStackView()
 	private let addISPButton = NewISPButton()
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
+	private let copyAlertView = CopyAlertView()
 
 
 // MARK: - Lifecycle
@@ -27,6 +28,8 @@ final class ISPVC: UIViewController {
 		configureStackView()
 		configureAddButton()
 		loadISP()
+		configureCopyAlert()
+		setupCopyAlertShadow()
 		haptic.prepare()
     }
 
@@ -44,6 +47,7 @@ final class ISPVC: UIViewController {
 		guard let isp = wifi.isp else { return }
 		let ispView = ISPContainerView(frame: .zero, isp: isp)
 		stackView.addArrangedSubview(ispView)
+		ispView.delegate = self
 	}
 
 
@@ -112,6 +116,29 @@ final class ISPVC: UIViewController {
 	}
 
 
+	private func configureCopyAlert() {
+		
+		view.addSubview(copyAlertView)
+
+		NSLayoutConstraint.activate([
+			copyAlertView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50),
+			copyAlertView.leadingAnchor.constraint(lessThanOrEqualTo: view.leadingAnchor, constant: 100),
+			copyAlertView.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: -100),
+			copyAlertView.heightAnchor.constraint(equalToConstant: 50)
+		])
+
+		copyAlertView.alpha = 0
+	}
+
+
+	private func setupCopyAlertShadow() {
+		copyAlertView.layer.shadowPath = UIBezierPath(rect: copyAlertView.bounds).cgPath
+		copyAlertView.layer.shadowRadius = 12
+		copyAlertView.layer.shadowOffset = .zero
+		copyAlertView.layer.shadowOpacity = 0.2
+	}
+
+
 	// MARK: - Actions
 	@objc private func dismissVC() {
 		dismiss(animated: true)
@@ -131,5 +158,17 @@ final class ISPVC: UIViewController {
 		let ispTableVC = ISPTableVC()
 		let navController = UINavigationController(rootViewController: ispTableVC)
 		present(navController, animated: true)
+	}
+
+
+	private func animateCopyAlert() {
+		copyAlertView.animateFromBottomWithTranslationTo(x: 0, y: -130)
+	}
+}
+
+
+extension ISPVC: ISPContainerViewDelegate {
+	func showCopyAlert() {
+		animateCopyAlert()
 	}
 }
