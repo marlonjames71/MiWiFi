@@ -40,6 +40,11 @@ final class ISPVC: UIViewController {
 		haptic.prepare()
     }
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		print("I will appear")
+	}
+
 	init(wifi: Wifi) {
 		self.wifi = wifi
 		super.init(nibName: nil, bundle: nil)
@@ -157,6 +162,7 @@ final class ISPVC: UIViewController {
 	@objc private func showAddISPVC() {
 		haptic.impactOccurred()
 		let addISPVC = AddISPVC(with: wifi)
+		addISPVC.delegate = self
 		addISPVC.modalPresentationStyle = .overFullScreen
 		addISPVC.modalTransitionStyle = .crossDissolve
 		present(addISPVC, animated: true)
@@ -165,6 +171,8 @@ final class ISPVC: UIViewController {
 
 	@objc private func showISPTableVC() {
 		let ispTableVC = ISPTableVC()
+		ispTableVC.wifi = wifi
+		ispTableVC.delegate = self
 		let navController = UINavigationController(rootViewController: ispTableVC)
 		present(navController, animated: true)
 	}
@@ -181,5 +189,25 @@ final class ISPVC: UIViewController {
 extension ISPVC: ISPContainerViewDelegate {
 	func showCopyAlert() {
 		animateCopyAlert()
+	}
+}
+
+
+extension ISPVC: AddISPDelegate, ISPTableVCDelegate {
+	func removeISPViewFromStackView() {
+		for view in stackView.arrangedSubviews {
+			view.isHidden = true
+			stackView.removeArrangedSubview(view)
+		}
+	}
+
+	func didFinishAddingISP() {
+		removeISPViewFromStackView()
+		loadISP()
+	}
+
+	func didFinishChoosingISP() {
+		removeISPViewFromStackView()
+		loadISP()
 	}
 }

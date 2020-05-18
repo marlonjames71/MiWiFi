@@ -222,10 +222,6 @@ class WIFIDetailVC: UIViewController {
 		let ispVC = ISPVC(wifi: wifi)
 		let navController = UINavigationController(rootViewController: ispVC)
 		self.present(navController, animated: true)
-//		let isp = ISP(name: "Armstrong", urlString: "https://google.com", phone: "3303303303", context: .mainContext)
-//		WifiController.shared.addISP(wifi: wifi, isp: isp)
-//			presentISPAlert(createHandler: { _ in
-//		})
 	}
 }
 

@@ -8,12 +8,18 @@
 
 import UIKit
 
+protocol AddISPDelegate: class {
+	func didFinishAddingISP()
+}
+
 final class AddISPVC: UIViewController {
 
 	// MARK: - Properties
 	private let wifi: Wifi
 	private let ispInputView: ISPInputView
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
+
+	weak var delegate: AddISPDelegate!
 
 	init(with wifi: Wifi) {
 		self.wifi = wifi
@@ -71,6 +77,7 @@ final class AddISPVC: UIViewController {
 
 	private func configureInputView() {
 		view.addSubview(ispInputView)
+		ispInputView.saveDelegate = self
 
 		let top = ispInputView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
 		top.priority = .defaultLow
@@ -124,5 +131,11 @@ final class AddISPVC: UIViewController {
 extension AddISPVC: ISPInputViewDelegate {
 	func dismissView() {
 		inputViewAnimateOut()
+	}
+}
+
+extension AddISPVC: ISPInputViewSaveDelegate {
+	func didTapSave() {
+		delegate.didFinishAddingISP()
 	}
 }

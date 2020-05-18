@@ -12,6 +12,10 @@ protocol ISPInputViewDelegate: class {
 	func dismissView()
 }
 
+protocol ISPInputViewSaveDelegate: class {
+	func didTapSave()
+}
+
 class ISPInputView: UIView {
 
 	// MARK: - Properties
@@ -55,15 +59,10 @@ class ISPInputView: UIView {
 		return button
 	}()
 
-//	private let saveButton = MiWiFiBarButton(backgroundColor: UIColor.miGlobalTint,
-//									 tintColor: .miGlobalTint,
-//									 textColor: .miGlobalTint,
-//									 title: "Save",
-//									 imageStr: nil)
-
 	private let saveButton = MiWiFiSaveButton()
 
 	weak var delegate: ISPInputViewDelegate?
+	weak var saveDelegate: ISPInputViewSaveDelegate?
 
 
 	// MARK: - Init
@@ -145,8 +144,9 @@ class ISPInputView: UIView {
 	@objc private func saveButtonTapped() {
 		guard let name = nameTextField.textField.text else { return }
 		let isp = ISPController.shared.createISP(name: name, urlString: urlTextField.textField.text, phone: phoneTextField.textField.text)
-		WifiController.shared.addISP(wifi: wifi, isp: isp)
+		WifiController.shared.updateISP(wifi: wifi, isp: isp)
 		delegate?.dismissView()
+		saveDelegate?.didTapSave()
 	}
 }
 

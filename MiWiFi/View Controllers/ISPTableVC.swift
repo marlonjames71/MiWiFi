@@ -7,11 +7,39 @@
 //
 
 import UIKit
+import CoreData
+
+protocol ISPTableVCDelegate: class {
+	func didFinishChoosingISP()
+}
 
 class ISPTableVC: UIViewController {
 
+	var wifi: Wifi?
+
+	weak var delegate: ISPTableVCDelegate!
+
 	private let ispTableView = UITableView(frame: .zero, style: .grouped)
 	private let identifier = "ISPCell"
+
+	lazy var fetchedResultsController: NSFetchedResultsController<ISP> = {
+		let fetchRequest: NSFetchRequest<ISP> = ISP.fetchRequest()
+		let nameDescriptor = NSSortDescriptor(keyPath: \ISP.name, ascending: true)
+		fetchRequest.sortDescriptors = [nameDescriptor]
+
+		let moc = CoreDataStack.shared.mainContext
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+																	managedObjectContext: moc,
+																	sectionNameKeyPath: nil,
+																	cacheName: nil)
+		fetchedResultsController.delegate = self
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			print("error performing initial fetch for frc: \(error)")
+		}
+		return fetchedResultsController
+	}()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +66,7 @@ class ISPTableVC: UIViewController {
 		ispTableView.rowHeight = 60
 
 		ispTableView.backgroundColor = .miSecondaryBackground
+		ispTableView.tintColor = .miGlobalTint
 		view.constrain(subview: ispTableView)
 
 		ispTableView.delegate = self
@@ -52,22 +81,103 @@ class ISPTableVC: UIViewController {
 
 
 extension ISPTableVC: UITableViewDelegate, UITableViewDataSource {
+	func numberOfSections(in tableView: UITableView) -> Int {
+		fetchedResultsController.sections?.count ?? 1
+	}
+	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 10
+		fetchedResultsController.sections?[section].numberOfObjects ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+		let isp = fetchedResultsController.object(at: indexPath)
 		cell.backgroundColor = .miSecondaryBackground
-		cell.textLabel?.text = "\(indexPath.row + 1)"
-		cell.textLabel?.font = .roundedFont(ofSize: 17, weight: .medium)
-		let config = UIImage.SymbolConfiguration(pointSize: 20)
-		if indexPath.row == 4 {
-			cell.imageView?.image = UIImage(systemName: "largecircle.fill.circle", withConfiguration: config)?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
+		cell.textLabel?.text = "\(isp.name ?? "No Name")"
+		cell.textLabel?.font = .roundedFont(ofSize: 20, weight: .medium)
+
+		if wifi?.isp == isp {
+			cell.accessoryType = .checkmark
 		} else {
-			cell.imageView?.image = UIImage(systemName: "circle", withConfiguration: config)?.withTintColor(.miGlobalTint, renderingMode: .alwaysOriginal)
+			cell.accessoryType = .none
 		}
 
 		return cell
+	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let isp = fetchedResultsController.object(at: indexPath)
+		guard let wifi = wifi else { return }
+		WifiController.shared.updateISP(wifi: wifi, isp: isp)
+		delegate.didFinishChoosingISP()
+		dismissVC()
+	}
+
+	func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+		"Swipe left on any cell to delete or edit an existing internet service provider."
+	}
+}
+
+
+extension ISPTableVC: NSFetchedResultsControllerDelegate {
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		ispTableView.beginUpdates()
+	}
+
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		if let count = fetchedResultsController.fetchedObjects?.count {
+			if navigationItem.rightBarButtonItem == nil && count > 0 {
+				navigationItem.rightBarButtonItem = editButtonItem
+				UIView.animate(withDuration: 1) {
+//					self.emptyStateView.isHidden = true
+				}
+			} else if count == 0 {
+				navigationItem.rightBarButtonItem = nil
+//				emptyStateView.isHidden = false
+			}
+		}
+
+		ispTableView.endUpdates()
+	}
+
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+					didChange sectionInfo: NSFetchedResultsSectionInfo,
+					atSectionIndex sectionIndex: Int,
+					for type: NSFetchedResultsChangeType) {
+		let indexSet = IndexSet([sectionIndex])
+		switch type {
+		case .insert:
+			ispTableView.insertSections(indexSet, with: .fade)
+		case .delete:
+			ispTableView.deleteSections(indexSet, with: .fade)
+		default:
+			print(#line, #file, "unexpected NSFetchedResultsChangeType: \(type)")
+		}
+	}
+
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+					didChange anObject: Any,
+					at indexPath: IndexPath?,
+					for type: NSFetchedResultsChangeType,
+					newIndexPath: IndexPath?) {
+		switch type {
+		case .insert:
+			guard let newIndexPath = newIndexPath else { return }
+			ispTableView.insertRows(at: [newIndexPath], with: .automatic)
+		case .move:
+			guard let indexPath = indexPath,
+				let newIndexPath = newIndexPath else { return }
+			let cell = ispTableView.cellForRow(at: indexPath) as? MiWiFiCell
+			cell?.updateViews()
+			ispTableView.moveRow(at: indexPath, to: newIndexPath)
+		case .update:
+			guard let indexPath = indexPath else { return }
+			ispTableView.reloadRows(at: [indexPath], with: .automatic)
+		case .delete:
+			guard let indexPath = indexPath else { return }
+			ispTableView.deleteRows(at: [indexPath], with: .automatic)
+		@unknown default:
+			print(#line, #file, "unknown NSFetchedResultsChangeType: \(type)")
+		}
 	}
 }
