@@ -16,17 +16,39 @@ protocol ISPContainerViewDelegate: class {
 
 class ISPContainerView: UIView {
 
-	let isp: ISP
+	private let isp: ISP
+	private let copyHaptic = UIImpactFeedbackGenerator(style: .rigid)
+	private let callHaptic = UIImpactFeedbackGenerator(style: .medium)
+	private let linkStackView = UIStackView()
+	private let buttonStackView = UIStackView()
 	lazy var callButton = CallButton(frame: .zero, isp: isp)
 	lazy var copyButton = CopyButton()
 
+	lazy var titleLabel: UILabel = {
+		let label = UILabel()
+		label.font = UIFont.roundedFont(ofSize: 22, weight: .medium)
+		label.textColor = .miIconTint
+		label.text = isp.name
+		return label
+	}()
+
+	private let activityIndicator = UIActivityIndicatorView()
+	private var provider = LPMetadataProvider()
+	private var linkView = LPLinkView()
+	private var currentMetadata: LPLinkMetadata?
+
 	weak var delegate: ISPContainerViewDelegate?
 
+	// MARK: - Init
 	init(frame: CGRect = .zero, isp: ISP) {
 		self.isp = isp
 		super.init(frame: frame)
 		configureMainView()
 		configureButtons()
+		configureLinkView()
+		loadLinkView()
+		copyHaptic.prepare()
+		callHaptic.prepare()
 	}
 
 	override init(frame: CGRect) {
@@ -39,6 +61,7 @@ class ISPContainerView: UIView {
 	}
 
 
+	// MARK: - Configure Methods
 	private func configureMainView() {
 		// Configure View
 		backgroundColor = .miSecondaryBackground
@@ -48,34 +71,118 @@ class ISPContainerView: UIView {
 	}
 
 
+	private func configureLinkView() {
+		addSubview(linkStackView)
+		linkStackView.translatesAutoresizingMaskIntoConstraints = false
+		linkStackView.axis = .vertical
+		linkStackView.alignment = .fill
+		linkStackView.distribution = .fill
+		linkStackView.spacing = 16
+		linkStackView.addArrangedSubview(buttonStackView)
+		linkStackView.insertArrangedSubview(activityIndicator, at: 1)
+		linkStackView.insertArrangedSubview(titleLabel, at: 0)
+
+		NSLayoutConstraint.activate([
+			linkStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+			linkStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+			linkStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+			linkStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+		])
+	}
+
+
 	private func configureButtons() {
-		addSubview(callButton)
-		addSubview(copyButton)
+		buttonStackView.axis = .horizontal
+		buttonStackView.alignment = .fill
+		buttonStackView.distribution = .fill
+		buttonStackView.spacing = 8
+		[callButton, copyButton].forEach { buttonStackView.addArrangedSubview($0) }
+
 		callButton.addTarget(self, action: #selector(makeCall(_:)), for: .touchUpInside)
 		copyButton.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
-
-//		let stackView = UIStackView.fillStackView(axis: .horizontal, spacing: 8, with: [callButton, copyButton])
-//		self.addSubview(stackView)
 
 		NSLayoutConstraint.activate([
 			callButton.heightAnchor.constraint(equalToConstant: 50),
 			copyButton.heightAnchor.constraint(equalToConstant: 50),
 			copyButton.widthAnchor.constraint(equalToConstant: 50),
-
-			callButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-			callButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-			callButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
-			callButton.trailingAnchor.constraint(equalTo: copyButton.leadingAnchor, constant: -8),
-
-			copyButton.topAnchor.constraint(equalTo: callButton.topAnchor),
-			copyButton.bottomAnchor.constraint(equalTo: callButton.bottomAnchor),
-			copyButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
-
-//			stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-//			stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-//			stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
-//			stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
 		])
+
+		buttonStackView.isHidden = true
+	}
+
+
+	// MARK: - Helper Methods
+	func loadLinkView() {
+		guard !activityIndicator.isAnimating else {
+			cancel()
+			return
+		}
+
+		activityIndicator.startAnimating()
+		buttonStackView.isHidden = true
+		provider = LPMetadataProvider()
+		provider.timeout = 5
+
+		linkView.removeFromSuperview()
+		guard let urlString = isp.urlString,
+			let url = URL(string: urlString) else {
+				resetViews()
+				return
+		}
+		linkView = LPLinkView(url: url)
+
+		fetchMetadata(for: url)
+		linkStackView.insertArrangedSubview(linkView, at: 1)
+	}
+
+
+	private func fetchMetadata(for url: URL) {
+		if let existingMetadata = MetadataCache.retrieve(urlString: url.absoluteString) {
+			linkView = LPLinkView(metadata: existingMetadata)
+			resetViews()
+			currentMetadata = existingMetadata
+		} else {
+			provider.startFetchingMetadata(for: url) { [weak self] metadata, error in
+				guard let self = self else { return }
+				guard let metadata = metadata, error == nil else {
+					if let error = error as? LPError {
+						DispatchQueue.main.async { [weak self] in
+							guard let self = self else { return }
+
+							print(error.prettyString) // Fix to use tiny popup alert
+							self.resetViews()
+						}
+					}
+					return
+				}
+
+				self.currentMetadata = metadata
+				if let imageProvider = metadata.imageProvider {
+					metadata.iconProvider = imageProvider
+				}
+				MetadataCache.cache(metadata: metadata)
+
+				DispatchQueue.main.async { [weak self] in
+					guard let self = self else { return }
+
+					self.linkView.metadata = metadata
+					self.resetViews()
+				}
+			}
+		}
+	}
+
+
+	private func cancel() {
+		provider.cancel()
+		provider = LPMetadataProvider()
+		resetViews()
+	}
+
+
+	private func resetViews() {
+		activityIndicator.stopAnimating()
+		buttonStackView.isHidden = false
 	}
 
 
@@ -87,7 +194,9 @@ class ISPContainerView: UIView {
 	}
 
 
+	// MARK: - Actions
 	@objc private func makeCall(_ sender: CallButton) {
+		callHaptic.impactOccurred()
 		guard let number = isp.phone,
 			let numberURL = URL(string: "tel:\(number)") else { return }
 		open(numberURL)
@@ -95,9 +204,33 @@ class ISPContainerView: UIView {
 
 
 	@objc private func copyButtonTapped() {
+		copyHaptic.impactOccurred()
+		copyButton.isEnabled = false
 		guard let number = isp.phone else { return }
 		delegate?.showCopyAlert()
 		let pasteboard = UIPasteboard.general
 		pasteboard.string = number
+	}
+}
+
+
+extension ISPContainerView: ISPVCDelegate {
+	func animationDidFinish() {
+		copyButton.isEnabled = true
+	}
+}
+
+
+extension ISPContainerView: UIActivityItemSource {
+	func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+		return "website.com"
+	}
+
+	func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+		return currentMetadata?.originalURL
+	}
+
+	func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+		return currentMetadata
 	}
 }

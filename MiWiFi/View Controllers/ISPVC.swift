@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol ISPVCDelegate {
+	func animationDidFinish()
+}
+
 final class ISPVC: UIViewController {
 
 	private let wifi: Wifi
@@ -17,6 +21,9 @@ final class ISPVC: UIViewController {
 	private let addISPButton = NewISPButton()
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
 	private let copyAlertView = CopyAlertView()
+	private var ispView: ISPContainerView?
+
+	var delegate: ISPVCDelegate?
 
 
 // MARK: - Lifecycle
@@ -45,9 +52,9 @@ final class ISPVC: UIViewController {
 
 	private func loadISP() {
 		guard let isp = wifi.isp else { return }
-		let ispView = ISPContainerView(frame: .zero, isp: isp)
-		stackView.addArrangedSubview(ispView)
-		ispView.delegate = self
+		ispView = ISPContainerView(frame: .zero, isp: isp)
+		stackView.addArrangedSubview(ispView ?? UIView())
+		ispView?.delegate = self
 	}
 
 
@@ -85,6 +92,8 @@ final class ISPVC: UIViewController {
 
 
 	private func configureAddButton() {
+		// Add button should only appear when an ISP hasn't been added yet
+		guard wifi.isp == nil else { return }
 		addISPButton.addTarget(self, action: #selector(showAddISPVC), for: .touchUpInside)
 		addISPButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
 		stackView.addArrangedSubview(addISPButton)
@@ -162,7 +171,9 @@ final class ISPVC: UIViewController {
 
 
 	private func animateCopyAlert() {
-		copyAlertView.animateFromBottomWithTranslationTo(x: 0, y: -130)
+		copyAlertView.animateFromBottomWithTranslationTo(x: 0, y: -130, completion: {
+			self.ispView?.copyButton.isEnabled = true
+		})
 	}
 }
 
