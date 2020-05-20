@@ -61,6 +61,13 @@ class WiFiTableVC: UIViewController {
     }
 
 
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		let indexPaths = wifiTableView.indexPathsForSelectedRows
+		indexPaths?.forEach { wifiTableView.deselectRow(at: $0, animated: true) }
+	}
+
+
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		self.setEditing(false, animated: false)

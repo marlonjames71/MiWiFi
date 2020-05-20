@@ -27,6 +27,7 @@
 		372CC8D62471B32F00570381 /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372CC8D52471B32F00570381 /* UIView+Animations.swift */; };
 		372CC8D82471EF2500570381 /* MetadataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372CC8D72471EF2500570381 /* MetadataCache.swift */; };
 		372CC8DA2471F25B00570381 /* LPError+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372CC8D92471F25B00570381 /* LPError+Ext.swift */; };
+		3741EB09247349930041EBB3 /* TouchDoll in Frameworks */ = {isa = PBXBuildFile; productRef = 3741EB08247349930041EBB3 /* TouchDoll */; };
 		374DA86723E530CA004FC394 /* UIAlert+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86623E530CA004FC394 /* UIAlert+Ext.swift */; };
 		374DA86A23E8EA49004FC394 /* MenuIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374DA86923E8EA49004FC394 /* MenuIdentifiable.swift */; };
 		374F59C223F1026B009921E3 /* MiWiFiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F59C123F1026B009921E3 /* MiWiFiCell.swift */; };
@@ -147,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				376D5BA4242F3C0100F4054A /* QRettyCode in Frameworks */,
+				3741EB09247349930041EBB3 /* TouchDoll in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +379,7 @@
 			name = MiWiFi;
 			packageProductDependencies = (
 				376D5BA3242F3C0100F4054A /* QRettyCode */,
+				3741EB08247349930041EBB3 /* TouchDoll */,
 			);
 			productName = MiWiFi;
 			productReference = 37162CC723BB4A0D00407766 /* MiWiFi.app */;
@@ -408,6 +411,7 @@
 			mainGroup = 37162CBE23BB4A0D00407766;
 			packageReferences = (
 				376D5BA2242F3C0100F4054A /* XCRemoteSwiftPackageReference "QRettyCode" */,
+				3741EB07247349930041EBB3 /* XCRemoteSwiftPackageReference "TouchDoll" */,
 			);
 			productRefGroup = 37162CC823BB4A0D00407766 /* Products */;
 			projectDirPath = "";
@@ -694,6 +698,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3741EB07247349930041EBB3 /* XCRemoteSwiftPackageReference "TouchDoll" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mredig/TouchDoll.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
 		376D5BA2242F3C0100F4054A /* XCRemoteSwiftPackageReference "QRettyCode" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mredig/QRettyCode.git";
@@ -705,6 +717,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3741EB08247349930041EBB3 /* TouchDoll */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3741EB07247349930041EBB3 /* XCRemoteSwiftPackageReference "TouchDoll" */;
+			productName = TouchDoll;
+		};
 		376D5BA3242F3C0100F4054A /* QRettyCode */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 376D5BA2242F3C0100F4054A /* XCRemoteSwiftPackageReference "QRettyCode" */;
