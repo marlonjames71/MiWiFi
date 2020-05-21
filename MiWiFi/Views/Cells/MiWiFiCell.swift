@@ -59,13 +59,12 @@ class MiWiFiCell: UITableViewCell {
 
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
+		// Editing styles don't seem to match what's actually happening
+		// Without the line below, the icon disappears even when swiping on the cell. Line below fixes that
+		guard editingStyle != .delete else { return }
 		if editing {
-//			self.leadingConstraintNormal.isActive = false
-//			self.leadingConstraintEdit.isActive = true
 			animateLabelConstraints(setToNormal: true)
 		} else {
-//			self.leadingConstraintEdit.isActive = false
-//			self.leadingConstraintNormal.isActive = true
 			animateLabelConstraints(setToNormal: false)
 		}
 		UIView.animate(withDuration: 0.3) {
@@ -77,25 +76,19 @@ class MiWiFiCell: UITableViewCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 		UIView.animate(withDuration: 0.3) {
-			switch selected {
-			case true:
+			if selected {
 				self.container.backgroundColor = UIColor.miIconTint.withAlphaComponent(0.2)
-			case false:
+			} else {
 				self.container.backgroundColor = .miSecondaryBackground
 			}
 		}
 		
 		guard isEditing else { return }
 		UIView.animate(withDuration: 0.3) {
-			switch selected {
-			case true:
-				self.containerLeadingConstraintNormal.isActive = false
-				self.containerLeadingConstraintEdit.isActive = true
-//				self.markIconAsSelected(basedOn: selected)
-			default:
-				self.containerLeadingConstraintEdit.isActive = false
-				self.containerLeadingConstraintNormal.isActive = true
-//				self.markIconAsSelected(basedOn: selected)
+			if selected {
+				self.animateContainerConstraints(setToNormal: true)
+			} else {
+				self.animateContainerConstraints(setToNormal: false)
 			}
 		}
 
@@ -105,49 +98,29 @@ class MiWiFiCell: UITableViewCell {
 	}
 
 
-	private func animateIcon(basedOn isEditing: Bool) {
-		guard let wifi = wifi else { return }
-		UIView.animate(withDuration: 0.3) {
-			if isEditing {
-				self.iconImageView.image = UIImage(systemName: "circle", withConfiguration: self.configuration)
-			} else {
-				self.iconImageView.image = UIImage(systemName: wifi.iconName ?? "house.fill", withConfiguration: self.configuration)
-			}
-			self.layoutIfNeeded()
+	private func animateContainerConstraints(setToNormal: Bool) {
+		if setToNormal {
+			guard containerLeadingConstraintNormal.isActive else { return }
+			NSLayoutConstraint.deactivate([containerLeadingConstraintNormal])
+			NSLayoutConstraint.activate([containerLeadingConstraintEdit])
+
+		} else {
+			guard containerLeadingConstraintEdit.isActive else { return }
+			NSLayoutConstraint.deactivate([containerLeadingConstraintEdit])
+			NSLayoutConstraint.activate([containerLeadingConstraintNormal])
 		}
-	}
-
-
-	private func markIconAsSelected(basedOn isSelected: Bool) {
-		UIView.animate(withDuration: 0.2) {
-			if isSelected {
-				self.iconImageView.image = UIImage(systemName: "largecircle.fill.circle", withConfiguration: self.configuration)
-			} else {
-				self.iconImageView.image = UIImage(systemName: "circle", withConfiguration: self.configuration)
-			}
-			self.layoutIfNeeded()
-		}
-	}
-
-
-	private func setIconImageToOriginalImageAndColor() {
-		guard let wifi = wifi else { return }
-		iconImageView.tintColor = wifi.isFavorite == true ? UIColor.miFavoriteTint : UIColor.miIconTint
-		iconImageView.image = UIImage(systemName: wifi.iconName ?? "house.fill", withConfiguration: configuration)
 	}
 
 
 	private func animateLabelConstraints(setToNormal: Bool) {
-		switch setToNormal {
-		case true:
+		if setToNormal {
 			guard labelsLeadingConstraintNormal.isActive else { return }
 			UIView.animate(withDuration: 0.15) {
 				self.iconImageView.alpha = 0
 			}
 			NSLayoutConstraint.deactivate([labelsLeadingConstraintNormal])
 			NSLayoutConstraint.activate([labelsLeadingConstraintEdit])
-
-		case false:
+		} else {
 			guard labelsLeadingConstraintEdit.isActive else { return }
 			NSLayoutConstraint.deactivate([labelsLeadingConstraintEdit])
 			NSLayoutConstraint.activate([labelsLeadingConstraintNormal])
@@ -172,19 +145,19 @@ class MiWiFiCell: UITableViewCell {
 			}
 		}
 
-		setIconImageToOriginalImageAndColor()
-
 		configureIconImageView()
 		configureLockImageView()
 	}
 
 
 	private func configureConstraints() {
+		// Container
 		containerLeadingConstraintNormal = container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -10)
 		containerLeadingConstraintNormal.isActive = true
 		containerLeadingConstraintEdit = container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
 		containerLeadingConstraintEdit.isActive = false
 
+		// labelStackView
 		labelsLeadingConstraintNormal = labelStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12)
 		labelsLeadingConstraintNormal.isActive = true
 		labelsLeadingConstraintEdit = labelStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 60)
@@ -233,6 +206,10 @@ class MiWiFiCell: UITableViewCell {
 			iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
 			iconImageView.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: 0)
 		])
+
+		guard let wifi = wifi else { return }
+		iconImageView.tintColor = wifi.isFavorite == true ? UIColor.miFavoriteTint : UIColor.miIconTint
+		iconImageView.image = UIImage(systemName: wifi.iconName ?? "house.fill", withConfiguration: configuration)
 	}
 
 
