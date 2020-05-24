@@ -65,7 +65,6 @@ final class AddISPVC: UIViewController {
 		view.backgroundColor = nil
 
 		let blurEffect = UIBlurEffect(style: .regular)
-//		let effectView = UIVisualEffectView(effect: blurEffect)
 		let effectView = CustomIntensityVisualEffectView(effect: blurEffect, intensity: 0.4)
 		view.addSubview(effectView)
 		effectView.frame = view.bounds

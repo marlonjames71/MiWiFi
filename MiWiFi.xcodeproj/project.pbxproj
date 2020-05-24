@@ -48,6 +48,7 @@
 		377E3A2724709E6900B4AB57 /* CopyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A2624709E6900B4AB57 /* CopyButton.swift */; };
 		377E3A292470FD5B00B4AB57 /* UIView+Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */; };
 		3781B0C2247624C50028A24C /* MiWiFiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781B0C1247624C50028A24C /* MiWiFiCell.swift */; };
+		378C73C2247B01FF009CB1CF /* CreditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C73C1247B01FF009CB1CF /* CreditView.swift */; };
 		37A404E624023FEF0028DB18 /* CALayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E524023FEF0028DB18 /* CALayer+Ext.swift */; };
 		37A404E824047B750028DB18 /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E724047B750028DB18 /* UIViewController+Alerts.swift */; };
 		37A404EA24047C550028DB18 /* ImageShareSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E924047C550028DB18 /* ImageShareSource.swift */; };
@@ -116,6 +117,7 @@
 		377E3A2624709E6900B4AB57 /* CopyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyButton.swift; sourceTree = "<group>"; };
 		377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraint.swift"; sourceTree = "<group>"; };
 		3781B0C1247624C50028A24C /* MiWiFiCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiWiFiCell.swift; sourceTree = "<group>"; };
+		378C73C1247B01FF009CB1CF /* CreditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditView.swift; sourceTree = "<group>"; };
 		37A404E524023FEF0028DB18 /* CALayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Ext.swift"; sourceTree = "<group>"; };
 		37A404E724047B750028DB18 /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		37A404E924047C550028DB18 /* ImageShareSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageShareSource.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				37737C6B23FA8679000E3D4C /* ISPContainerView.swift */,
 				377E3A1B246F3D2300B4AB57 /* ISPInputView.swift */,
 				375B3E872471965D009FF99E /* CopyAlertView.swift */,
+				378C73C1247B01FF009CB1CF /* CreditView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				37162CE523BBEDA200407766 /* AddWIFIVC.swift in Sources */,
 				37E8B0A423E15B1F002701FC /* MiWiFiPlaceholderLabel.swift in Sources */,
 				371E94F1245FD2B300B21E43 /* MiWiFiBarButton.swift in Sources */,
+				378C73C2247B01FF009CB1CF /* CreditView.swift in Sources */,
 				37A404E624023FEF0028DB18 /* CALayer+Ext.swift in Sources */,
 				37A404E824047B750028DB18 /* UIViewController+Alerts.swift in Sources */,
 				371E94ED245F210000B21E43 /* ISP+Convenience.swift in Sources */,
