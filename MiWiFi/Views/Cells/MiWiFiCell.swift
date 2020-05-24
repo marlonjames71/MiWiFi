@@ -154,10 +154,11 @@ class MiWiFiCell: UITableViewCell {
 		// Container
 		containerLeadingConstraintNormal = container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -10)
 		containerLeadingConstraintNormal.isActive = true
-		containerLeadingConstraintEdit = container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
+		containerLeadingConstraintEdit = container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
 		containerLeadingConstraintEdit.isActive = false
 
 		// labelStackView
+		labelStackView.translatesAutoresizingMaskIntoConstraints = false
 		labelsLeadingConstraintNormal = labelStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12)
 		labelsLeadingConstraintNormal.isActive = true
 		labelsLeadingConstraintEdit = labelStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 60)
@@ -170,7 +171,6 @@ class MiWiFiCell: UITableViewCell {
 
 		NSLayoutConstraint.activate([
 			container.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-			container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
 			container.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
 			container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
 		])
@@ -178,9 +178,6 @@ class MiWiFiCell: UITableViewCell {
 
 
 	private func configureLabels() {
-		nicknameLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-		networkLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
-
 		labelStackView = UIStackView.fillStackView(spacing: 8, with: [nicknameLabel, networkLabel])
 
 		container.addSubview(labelStackView)
@@ -188,7 +185,6 @@ class MiWiFiCell: UITableViewCell {
 
 		NSLayoutConstraint.activate([
 			labelStackView.topAnchor.constraint(equalTo: container.topAnchor, constant: 12),
-			labelStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
 			labelStackView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -12),
 			labelStackView.trailingAnchor.constraint(equalTo: lockImageView.leadingAnchor, constant: -8)
 		])
