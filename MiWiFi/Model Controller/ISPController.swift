@@ -28,6 +28,7 @@ class ISPController {
 			isp.urlString = urlString
 			isp.phone = phone
 		}
+		saveToPersistentStore()
 	}
 
 

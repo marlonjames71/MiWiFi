@@ -49,6 +49,7 @@
 		377E3A292470FD5B00B4AB57 /* UIView+Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */; };
 		3781B0C2247624C50028A24C /* MiWiFiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781B0C1247624C50028A24C /* MiWiFiCell.swift */; };
 		378C73C2247B01FF009CB1CF /* CreditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C73C1247B01FF009CB1CF /* CreditView.swift */; };
+		378C73C5247B2903009CB1CF /* ContextMenuConfig+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C73C4247B2903009CB1CF /* ContextMenuConfig+Ext.swift */; };
 		37A404E624023FEF0028DB18 /* CALayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E524023FEF0028DB18 /* CALayer+Ext.swift */; };
 		37A404E824047B750028DB18 /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E724047B750028DB18 /* UIViewController+Alerts.swift */; };
 		37A404EA24047C550028DB18 /* ImageShareSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A404E924047C550028DB18 /* ImageShareSource.swift */; };
@@ -118,6 +119,7 @@
 		377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraint.swift"; sourceTree = "<group>"; };
 		3781B0C1247624C50028A24C /* MiWiFiCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiWiFiCell.swift; sourceTree = "<group>"; };
 		378C73C1247B01FF009CB1CF /* CreditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditView.swift; sourceTree = "<group>"; };
+		378C73C4247B2903009CB1CF /* ContextMenuConfig+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContextMenuConfig+Ext.swift"; sourceTree = "<group>"; };
 		37A404E524023FEF0028DB18 /* CALayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Ext.swift"; sourceTree = "<group>"; };
 		37A404E724047B750028DB18 /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		37A404E924047C550028DB18 /* ImageShareSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageShareSource.swift; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 				377E3A282470FD5B00B4AB57 /* UIView+Constraint.swift */,
 				372CC8D52471B32F00570381 /* UIView+Animations.swift */,
 				372CC8D92471F25B00570381 /* LPError+Ext.swift */,
+				378C73C4247B2903009CB1CF /* ContextMenuConfig+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				37055805246A548100C2ED1C /* MiWiFiISPContainerView.swift in Sources */,
 				37162CE723BBF52700407766 /* MiWiFiTextFieldView.swift in Sources */,
 				37162CDF23BB4F7700407766 /* WiFiTableVC.swift in Sources */,
+				378C73C5247B2903009CB1CF /* ContextMenuConfig+Ext.swift in Sources */,
 				37162CE323BB797900407766 /* Colors.swift in Sources */,
 				37162CCB23BB4A0D00407766 /* AppDelegate.swift in Sources */,
 				37E8B05223D5A3E5002701FC /* wifi.xcdatamodeld in Sources */,

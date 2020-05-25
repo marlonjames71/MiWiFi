@@ -15,7 +15,7 @@ protocol ISPVCDelegate {
 
 final class ISPVC: UIViewController {
 
-	private let wifi: Wifi
+	private var wifi: Wifi
 	private let scrollView = UIScrollView()
 	private let stackView = UIStackView()
 	private let addISPButton = NewISPButton()
@@ -33,7 +33,7 @@ final class ISPVC: UIViewController {
 		configureNavBar()
 		configureScrollView()
 		configureStackView()
-		configureAddButton()
+//		configureAddButton()
 		loadISP()
 		configureCopyAlert()
 		setupCopyAlertShadow()
@@ -56,7 +56,10 @@ final class ISPVC: UIViewController {
 
 
 	private func loadISP() {
-		guard let isp = wifi.isp else { return }
+		guard let isp = wifi.isp else {
+			configureAddButton()
+			return
+		}
 		ispView = ISPContainerView(frame: .zero, isp: isp)
 		stackView.addArrangedSubview(ispView ?? UIView())
 		ispView?.delegate = self
@@ -161,7 +164,7 @@ final class ISPVC: UIViewController {
 
 	@objc private func showAddISPVC() {
 		haptic.impactOccurred()
-		let addISPVC = AddISPVC(with: wifi)
+		let addISPVC = AddISPVC(with: wifi, shouldAttachToWifi: true)
 		addISPVC.delegate = self
 		addISPVC.modalPresentationStyle = .overFullScreen
 		addISPVC.modalTransitionStyle = .crossDissolve
@@ -183,6 +186,26 @@ final class ISPVC: UIViewController {
 			self.ispView?.copyButton.isEnabled = true
 		})
 	}
+
+
+	func removeISPViewFromStackView() {
+		for view in stackView.arrangedSubviews {
+			view.isHidden = true
+			stackView.removeArrangedSubview(view)
+		}
+	}
+
+
+	private func resetViews() {
+		removeISPViewFromStackView()
+		loadISP()
+	}
+
+
+	private func resetViewsAfterDeletion() {
+		removeISPViewFromStackView()
+		loadISP()
+	}
 }
 
 
@@ -194,20 +217,18 @@ extension ISPVC: ISPContainerViewDelegate {
 
 
 extension ISPVC: AddISPDelegate, ISPTableVCDelegate {
-	func removeISPViewFromStackView() {
-		for view in stackView.arrangedSubviews {
-			view.isHidden = true
-			stackView.removeArrangedSubview(view)
-		}
-	}
-
 	func didFinishAddingISP() {
-		removeISPViewFromStackView()
-		loadISP()
+		resetViews()
 	}
 
 	func didFinishChoosingISP() {
-		removeISPViewFromStackView()
-		loadISP()
+		resetViews()
+	}
+
+	func didDeleteISP(wifi: Wifi?) {
+		if let wifi = wifi {
+			self.wifi = wifi
+		}
+		resetViewsAfterDeletion()
 	}
 }

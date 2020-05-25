@@ -20,6 +20,13 @@ class ISPInputView: UIView {
 
 	// MARK: - Properties
 	private let wifi: Wifi
+	private let shouldAttachISPToWiFi: Bool
+
+	var isp: ISP? {
+		didSet {
+			loadISPInfo()
+		}
+	}
 
 	private let nameTextField = MiWiFiTextFieldView(isSecureEntry: false,
 													placeholder: "Name of ISP",
@@ -49,7 +56,7 @@ class ISPInputView: UIView {
 	}()
 
 	private lazy var dismissButton: UIButton = {
-		let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+		let config = UIImage.SymbolConfiguration(pointSize: 26, weight: .regular)
 		let button = UIButton()
 		button.tintColor = .miGlobalTint
 		button.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: config), for: .normal)
@@ -66,8 +73,9 @@ class ISPInputView: UIView {
 
 
 	// MARK: - Init
-	init(frame: CGRect = .zero, with wifi: Wifi) {
+	init(frame: CGRect = .zero, with wifi: Wifi, shouldAttachISPToWiFi: Bool) {
 		self.wifi = wifi
+		self.shouldAttachISPToWiFi = shouldAttachISPToWiFi
 		super.init(frame: frame)
 		nameTextField.textField.becomeFirstResponder()
 		configure()
@@ -82,6 +90,14 @@ class ISPInputView: UIView {
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+
+	private func loadISPInfo() {
+		guard let isp = isp else { return }
+		nameTextField.textField.text = isp.name
+		urlTextField.textField.text = isp.urlString
+		phoneTextField.textField.text = isp.phone
 	}
 
 
@@ -143,10 +159,18 @@ class ISPInputView: UIView {
 
 	@objc private func saveButtonTapped() {
 		guard let name = nameTextField.textField.text else { return }
-		let isp = ISPController.shared.createISP(name: name, urlString: urlTextField.textField.text, phone: phoneTextField.textField.text)
-		WifiController.shared.updateISP(wifi: wifi, isp: isp)
-		delegate?.dismissView()
-		saveDelegate?.didTapSave()
+		if let isp = isp {
+			ISPController.shared.updateISP(isp: isp, name: name, urlString: urlTextField.textField.text, phone: phoneTextField.textField.text)
+			delegate?.dismissView()
+			saveDelegate?.didTapSave()
+		} else {
+			let isp = ISPController.shared.createISP(name: name, urlString: urlTextField.textField.text, phone: phoneTextField.textField.text)
+			if shouldAttachISPToWiFi {
+				WifiController.shared.updateISP(wifi: wifi, isp: isp)
+			}
+			delegate?.dismissView()
+			saveDelegate?.didTapSave()
+		}
 	}
 }
 

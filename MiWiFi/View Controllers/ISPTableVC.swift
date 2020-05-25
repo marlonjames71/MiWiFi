@@ -11,6 +11,7 @@ import CoreData
 
 protocol ISPTableVCDelegate: class {
 	func didFinishChoosingISP()
+	func didDeleteISP(wifi: Wifi?)
 }
 
 class ISPTableVC: UIViewController {
@@ -56,8 +57,8 @@ class ISPTableVC: UIViewController {
 																		.font : UIFont.roundedFont(ofSize: 35, weight: .heavy)]
 		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.miTitleColor,
 																   .font : UIFont.roundedFont(ofSize: 20, weight: .bold)]
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissVC))
-		
+		navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissVC))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddISPVC))
 	}
 
 	private func configureTableView() {
@@ -77,6 +78,23 @@ class ISPTableVC: UIViewController {
 	@objc private func dismissVC() {
 		dismiss(animated: true)
 	}
+
+
+	@objc internal func showAddISPVC() {
+		guard let wifi = wifi else { return }
+		let addISPVC = AddISPVC(with: wifi, shouldAttachToWifi: false)
+		addISPVC.delegate = self
+		addISPVC.modalPresentationStyle = .overFullScreen
+		addISPVC.modalTransitionStyle = .crossDissolve
+		present(addISPVC, animated: true)
+	}
+}
+
+
+extension ISPTableVC: AddISPDelegate {
+	func didFinishAddingISP() {
+		delegate.didFinishChoosingISP()
+	}
 }
 
 
@@ -89,8 +107,7 @@ extension ISPTableVC: UITableViewDelegate, UITableViewDataSource {
 		fetchedResultsController.sections?[section].numberOfObjects ?? 0
 	}
 
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+	private func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
 		let isp = fetchedResultsController.object(at: indexPath)
 		cell.backgroundColor = .miSecondaryBackground
 		cell.textLabel?.text = "\(isp.name ?? "No Name")"
@@ -101,8 +118,18 @@ extension ISPTableVC: UITableViewDelegate, UITableViewDataSource {
 		} else {
 			cell.accessoryType = .none
 		}
+	}
+
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+		configureCell(cell, at: indexPath)
 
 		return cell
+	}
+
+	func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+		let isp = self.fetchedResultsController.object(at: indexPath)
+		return UIContextMenuConfiguration.newISPTableViewConfiguration(isp: isp, delegate: self, indexPath: indexPath)
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -119,24 +146,25 @@ extension ISPTableVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 
+extension ISPTableVC: ISPTableViewConfigurationDelegate {
+	func showAddISPVCForEditing(isp: ISP) {
+		guard let wifi = wifi else { return }
+		let addISPVC = AddISPVC(with: wifi, shouldAttachToWifi: true)
+		addISPVC.isp = isp
+		addISPVC.delegate = self
+		addISPVC.modalPresentationStyle = .overFullScreen
+		addISPVC.modalTransitionStyle = .crossDissolve
+		present(addISPVC, animated: true)
+	}
+}
+
+
 extension ISPTableVC: NSFetchedResultsControllerDelegate {
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		ispTableView.beginUpdates()
 	}
 
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		if let count = fetchedResultsController.fetchedObjects?.count {
-			if navigationItem.rightBarButtonItem == nil && count > 0 {
-				navigationItem.rightBarButtonItem = editButtonItem
-				UIView.animate(withDuration: 1) {
-//					self.emptyStateView.isHidden = true
-				}
-			} else if count == 0 {
-				navigationItem.rightBarButtonItem = nil
-//				emptyStateView.isHidden = false
-			}
-		}
-
 		ispTableView.endUpdates()
 	}
 
@@ -167,8 +195,9 @@ extension ISPTableVC: NSFetchedResultsControllerDelegate {
 		case .move:
 			guard let indexPath = indexPath,
 				let newIndexPath = newIndexPath else { return }
-			let cell = ispTableView.cellForRow(at: indexPath) as? MiWiFiCell
-			cell?.updateViews()
+			if let cell = ispTableView.cellForRow(at: indexPath) {
+				configureCell(cell, at: newIndexPath)
+			}
 			ispTableView.moveRow(at: indexPath, to: newIndexPath)
 		case .update:
 			guard let indexPath = indexPath else { return }
@@ -176,6 +205,8 @@ extension ISPTableVC: NSFetchedResultsControllerDelegate {
 		case .delete:
 			guard let indexPath = indexPath else { return }
 			ispTableView.deleteRows(at: [indexPath], with: .automatic)
+			// update ISPVC if ISP has been deleted
+			delegate.didDeleteISP(wifi: wifi)
 		@unknown default:
 			print(#line, #file, "unknown NSFetchedResultsChangeType: \(type)")
 		}

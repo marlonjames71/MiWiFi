@@ -27,7 +27,7 @@ class MiWiFiBarButton: UIButton {
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		layer.cornerRadius = 6
+		layer.cornerRadius = self.frame.height / 2
 		clipsToBounds = true
 		layer.cornerCurve = .continuous
 	}

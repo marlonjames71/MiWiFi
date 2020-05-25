@@ -16,14 +16,21 @@ final class AddISPVC: UIViewController {
 
 	// MARK: - Properties
 	private let wifi: Wifi
+	var isp: ISP? {
+		didSet {
+			ispInputView.isp = isp
+		}
+	}
+	private let shouldAttachToWifi: Bool
 	private let ispInputView: ISPInputView
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
 
 	weak var delegate: AddISPDelegate!
 
-	init(with wifi: Wifi) {
+	init(with wifi: Wifi, shouldAttachToWifi: Bool) {
 		self.wifi = wifi
-		ispInputView = ISPInputView(with: wifi)
+		self.shouldAttachToWifi = shouldAttachToWifi
+		ispInputView = ISPInputView(frame: .zero, with: wifi, shouldAttachISPToWiFi: shouldAttachToWifi)
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -68,9 +75,6 @@ final class AddISPVC: UIViewController {
 		let effectView = CustomIntensityVisualEffectView(effect: blurEffect, intensity: 0.4)
 		view.addSubview(effectView)
 		effectView.frame = view.bounds
-
-//		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
-//		view.addGestureRecognizer(tapGesture)
 	}
 
 

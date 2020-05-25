@@ -9,12 +9,17 @@
 import Foundation
 import CoreData
 
-extension ISP {
+extension ISP: MenuIdentifiable {
+	
 	@discardableResult convenience init(name: String, urlString: String? = nil, phone: String? = nil, context: NSManagedObjectContext) {
 		self.init(context: context)
 		self.name = name
 		self.urlString = urlString
 		self.wifiNetworks = NSOrderedSet(array: [])
 		self.phone = phone
+	}
+
+	var passwordIDStr: String {
+		self.name ?? "Password" + "71"
 	}
 }
