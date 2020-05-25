@@ -12,7 +12,6 @@ import CoreData
 class WiFiTableVC: UIViewController {
 
 	// MARK: - Properties & Outlets
-	private let haptic = UIImpactFeedbackGenerator(style: .rigid)
 	private let wifiTableView = UITableView(frame: .zero, style: .plain)
 	private let addButton = UIButton(type: .system)
 	private let trashButton = UIButton(type: .system)
@@ -57,7 +56,6 @@ class WiFiTableVC: UIViewController {
 		configureListTableView()
 		configureEmptyStateView()
 		configureAddButton()
-		haptic.prepare()
     }
 
 
@@ -166,7 +164,6 @@ class WiFiTableVC: UIViewController {
 
 	// MARK: - Actions
 	@objc private func plusButtonTapped(_ sender: UIButton) {
-		haptic.impactOccurred()
 		if self.isEditing {
 			deleteSelectedWiFiNetworks()
 		} else {

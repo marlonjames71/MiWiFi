@@ -16,6 +16,8 @@ class MiWiFiCell: UITableViewCell {
 		}
 	}
 
+	let haptic = UIImpactFeedbackGenerator(style: .rigid)
+
 	var containerLeadingConstraintNormal: NSLayoutConstraint!
 	var containerLeadingConstraintEdit: NSLayoutConstraint!
 	var labelsLeadingConstraintNormal: NSLayoutConstraint!
@@ -48,6 +50,7 @@ class MiWiFiCell: UITableViewCell {
 		configureLockImageView()
 		configureLabels()
 		configureConstraints()
+		haptic.prepare()
 		accessoryType = .disclosureIndicator
 	}
 
@@ -87,8 +90,10 @@ class MiWiFiCell: UITableViewCell {
 		UIView.animate(withDuration: 0.3) {
 			if selected {
 				self.animateContainerConstraints(setToNormal: true)
+				self.haptic.impactOccurred()
 			} else {
 				self.animateContainerConstraints(setToNormal: false)
+				self.haptic.impactOccurred()
 			}
 		}
 
