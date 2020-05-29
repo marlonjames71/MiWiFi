@@ -80,6 +80,7 @@ class CreditView: UIView, UITextViewDelegate {
 		creditTextView.delegate = self
 		creditTextView.isSelectable = true
 		creditTextView.isEditable = false
+		creditTextView.alwaysBounceVertical = true
 		creditTextView.backgroundColor = .clear
 
 		let str = """

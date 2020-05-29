@@ -61,7 +61,7 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 		super.init(frame: frame)
 //		backgroundColor = .black
 		translatesAutoresizingMaskIntoConstraints = false
-		configureCointainer()
+		configureContainer()
 		configureTextField()
 		configureLabel()
 	}
@@ -89,7 +89,7 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
 			configureRevealButton()
 		}
 		label.text = placeholder
-		configureCointainer()
+		configureContainer()
 		configureTextField()
 		configureLabel()
 	}
@@ -104,7 +104,7 @@ class MiWiFiTextFieldView: UIView, UITextFieldDelegate {
     }
 
 
-	private func configureCointainer() {
+	private func configureContainer() {
 		layer.addSublayer(border)
 		translatesAutoresizingMaskIntoConstraints = false
 		backgroundColor = .clear

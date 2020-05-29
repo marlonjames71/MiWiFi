@@ -16,6 +16,8 @@ protocol ISPContainerViewDelegate: class {
 
 class ISPDisplayView: UIView {
 
+	// MARK: - Properties
+
 	private let isp: ISP
 	private let copyHaptic = UIImpactFeedbackGenerator(style: .rigid)
 	private let callHaptic = UIImpactFeedbackGenerator(style: .medium)
@@ -39,7 +41,9 @@ class ISPDisplayView: UIView {
 
 	weak var delegate: ISPContainerViewDelegate?
 
+
 	// MARK: - Init
+
 	init(frame: CGRect = .zero, isp: ISP) {
 		self.isp = isp
 		super.init(frame: frame)
@@ -62,6 +66,7 @@ class ISPDisplayView: UIView {
 
 
 	// MARK: - Configure Methods
+
 	private func configureMainView() {
 		// Configure View
 		backgroundColor = .miSecondaryBackground
@@ -112,6 +117,7 @@ class ISPDisplayView: UIView {
 
 
 	// MARK: - Helper Methods
+
 	func loadLinkView() {
 		guard !activityIndicator.isAnimating else {
 			cancel()

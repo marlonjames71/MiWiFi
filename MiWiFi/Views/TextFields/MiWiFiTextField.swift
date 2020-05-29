@@ -37,7 +37,13 @@ class MiWiFiTextField: UITextField {
 	}
 
 
-	init(isSecureEntry: Bool, placeholder: String, autocorrectionType: UITextAutocorrectionType, autocapitalizationType: UITextAutocapitalizationType, returnType: UIReturnKeyType, needsRevealButton: Bool = false) {
+	init(isSecureEntry: Bool,
+		 placeholder: String,
+		 autocorrectionType: UITextAutocorrectionType,
+		 autocapitalizationType: UITextAutocapitalizationType,
+		 returnType: UIReturnKeyType,
+		 needsRevealButton: Bool = false) {
+
 		super.init(frame: .zero)
 		isSecureTextEntry = isSecureEntry
 		self.autocorrectionType = autocorrectionType

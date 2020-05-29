@@ -21,7 +21,7 @@ final class ISPVC: UIViewController {
 	private let addISPButton = NewISPButton()
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
 	private let copyAlertView = CopyAlertView()
-	private var ispView: ISPContainerView?
+	private var ispView: ISPDisplayView?
 
 	var delegate: ISPVCDelegate?
 
@@ -60,7 +60,7 @@ final class ISPVC: UIViewController {
 			configureAddButton()
 			return
 		}
-		ispView = ISPContainerView(frame: .zero, isp: isp)
+		ispView = ISPDisplayView(frame: .zero, isp: isp)
 		stackView.addArrangedSubview(ispView ?? UIView())
 		ispView?.delegate = self
 	}

@@ -79,7 +79,7 @@ class MiWiFiAcknowledgmentVC: UIViewController, UITextViewDelegate {
 			})
 		} else {
 			isCreditViewOffCentered = true
-			UIView.animate(withDuration: 0.6) {
+			UIView.animate(withDuration: 0.3) {
 				self.creditView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.midY + self.creditView.frame.height)
 				self.creditView.alpha = 0
 			}

@@ -16,11 +16,13 @@ final class AddISPVC: UIViewController {
 
 	// MARK: - Properties
 	private let wifi: Wifi
+	
 	var isp: ISP? {
 		didSet {
 			ispInputView.isp = isp
 		}
 	}
+
 	private let shouldAttachToWifi: Bool
 	private let ispInputView: ISPInputView
 	private let haptic = UIImpactFeedbackGenerator(style: .medium)
@@ -38,7 +40,6 @@ final class AddISPVC: UIViewController {
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		fatalError("Use init(with wifi: Wifi)")
 	}
-
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")

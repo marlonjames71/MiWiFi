@@ -110,7 +110,7 @@ class AddWIFIVC: UIViewController {
 	}
 
 
-	// MARK: - Configuartion
+	// MARK: - Configuration
 	private func configureLargeWifiIcon() {
 		view.addSubview(largeGrayWifiIcon)
 		largeGrayWifiIcon.frame = view.bounds
@@ -118,7 +118,7 @@ class AddWIFIVC: UIViewController {
 
 
 	private func configureTapGestureForView() {
-		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapViewToDimissKeyboard(_:)))
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapViewToDismissKeyboard(_:)))
 		tapGesture.numberOfTapsRequired = 1
 		view.addGestureRecognizer(tapGesture)
 	}
@@ -136,12 +136,12 @@ class AddWIFIVC: UIViewController {
 			title = "Add WiFi"
 		}
 
-		let cancelBarbutton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped(_:)))
+		let cancelBarButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped(_:)))
 		navigationItem.rightBarButtonItem = saveBarButtonItem
 		// ↓ ↓ ↓ Removing this line breaks the save button after resignFirstResponder() ⤸ ⤸ ⤸
 		saveBarButtonItem.target = self
 		saveBarButtonItem.isEnabled = false
-		navigationItem.leftBarButtonItem = cancelBarbutton
+		navigationItem.leftBarButtonItem = cancelBarButton
 		iconButton.setImage(IconInfo.home.homeImage, for: .normal)
 		iconButton.tintColor = .miIconTint
 		navigationItem.titleView = iconButton
@@ -172,7 +172,7 @@ class AddWIFIVC: UIViewController {
 
 		nicknameTextField.textField.addTarget(self, action: #selector(updateTitleWhileEditing(_:)), for: .editingChanged)
 		[nicknameTextField.textField, networkTextField.textField, passwordTextField.textField].forEach {
-			$0.addTarget(self, action: #selector(watchChangesOccured(_:)), for: .editingChanged)
+			$0.addTarget(self, action: #selector(watchChangesOccurred(_:)), for: .editingChanged)
 		}
 
 		[iconSegControl,
@@ -215,21 +215,21 @@ class AddWIFIVC: UIViewController {
 
 
 	// MARK: - Actions & Methods
-	@objc private func tapViewToDimissKeyboard(_ sender: UITapGestureRecognizer) {
+	@objc private func tapViewToDismissKeyboard(_ sender: UITapGestureRecognizer) {
 		[nicknameTextField.textField, networkTextField.textField, passwordTextField.textField].forEach { $0.resignFirstResponder() }
 	}
 
 
 	private func updateWifi(wifi: Wifi) {
 		if let nickname = nicknameTextField.textField.text,
-			let networkname = networkTextField.textField.text,
+			let networkName = networkTextField.textField.text,
 			let id = wifi.passwordID,
 			!nickname.isEmpty,
-			!networkname.isEmpty {
+			!networkName.isEmpty {
 
 			WifiController.shared.updateWifi(wifi: wifi,
 								  nickname: nickname,
-								  networkName: networkname,
+								  networkName: networkName,
 								  passwordID: id,
 								  locationDesc: desc,
 								  iconName: icon.rawValue,
@@ -279,7 +279,7 @@ class AddWIFIVC: UIViewController {
 	}
 
 
-	@objc private func watchChangesOccured(_ sender: UITextField) {
+	@objc private func watchChangesOccurred(_ sender: UITextField) {
 		let saveButtonEnabled = nicknameTextField.textField.text?.isEmpty != true && networkTextField.textField.text?.isEmpty != true
 
 		saveBarButtonItem.isEnabled = saveButtonEnabled
