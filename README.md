@@ -11,7 +11,7 @@ Secondly, this app is a side project while I am still attending Lambda. I made i
 I hope you enjoy MiWiFi!
 
 ### Future Features
-- [ ] Ability to add your ISP information for quick access
+- [X] Ability to add your ISP information for quick access
 - [ ] Custom QR Code theme selection for user
 - [ ] iPad and Apple Watch counter part
 - [ ] CloudKit (sync support for iPad and Apple Watch)
