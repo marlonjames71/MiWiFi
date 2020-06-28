@@ -1,5 +1,5 @@
 # MiWiFi
----
+
 MiWiFi is an app that lets you add any WiFi network and its credentials and will generate a QR code for you using the [QRettyCode](https://github.com/mredig/QRettyCode) framework. This makes it much easier to allow people to join your wifi network without revealing your password. All passwords are stored securely in Keychain.
 ---
 
