@@ -17,7 +17,10 @@ class CustomIntensityVisualEffectView: UIVisualEffectView {
 	///   - intensity: custom intensity from 0.0 (no effect) to 1.0 (full effect) using linear scale
 	init(effect: UIVisualEffect, intensity: CGFloat) {
 		super.init(effect: nil)
-		animator = UIViewPropertyAnimator(duration: 1, curve: .linear) { [unowned self] in self.effect = effect }
+		animator = UIViewPropertyAnimator(duration: 1, curve: .linear) { [weak self] in
+			guard let self = self else { return }
+			self.effect = effect
+		}
 		animator.fractionComplete = intensity
 	}
 
