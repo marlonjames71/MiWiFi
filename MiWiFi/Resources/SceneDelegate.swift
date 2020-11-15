@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		window = UIWindow(frame: windowScene.coordinateSpace.bounds)
 		#if DEBUG
-		window?.showTouches()
+//		window?.showTouches()
 		#endif
 		window?.windowScene = windowScene
 		window?.rootViewController = createTabBar()
